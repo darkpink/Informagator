@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2AE76072-2A5A-4560-B31A-8EBF26C99BBD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Acadian.Informagator.ProdProviders</RootNamespace>
+    <AssemblyName>Acadian.Informagator.ProdProviders</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assembly.cs">
+      <DependentUpon>AssemblyStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyStore.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyStore.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyStore.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyStore.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyStore.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ConfigurationModel.Context.cs">
+      <DependentUpon>ConfigurationModel.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ConfigurationModel.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ConfigurationModel.Designer.cs">
+      <DependentUpon>ConfigurationModel.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DatabaseAssemblyStore.cs" />
+    <Compile Include="DatabaseConfigurationProvider.cs" />
+    <Compile Include="Host.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Message.cs">
+      <DependentUpon>MessageStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageStore.Context.cs">
+      <DependentUpon>MessageStore.Context.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DatabaseMessageStore.cs" />
+    <Compile Include="MessageStore.Designer.cs">
+      <DependentUpon>MessageStore.edmx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="MessageStore1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageStore.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stage.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="StageParameter.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Thread.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <EntityDeploy Include="ConfigurationModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ConfigurationModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="AssemblyStore.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AssemblyStore.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="AssemblyStore.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AssemblyStore.edmx</DependentUpon>
+      <LastGenOutput>AssemblyStore.Context.cs</LastGenOutput>
+    </None>
+    <None Include="AssemblyStore.edmx.diagram">
+      <DependentUpon>AssemblyStore.edmx</DependentUpon>
+    </None>
+    <None Include="AssemblyStore.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AssemblyStore.edmx</DependentUpon>
+      <LastGenOutput>AssemblyStore.cs</LastGenOutput>
+    </None>
+    <None Include="ConfigurationModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ConfigurationModel.edmx</DependentUpon>
+      <LastGenOutput>ConfigurationModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="ConfigurationModel.edmx.diagram">
+      <DependentUpon>ConfigurationModel.edmx</DependentUpon>
+    </None>
+    <None Include="ConfigurationModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ConfigurationModel.edmx</DependentUpon>
+      <LastGenOutput>ConfigurationModel.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="MessageStore.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MessageStore.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="MessageStore.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MessageStore.edmx</DependentUpon>
+      <LastGenOutput>MessageStore.Context.cs</LastGenOutput>
+    </None>
+    <None Include="MessageStore.edmx.diagram">
+      <DependentUpon>MessageStore.edmx</DependentUpon>
+    </None>
+    <None Include="MessageStore.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MessageStore.edmx</DependentUpon>
+      <LastGenOutput>MessageStore1.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Informagator\Informagator.csproj">
+      <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
+      <Name>Informagator</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

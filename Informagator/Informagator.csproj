@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FAADC037-755C-4FA2-A32B-292AA8F80505}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Acadian.Informagator</RootNamespace>
+    <AssemblyName>Acadian.Informagator</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Services\InfoService.cs" />
+    <Compile Include="Services\AdminService.cs" />
+    <Compile Include="Services\InfoServiceHost.cs" />
+    <Compile Include="Services\AdminServiceHost.cs" />
+    <Compile Include="Services\IInfoService.cs" />
+    <Compile Include="Services\IAdminService.cs" />
+    <Compile Include="Configuration\ConfigurationParameterAttribute.cs" />
+    <Compile Include="Configuration\InformagatorConfiguration.cs" />
+    <Compile Include="Infrastructure\IInformagatorConfiguration.cs" />
+    <Compile Include="Infrastructure\IConfigurationProvider.cs" />
+    <Compile Include="Infrastructure\IThreadConfiguration.cs" />
+    <Compile Include="Configuration\StageConfiguration.cs" />
+    <Compile Include="Configuration\StageConfigurationParameter.cs" />
+    <Compile Include="Configuration\ThreadConfiguration.cs" />
+    <Compile Include="Infrastructure\IMessageErrorHandler.cs" />
+    <Compile Include="Infrastructure\IMessageValidationErrorHandler.cs" />
+    <Compile Include="Exceptions\MessageException.cs" />
+    <Compile Include="Exceptions\MessageValidationException.cs" />
+    <Compile Include="Exceptions\ConfigurationException.cs" />
+    <Compile Include="Exceptions\InformagatorException.cs" />
+    <Compile Include="Exceptions\InformagatorInvalidOperationException.cs" />
+    <Compile Include="InformagatorService.cs" />
+    <Compile Include="Threads\PollingStageWorker.cs" />
+    <Compile Include="Infrastructure\IAssemblySource.cs" />
+    <Compile Include="Infrastructure\IInformagatorThreadHost.cs" />
+    <Compile Include="Infrastructure\IInformagatorThreadIsolator.cs" />
+    <Compile Include="Infrastructure\IInformagatorThreadStatus.cs" />
+    <Compile Include="Infrastructure\IInformagatorWorkerClass.cs" />
+    <Compile Include="Messages\ByteArrayMessage.cs" />
+    <Compile Include="Infrastructure\IMessage.cs" />
+    <Compile Include="Infrastructure\IMessageStore.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stages\ConsumerStage.cs" />
+    <Compile Include="Stages\ProcessingSequence.cs" />
+    <Compile Include="Stages\ProcessingStage.cs" />
+    <Compile Include="Stages\SupplierStage.cs" />
+    <Compile Include="Stages\TransformStage.cs" />
+    <Compile Include="Stages\ValidationStage.cs" />
+    <Compile Include="Threads\IntervalExecutionThread.cs" />
+    <Compile Include="Threads\Isolator.cs" />
+    <Compile Include="Threads\MultigatorThreadStatus.cs" />
+    <Compile Include="Threads\ThreadHost.cs" />
+    <Compile Include="Threads\Worker.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
