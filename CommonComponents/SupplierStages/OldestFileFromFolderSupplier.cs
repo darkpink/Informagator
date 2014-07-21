@@ -1,4 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
+using Acadian.Informagator.Exceptions;
 using Acadian.Informagator.Infrastructure;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.Stages;
@@ -11,19 +12,16 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    public class OldestFileFromFolderSupplier : SupplierStage
+    public class OldestFileFromFolderSupplier : ISupplierStage
     {
-        public OldestFileFromFolderSupplier(IMessageErrorHandler errorHandler)
-            : base(errorHandler)
-        {
-        }
-
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        protected override IMessage GetMessage()
+        public IMessage GetMessage()
         {
             ByteArrayMessage result = null;
+
+            ValidateSettings();
 
             string[] files = Directory.GetFiles(FolderPath);
             var fileCreation = new Dictionary<string, DateTime>();
@@ -54,5 +52,18 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
             return result;
         }
 
+        protected void ValidateSettings()
+        {
+            if (String.IsNullOrWhiteSpace(FolderPath))
+            {
+                throw new ConfigurationException("FolderPath must be configured for OldestFileFromFolderSupplier");
+            }
+
+            if (!Directory.Exists(FolderPath))
+            {
+                throw new ConfigurationException("FolderPath " + FolderPath + " does not exist");
+            }
+
+        }
     }
 }

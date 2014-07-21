@@ -1,4 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
+using Acadian.Informagator.Exceptions;
 using Acadian.Informagator.Infrastructure;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.Stages;
@@ -12,25 +13,42 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class OutputFolderConsumer : ConsumerStage
+    public class OutputFolderConsumer : IConsumerStage
     {
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public OutputFolderConsumer(IMessageErrorHandler errorHandler)
-            :base(errorHandler)
+        public void ConsumeMessage(IMessage message)
         {
-        }
+            ValidateSettings();
 
-        protected override void Consume(IMessage message)
-        {
             var fileName = Guid.NewGuid().ToString();
             var fullPath = Path.Combine(FolderPath, fileName);
 
             using (FileStream outFileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
-                outFileStream.Write(message.Body, 0, message.Body.Length);
+                outFileStream.Write(message.BinaryData, 0, message.BinaryData.Length);
                 outFileStream.Close();
+            }
+        }
+
+        protected void ValidateSettings()
+        {
+            if (String.IsNullOrWhiteSpace(FolderPath))
+            {
+                throw new ConfigurationException("FolderPath must be configured for OutputFolderConsumer");
+            }
+
+            if (!Directory.Exists(FolderPath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(FolderPath);
+                }
+                catch (Exception ex)
+                {
+                    throw new ConfigurationException("Unable to create directory " + FolderPath, ex);
+                }
             }
         }
     }

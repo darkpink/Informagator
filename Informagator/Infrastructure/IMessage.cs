@@ -9,8 +9,13 @@ namespace Acadian.Informagator.Infrastructure
 {
     public interface IMessage
     {
-        byte[] Body { get; }
+        byte[] BinaryData { get; set; }
         IDictionary<string, string> Attributes { get; }
         IList<string> ProcessingTrail { get; }
+    }
+
+    public interface IMessage<TBody> : IMessage
+    {
+        TBody Body { get; set; }
     }
 }

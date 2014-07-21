@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Threads
 {
-    public class ThreadHost : MarshalByRefObject, IInfomagatorThreadHost
+    public class ThreadHost : MarshalByRefObject, IInformagatorThreadHost
     {
         protected const int StopTimeoutMilliseconds = 10000;
 
@@ -22,7 +22,7 @@ namespace Acadian.Informagator.Threads
         protected IThreadConfiguration WorkerConfiguration { get; set; }
         protected Dictionary<string, Assembly> LoadedAssemblies { get; set; }
         protected Exception WorkerThreadException { get; set; }
-        public IAssemblySource AssemblyLoader { protected get; set; }
+        protected IAssemblySource AssemblyLoader { get; set; }
         public ThreadHost()
         {
             LoadedAssemblies = new Dictionary<string, Assembly>();
@@ -93,7 +93,7 @@ namespace Acadian.Informagator.Threads
                 }
                 else
                 {
-                    result = new MultigatorThreadStatus();
+                    result = new InformagatorThreadStatus();
                     result.HostName = Dns.GetHostName();
                     result.Info = "Not Started";
                     result.ThreadName = WorkerConfiguration == null ? "Configuration Not Yet Loaded" : WorkerConfiguration.Name;
@@ -111,6 +111,13 @@ namespace Acadian.Informagator.Threads
             }
         }
 
+        public IAssemblySource AssemblySource
+        {
+            set
+            {
+                AssemblyLoader = value;
+            }
+        }
         public void LoadAssembly(string name)
         {
             AssemblyLoader.LoadAssembly(name);

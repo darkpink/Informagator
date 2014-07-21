@@ -45,8 +45,8 @@ namespace Acadian.Informagator.DevProviders
                         "Demo", 
                         new ThreadConfiguration() {
                             Name = "Demo",
-                            ThreadStartTypeAssembly = "Acadian.Informagator.dll",
-                            ThreadStartTypeName = "Acadian.Informagator.Threads.PollingStageWorker",
+                            ThreadHostTypeAssembly = "Acadian.Informagator.dll",
+                            ThreadHostTypeName = "Acadian.Informagator.Threads.PollingStageWorker",
                             RequiredAssemblies = new[] {"Acadian.Informagator.CommonComponents.dll", "Acadian.Informagator.dll" },
                             StageConfigurations = new[] { new StageConfiguration()
                                                           { 

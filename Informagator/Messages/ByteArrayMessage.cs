@@ -1,6 +1,7 @@
 ﻿using Acadian.Informagator.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -8,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Messages
 {
-    public class ByteArrayMessage : IMessage
+    public class ByteArrayMessage : MessageBase<byte[]>, IMessage
     {
-        public Dictionary<string, string> Attributes { get; protected set; }
-        public List<string> ProcessingTrail { get; protected set; }
-
-        public Byte[] Body { get; set; }
-
         public ByteArrayMessage()
         {
-            Attributes = new Dictionary<string, string>();
-            ProcessingTrail = new List<string>();
         }
 
-        IDictionary<string, string> IMessage.Attributes
+        public ByteArrayMessage(Stream data)
         {
-            get { return this.Attributes; }
+            Body = new byte[data.Length];
+            data.Read(Body, 0, (int)data.Length);
         }
-
-        IList<string> IMessage.ProcessingTrail
+        public override byte[] BinaryData
         {
-            get { return this.ProcessingTrail; }
+            get
+            {
+                return Body;
+            }
+            set
+            {
+                Body = value;
+            }
         }
     }
 }

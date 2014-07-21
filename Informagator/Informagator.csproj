@@ -45,6 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\InformagatorProvidedAttribute.cs" />
+    <Compile Include="Infrastructure\IConsumerStage.cs" />
+    <Compile Include="Infrastructure\IObserverStage.cs" />
+    <Compile Include="Infrastructure\ISupplierStage.cs" />
+    <Compile Include="Infrastructure\ITransformStage.cs" />
+    <Compile Include="Messages\AsciiStringMessage.cs" />
+    <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Services\InfoService.cs" />
     <Compile Include="Services\AdminService.cs" />
     <Compile Include="Services\InfoServiceHost.cs" />
@@ -85,7 +92,7 @@
     <Compile Include="Stages\ValidationStage.cs" />
     <Compile Include="Threads\IntervalExecutionThread.cs" />
     <Compile Include="Threads\Isolator.cs" />
-    <Compile Include="Threads\MultigatorThreadStatus.cs" />
+    <Compile Include="Threads\InformagatorThreadStatus.cs" />
     <Compile Include="Threads\ThreadHost.cs" />
     <Compile Include="Threads\Worker.cs" />
   </ItemGroup>

@@ -30,8 +30,8 @@ namespace Acadian.Informagator.ProdProviders
                         {
                             ThreadConfiguration threadConfig = new ThreadConfiguration();
                             threadConfig.Name = t.Name;
-                            threadConfig.ThreadStartTypeAssembly = t.WorkerAssembly;
-                            threadConfig.ThreadStartTypeName = t.WorkerType;
+                            threadConfig.ThreadHostTypeAssembly = t.WorkerAssembly;
+                            threadConfig.ThreadHostTypeName = t.WorkerType;
                             threadConfig.RequiredAssemblies.Add(t.WorkerAssembly);
 
                             foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
