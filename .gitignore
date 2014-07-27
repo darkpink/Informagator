@@ -46,6 +46,7 @@ Informagator/obj/
 packages/
 ProdProviders/bin/
 ProdProviders/obj/
+<<<<<<< HEAD
 Tests/obj/
 Tests/bin/
 
@@ -54,3 +55,8 @@ Tests/bin/Debug/HostConsoleApp.exe
 Tests/bin/Debug/Acadian.Informagator.ProdProviders.pdb
 Tests/bin/Debug/Acadian.Informagator.DevProviders.dll
 Tests/bin/Debug/Acadian.Informagator.CommonComponents.dll
+=======
+Tests/bin/
+Tests/obj/
+
+>>>>>>> origin/master
