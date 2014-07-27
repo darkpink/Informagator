@@ -46,4 +46,11 @@ Informagator/obj/
 packages/
 ProdProviders/bin/
 ProdProviders/obj/
+Tests/obj/
+Tests/bin/
 
+Tests/bin/Debug/Tests.dll
+Tests/bin/Debug/HostConsoleApp.exe
+Tests/bin/Debug/Acadian.Informagator.ProdProviders.pdb
+Tests/bin/Debug/Acadian.Informagator.DevProviders.dll
+Tests/bin/Debug/Acadian.Informagator.CommonComponents.dll
