@@ -15,7 +15,7 @@ namespace Acadian.Informagator.ProdProviders
             using (MessageStoreEntities entities = new MessageStoreEntities())
             {
                 Message m = entities.Messages.Create();
-                m.Body = Encoding.ASCII.GetString(message.Body);
+                m.Body = Encoding.ASCII.GetString(message.BinaryData);
                 m.QueueName = queueName;
                 entities.SaveChanges();
             }

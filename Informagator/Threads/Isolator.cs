@@ -11,36 +11,21 @@ namespace Acadian.Informagator.Threads
 {
     public class Isolator : IInformagatorThreadIsolator
     {
-        public MultigatorThreadStatus Status { get; protected set; }
-        public  IThreadConfiguration ThreadConfiguration { get; protected set; }
+        public InformagatorThreadStatus Status { get; protected set; }
+        public  IThreadConfiguration ThreadConfiguration { protected get; set; }
 
-        protected IInfomagatorThreadHost CrossDomainProxy { get; set; }
+        protected IInformagatorThreadHost CrossDomainProxy { get; set; }
+        
         protected AppDomain InnerThreadDomain { get; set; }
 
-        protected IAssemblySource AssemblySource { get; set; }
-
-        public Isolator(IThreadConfiguration configuration, IAssemblySource assemblySource)
-        {
-            ThreadConfiguration = configuration;
-            AssemblySource = assemblySource;
-        }
-
-        public void ReloadConfig()
-        {
-        }
+        public IAssemblySource AssemblySource { protected get; set; }
 
         public void Start()
         {
             InnerThreadDomain = AppDomain.CreateDomain(ThreadConfiguration.Name);
-            ThreadHost host = InnerThreadDomain.CreateInstanceAndUnwrap(typeof(ThreadHost).Assembly.FullName, typeof(ThreadHost).FullName) as ThreadHost;
+            IInformagatorThreadHost host = InnerThreadDomain.CreateInstanceAndUnwrap(ThreadConfiguration.ThreadHostTypeAssembly, ThreadConfiguration.ThreadHostTypeName) as IInformagatorThreadHost;
             host.Configuration = ThreadConfiguration;
-            host.AssemblyLoader = AssemblySource;
-            //AssemblySource.LoadAssembly(ThreadConfiguration.ThreadStartTypeAssembly);
-            foreach (string assemblyName in ThreadConfiguration.RequiredAssemblies)
-            {
-                host.LoadAssembly(assemblyName);
-            }
-            host.CreateWorker(ThreadConfiguration.ThreadStartTypeAssembly, ThreadConfiguration.ThreadStartTypeName);
+            host.AssemblySource = AssemblySource;
             CrossDomainProxy = host;
             host.Start();
         }

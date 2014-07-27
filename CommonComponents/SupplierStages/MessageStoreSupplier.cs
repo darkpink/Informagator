@@ -1,4 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
+using Acadian.Informagator.Exceptions;
 using Acadian.Informagator.Infrastructure;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.Stages;
@@ -11,26 +12,37 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    public class MessageStoreQueueSource : SupplierStage
+    [Export(typeof(ISupplierStage))]
+    public class MessageStoreSupplier : ISupplierStage
     {
-        public MessageStoreQueueSource(IMessageErrorHandler errorHandler)
-            : base(errorHandler)
-        {
-        }
-
         [ConfigurationParameter]
         public string QueueName { get; set; }
 
-        [Import]
+        [InformagatorProvided]
         public IMessageStore MessageStore { get; set; }
 
-
-        protected override IMessage GetMessage()
+        public IMessage GetMessage()
         {
-            IMessage result = MessageStore.Dequeue(QueueName);
+            IMessage result;
+
+            ValidateSettings();
+            result = MessageStore.Dequeue(QueueName);
 
             return result;
         }
 
+        protected void ValidateSettings()
+        {
+            if (MessageStore == null)
+            {
+                throw new InformagatorInvalidOperationException("MessageStore must be provided to MessageStoreSupplier");
+            }
+
+            if (String.IsNullOrEmpty(QueueName))
+            {
+                throw new ConfigurationException("QueueName must be set for MessageStoreSupplier");
+            }
+
+        }
     }
 }

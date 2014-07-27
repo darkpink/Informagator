@@ -113,7 +113,7 @@ namespace Acadian.Informagator.Threads
         {
             get 
             {
-                MultigatorThreadStatus result = new MultigatorThreadStatus();
+                InformagatorThreadStatus result = new InformagatorThreadStatus();
                 result.IsRunning = IsRunning;
                 result.HostName = Dns.GetHostName();
                 result.HeartBeat = HeartBeat;

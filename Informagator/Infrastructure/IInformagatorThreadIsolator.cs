@@ -9,11 +9,11 @@ namespace Acadian.Informagator.Infrastructure
 {
     public interface IInformagatorThreadIsolator
     {
-        IThreadConfiguration ThreadConfiguration { get; }
+        IAssemblySource AssemblySource { set; }
+        IThreadConfiguration ThreadConfiguration { set; }
         void Start();
         void Pause();
         void Resume();
         void Stop();
-        void ReloadConfig();
     }
 }

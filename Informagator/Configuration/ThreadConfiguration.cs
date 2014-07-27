@@ -14,20 +14,30 @@ namespace Acadian.Informagator.Configuration
             RequiredAssemblies = new List<string>();
             StageConfigurations = new List<StageConfiguration>();
         }
+        
         public IList<StageConfiguration> StageConfigurations { get; set; }
 
         public IList<string> RequiredAssemblies { get; set; }
-
+        
         public string Name { get; set; }
-        public string ThreadStartTypeAssembly { get; set; }
-        public string ThreadStartTypeName { get; set; }
+        
+        public string ThreadHostTypeAssembly { get; set; }
+        
+        public string ThreadHostTypeName { get; set; }
+        
+        public string WorkerClassTypeAssembly { get; set; }
+        
+        public string WorkerClassTypeName { get; set; }
+        
         public bool IsSameAs(IThreadConfiguration config)
         {
             bool result = true;
 
             result &= Name == config.Name;
-            result &= ThreadStartTypeAssembly == config.ThreadStartTypeAssembly;
-            result &= ThreadStartTypeName == config.ThreadStartTypeName;
+            result &= ThreadHostTypeAssembly == config.ThreadHostTypeAssembly;
+            result &= ThreadHostTypeName == config.ThreadHostTypeName;
+            result &= WorkerClassTypeAssembly == config.WorkerClassTypeAssembly;
+            result &= WorkerClassTypeName == config.WorkerClassTypeName;
 
             foreach (string required in RequiredAssemblies)
             {

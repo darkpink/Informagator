@@ -33,6 +33,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,11 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsumerStages\MessageStoreConsumer.cs" />
+    <Compile Include="ConsumerStages\TransactionalMsmqBinaryConsumer.cs" />
     <Compile Include="ConsumerStages\OutputFolderConsumer.cs" />
     <Compile Include="SupplierStages\MessageStoreSupplier.cs" />
+    <Compile Include="SupplierStages\TransactionalMsmqBinarySupplier.cs" />
     <Compile Include="SupplierStages\OldestFileFromFolderSupplier.cs" />
     <Compile Include="ErrorHandlers\IgnoreErrorHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransformStages\ToStringMessageTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Informagator\Informagator.csproj">
@@ -54,7 +58,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="TransformStages\" />
     <Folder Include="ValidationStages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
