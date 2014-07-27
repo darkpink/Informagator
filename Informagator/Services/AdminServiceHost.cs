@@ -7,7 +7,7 @@ using System.ServiceModel.Description;
 
 namespace Acadian.Informagator.Services
 {
-    public class AdminServiceHost
+    public static class AdminServiceHost
     {
         private static ServiceHost adminServiceHost = null;
 

@@ -78,7 +78,7 @@ namespace Acadian.Informagator
 
         private void LaunchControlService()
         {
-            AdminService remoteControlService = new AdminService();
+            AdminService remoteControlService = new AdminService(this);
             AdminServiceHost.StartService(remoteControlService);
         }
 
@@ -125,6 +125,20 @@ namespace Acadian.Informagator
         }
 
         private void StopControlService()
+        {
+        }
+
+        public void StopThread(string threadName)
+        {
+        }
+
+        public void StartThread(string threadName)
+        {
+        }
+        public void PauseThread(string threadName)
+        {
+        }
+        public void ResumeThread(string threadName)
         {
         }
 
