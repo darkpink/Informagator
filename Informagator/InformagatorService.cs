@@ -17,7 +17,7 @@ namespace Acadian.Informagator
     {
         public IMessageStore MessageStore { get; set; }
 
-        protected List<IInformagatorThreadIsolator> Threads { get; set; }
+        protected Dictionary<string, IInformagatorThreadIsolator> Threads { get; set; }
 
         protected IInformagatorConfiguration Configuration { get; set; }
 
@@ -58,12 +58,14 @@ namespace Acadian.Informagator
                 IThreadConfiguration oldThreadConfig = Configuration.ThreadConfiguration[existingThreadName];
                 if (!newThreadConfig.IsSameAs(oldThreadConfig))
                 {
-                    IInformagatorThreadIsolator thread = Threads.Single(i => i.ThreadConfiguration.Name == newThreadConfig.Name);
+                    IInformagatorThreadIsolator thread = Threads[existingThreadName];
                     thread.Stop();
-                    Threads.Remove(thread);
-                    thread = new Isolator(newConfiguration.ThreadConfiguration[existingThreadName], AssemblySource);
+                    Threads.Remove(existingThreadName);
+                    thread = new Isolator();
+                    thread.AssemblySource = AssemblySource;
+                    thread.ThreadConfiguration = newConfiguration.ThreadConfiguration[existingThreadName];
                     thread.Start();
-                    Threads.Add(thread);
+                    Threads.Add(existingThreadName, thread);
                 }
             }
 
@@ -84,7 +86,7 @@ namespace Acadian.Informagator
 
         private void StartThreads()
         {
-            foreach (IInformagatorThreadIsolator thread in Threads)
+            foreach (IInformagatorThreadIsolator thread in Threads.Values)
             {
                 thread.Start();
             }
@@ -92,17 +94,17 @@ namespace Acadian.Informagator
 
         private void BuildThreads()
         {
-            var threads = new List<IInformagatorThreadIsolator>();
+            Threads = new Dictionary<string, IInformagatorThreadIsolator>();
 
             Configuration = ConfigurationProvider.Configuration;
 
             foreach (string threadName in Configuration.ThreadConfiguration.Keys)
             {
-                var thread = new Isolator(Configuration.ThreadConfiguration[threadName], AssemblySource);
-                threads.Add(thread);
+                var thread = new Isolator();
+                thread.AssemblySource = AssemblySource;
+                thread.ThreadConfiguration = Configuration.ThreadConfiguration[threadName];
+                Threads.Add(threadName, thread);
             }
-
-            Threads = threads;
         }
 
         public void Stop()
@@ -114,7 +116,7 @@ namespace Acadian.Informagator
 
         private void StopThreads()
         {
-            foreach (IInformagatorThreadIsolator host in Threads)
+            foreach (IInformagatorThreadIsolator host in Threads.Values)
             {
                 host.Stop();
             }
