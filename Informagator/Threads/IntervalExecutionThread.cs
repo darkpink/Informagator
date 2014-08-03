@@ -8,19 +8,17 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Threads
 {
+    [Serializable]
     public abstract class IntervalExecutionThread : Worker
     {
         protected virtual int MinSleepTime { get { return 500; } }
         protected virtual int MaxSleepTime { get { return 3000; } }
         protected virtual Func<int, int> GetSleepTime { get { return (t => Math.Min(t + MinSleepTime, MaxSleepTime)); } }
 
-        public IntervalExecutionThread(ThreadConfiguration configuration)
-            : base(configuration)
+        public override sealed void Run()
         {
-        }
+            OnInitialize();
 
-        public override void Run()
-        {
             int currentSleepTime = 0;
             while(!StopRequested)
             {
@@ -37,6 +35,10 @@ namespace Acadian.Informagator.Threads
             }
         }
 
+        protected virtual void OnInitialize()
+        {
+
+        }
         protected abstract bool Execute();
         
     }

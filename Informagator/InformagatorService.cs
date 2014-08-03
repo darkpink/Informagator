@@ -54,8 +54,8 @@ namespace Acadian.Informagator
 
             foreach (string existingThreadName in newConfiguration.ThreadConfiguration.Keys.Intersect(Configuration.ThreadConfiguration.Keys))
             {
-                IThreadConfiguration newThreadConfig = newConfiguration.ThreadConfiguration[existingThreadName];
-                IThreadConfiguration oldThreadConfig = Configuration.ThreadConfiguration[existingThreadName];
+                IThreadIsolatorConfiguration newThreadConfig = newConfiguration.ThreadConfiguration[existingThreadName];
+                IThreadIsolatorConfiguration oldThreadConfig = Configuration.ThreadConfiguration[existingThreadName];
                 if (!newThreadConfig.IsSameAs(oldThreadConfig))
                 {
                     IInformagatorThreadIsolator thread = Threads[existingThreadName];
@@ -63,7 +63,7 @@ namespace Acadian.Informagator
                     Threads.Remove(existingThreadName);
                     thread = new Isolator();
                     thread.AssemblySource = AssemblySource;
-                    thread.ThreadConfiguration = newConfiguration.ThreadConfiguration[existingThreadName];
+                    thread.Configuration = newConfiguration.ThreadConfiguration[existingThreadName];
                     thread.Start();
                     Threads.Add(existingThreadName, thread);
                 }
@@ -102,7 +102,7 @@ namespace Acadian.Informagator
             {
                 var thread = new Isolator();
                 thread.AssemblySource = AssemblySource;
-                thread.ThreadConfiguration = Configuration.ThreadConfiguration[threadName];
+                thread.Configuration = Configuration.ThreadConfiguration[threadName];
                 Threads.Add(threadName, thread);
             }
         }

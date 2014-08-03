@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Infrastructure
 {
-    public interface IConfigurationProvider
+    public interface IProcessingStage
     {
-        IInformagatorConfiguration Configuration { get; }
+        IMessage Execute(IMessage msgIn);
     }
 }

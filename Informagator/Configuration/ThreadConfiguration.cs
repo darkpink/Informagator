@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acadian.Informagator.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,15 +8,15 @@ using System.Threading.Tasks;
 namespace Acadian.Informagator.Configuration
 {
     [Serializable]
-    public class ThreadConfiguration : IThreadConfiguration
+    public class ThreadConfiguration : IThreadIsolatorConfiguration
     {
         public ThreadConfiguration()
         {
             RequiredAssemblies = new List<string>();
-            StageConfigurations = new List<StageConfiguration>();
+            StageConfigurations = new List<IStageConfiguration>();
         }
         
-        public IList<StageConfiguration> StageConfigurations { get; set; }
+        public IList<IStageConfiguration> StageConfigurations { get; set; }
 
         public IList<string> RequiredAssemblies { get; set; }
         
@@ -28,32 +29,39 @@ namespace Acadian.Informagator.Configuration
         public string WorkerClassTypeAssembly { get; set; }
         
         public string WorkerClassTypeName { get; set; }
-        
-        public bool IsSameAs(IThreadConfiguration config)
+        public bool IsSameAs(IThreadHostConfiguration config)
         {
             bool result = true;
-
-            result &= Name == config.Name;
-            result &= ThreadHostTypeAssembly == config.ThreadHostTypeAssembly;
-            result &= ThreadHostTypeName == config.ThreadHostTypeName;
-            result &= WorkerClassTypeAssembly == config.WorkerClassTypeAssembly;
-            result &= WorkerClassTypeName == config.WorkerClassTypeName;
-
-            foreach (string required in RequiredAssemblies)
+            ThreadConfiguration castedConfig = config as ThreadConfiguration;
+            if (castedConfig == null)
             {
-                result &= config.RequiredAssemblies.Contains(required);
+                result = false;
+            }
+            else
+            {
+                result &= Name == castedConfig.Name;
+                result &= ThreadHostTypeAssembly == castedConfig.ThreadHostTypeAssembly;
+                result &= ThreadHostTypeName == castedConfig.ThreadHostTypeName;
+                result &= WorkerClassTypeAssembly == castedConfig.WorkerClassTypeAssembly;
+                result &= WorkerClassTypeName == castedConfig.WorkerClassTypeName;
+
+                foreach (string required in RequiredAssemblies)
+                {
+                    result &= castedConfig.RequiredAssemblies.Contains(required);
+                }
+
+                foreach (string required in castedConfig.RequiredAssemblies)
+                {
+                    result &= RequiredAssemblies.Contains(required);
+                }
+
+                result = result && !HasCustomConfigurationDifferences(castedConfig);
             }
 
-            foreach (string required in config.RequiredAssemblies)
-            {
-                result &= RequiredAssemblies.Contains(required);
-            }
-
-            result = result && !HasCustomConfigurationDifferences(config);
             return result;
         }
 
-        protected bool HasCustomConfigurationDifferences(Informagator.Configuration.IThreadConfiguration config)
+        protected bool HasCustomConfigurationDifferences(Informagator.Infrastructure.IThreadHostConfiguration config)
         {
             bool result;
             
@@ -65,8 +73,8 @@ namespace Acadian.Informagator.Configuration
                 {
                     for (int stageIndex = 0; stageIndex < StageConfigurations.Count; stageIndex++)
                     {
-                        StageConfiguration c1 = StageConfigurations[stageIndex];
-                        StageConfiguration c2 = castedConfig.StageConfigurations[stageIndex];
+                        IStageConfiguration c1 = StageConfigurations[stageIndex];
+                        IStageConfiguration c2 = castedConfig.StageConfigurations[stageIndex];
                         result |= !c1.IsSameAs(c2);
                     }
                 }
@@ -81,6 +89,12 @@ namespace Acadian.Informagator.Configuration
             }
             
             return result;
+        }
+
+
+        public bool IsSameAs(IThreadIsolatorConfiguration config)
+        {
+            throw new NotImplementedException();
         }
     }
 }

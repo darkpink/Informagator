@@ -10,11 +10,11 @@ namespace Acadian.Informagator.Stages
 {
     public class ProcessingSequence
     {
-        public IList<ProcessingStage> Stages { get; set; }
+        public IList<IProcessingStage> Stages { get; set; }
 
         public ProcessingSequence()
         {
-            Stages = new List<ProcessingStage>();
+            Stages = new List<IProcessingStage>();
         }
 
         public virtual bool Execute()
@@ -22,9 +22,9 @@ namespace Acadian.Informagator.Stages
             bool result = false;
             IMessage message = null;
             
-            foreach (ProcessingStage stage in Stages)
+            foreach (IProcessingStage stage in Stages)
             {
-                message = stage.Process(message);
+                message = stage.Execute(message);
                 if (message == null)
                 {
                     break;

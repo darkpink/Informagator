@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acadian.Informagator.Tracking;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Infrastructure
 {
-    public interface ISupplierStage
+    public interface IMessageTracker
     {
-        IMessage GetMessage();
+        void TrackMessage(TrackingInfo info, IMessage message);
     }
 }

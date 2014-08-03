@@ -46,10 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\InformagatorProvidedAttribute.cs" />
-    <Compile Include="Infrastructure\IConsumerStage.cs" />
+    <Compile Include="Infrastructure\IInformagatorRunner.cs" />
+    <Compile Include="Infrastructure\IStageConfigurationParameter.cs" />
+    <Compile Include="Infrastructure\IMessageTracker.cs" />
     <Compile Include="Infrastructure\IObserverStage.cs" />
-    <Compile Include="Infrastructure\ISupplierStage.cs" />
+    <Compile Include="Infrastructure\IStageConfiguration.cs" />
+    <Compile Include="Infrastructure\IProcessingStage.cs" />
+    <Compile Include="Infrastructure\IThreadIsolatorConfiguration.cs" />
     <Compile Include="Infrastructure\ITransformStage.cs" />
+    <Compile Include="Infrastructure\IWorkerConfiguration.cs" />
     <Compile Include="Messages\AsciiStringMessage.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Services\InfoService.cs" />
@@ -62,7 +67,7 @@
     <Compile Include="Configuration\InformagatorConfiguration.cs" />
     <Compile Include="Infrastructure\IInformagatorConfiguration.cs" />
     <Compile Include="Infrastructure\IConfigurationProvider.cs" />
-    <Compile Include="Infrastructure\IThreadConfiguration.cs" />
+    <Compile Include="Infrastructure\IThreadHostConfiguration.cs" />
     <Compile Include="Configuration\StageConfiguration.cs" />
     <Compile Include="Configuration\StageConfigurationParameter.cs" />
     <Compile Include="Configuration\ThreadConfiguration.cs" />
@@ -79,7 +84,7 @@
     <Compile Include="Infrastructure\IInformagatorThreadHost.cs" />
     <Compile Include="Infrastructure\IInformagatorThreadIsolator.cs" />
     <Compile Include="Infrastructure\IInformagatorThreadStatus.cs" />
-    <Compile Include="Infrastructure\IInformagatorWorkerClass.cs" />
+    <Compile Include="Infrastructure\IInformagatorWorker.cs" />
     <Compile Include="Messages\ByteArrayMessage.cs" />
     <Compile Include="Infrastructure\IMessage.cs" />
     <Compile Include="Infrastructure\IMessageStore.cs" />
@@ -95,10 +100,12 @@
     <Compile Include="Threads\InformagatorThreadStatus.cs" />
     <Compile Include="Threads\ThreadHost.cs" />
     <Compile Include="Threads\Worker.cs" />
+    <Compile Include="Tracking\TrackingInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

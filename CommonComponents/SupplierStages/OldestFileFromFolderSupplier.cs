@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    public class OldestFileFromFolderSupplier : ISupplierStage
+    public class OldestFileFromFolderSupplier : IProcessingStage
     {
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public IMessage GetMessage()
+        public IMessage Execute(IMessage msgIn)
         {
             ByteArrayMessage result = null;
 

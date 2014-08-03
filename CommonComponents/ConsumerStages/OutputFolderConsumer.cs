@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class OutputFolderConsumer : IConsumerStage
+    public class OutputFolderConsumer : IProcessingStage
     {
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public void ConsumeMessage(IMessage message)
+        public IMessage Execute(IMessage msgIn)
         {
             ValidateSettings();
 
@@ -27,9 +27,11 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
 
             using (FileStream outFileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
-                outFileStream.Write(message.BinaryData, 0, message.BinaryData.Length);
+                outFileStream.Write(msgIn.BinaryData, 0, msgIn.BinaryData.Length);
                 outFileStream.Close();
             }
+
+            return null;
         }
 
         protected void ValidateSettings()

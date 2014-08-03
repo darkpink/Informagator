@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Infrastructure
 {
-    public interface IConfigurationProvider
+    public interface IInformagatorWorker : IInformagatorRunner<IWorkerConfiguration>
     {
-        IInformagatorConfiguration Configuration { get; }
+        IList<string> RequiredAssemblies { get; }
     }
 }

@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    [Export(typeof(ISupplierStage))]
-    public class MessageStoreSupplier : ISupplierStage
+    [Export(typeof(IProcessingStage))]
+    public class MessageStoreSupplier : IProcessingStage
     {
         [ConfigurationParameter]
         public string QueueName { get; set; }
@@ -21,7 +21,7 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
         [InformagatorProvided]
         public IMessageStore MessageStore { get; set; }
 
-        public IMessage GetMessage()
+        public IMessage Execute(IMessage msgIn)
         {
             IMessage result;
 

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Infrastructure
 {
-    public interface IConsumerStage
+    public interface IWorkerConfiguration
     {
-        void ConsumeMessage(IMessage message);
+        string Name { get; }
+
+        IList<IStageConfiguration> StageConfigurations { get; }
     }
 }

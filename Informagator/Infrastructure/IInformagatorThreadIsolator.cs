@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Infrastructure
 {
-    public interface IInformagatorThreadIsolator
+    public interface IInformagatorThreadIsolator : IInformagatorRunner<IThreadIsolatorConfiguration>
     {
         IAssemblySource AssemblySource { set; }
-        IThreadConfiguration ThreadConfiguration { set; }
-        void Start();
-        void Pause();
-        void Resume();
-        void Stop();
     }
 }

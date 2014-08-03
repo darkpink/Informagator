@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    public class TransactionalMsmqBinarySupplier : ISupplierStage
+    public class TransactionalMsmqBinarySupplier : IProcessingStage
     {
         private readonly TimeSpan ReceiveTimeout = TimeSpan.FromSeconds(1);
         protected MessageQueue Queue { get; set; }
@@ -41,7 +41,7 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
             Queue = new MessageQueue(QueueName, QueueAccessMode.Receive);
         }
 
-        public IMessage GetMessage()
+        public IMessage Execute(IMessage msgIn)
         {
             ByteArrayMessage result = null;
 

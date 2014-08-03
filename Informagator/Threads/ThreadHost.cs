@@ -17,12 +17,15 @@ namespace Acadian.Informagator.Threads
         protected const int StopTimeoutMilliseconds = 10000;
 
         protected Thread WorkerThread { get; set; }
-        protected IInformagatorWorkerClass WorkerObject { get; set; }
+        protected IInformagatorWorker WorkerObject { get; set; }
         protected Type WorkerClass { get; set; }
-        protected IThreadConfiguration WorkerConfiguration { get; set; }
+        protected IThreadHostConfiguration WorkerConfiguration { get; set; }
         protected Dictionary<string, Assembly> LoadedAssemblies { get; set; }
         protected Exception WorkerThreadException { get; set; }
-        protected IAssemblySource AssemblyLoader { get; set; }
+        public IAssemblySource AssemblySource { protected get; set; }
+        public IMessageTracker MessageTracker { protected get; set; }
+        public IMessageStore MessageStore { protected get; set; }
+        public string Name { protected get; set; }
         public ThreadHost()
         {
             LoadedAssemblies = new Dictionary<string, Assembly>();
@@ -35,11 +38,7 @@ namespace Acadian.Informagator.Threads
                 throw new InformagatorInvalidOperationException("Thread can only be started once.  Rebuild it.");
             }
 
-            if (WorkerObject == null)
-            {
-                throw new InformagatorInvalidOperationException("Worker Object must be created before starting");
-            }
-
+            CreateWorker();
             WorkerThread = new Thread(new ThreadStart(RunWorker));
             WorkerThread.Start();
         }
@@ -48,7 +47,7 @@ namespace Acadian.Informagator.Threads
         {
             try
             {
-                WorkerObject.Run();
+                WorkerObject.Start();
             }
             catch (ThreadAbortException)
             { 
@@ -96,39 +95,32 @@ namespace Acadian.Informagator.Threads
                     result = new InformagatorThreadStatus();
                     result.HostName = Dns.GetHostName();
                     result.Info = "Not Started";
-                    result.ThreadName = WorkerConfiguration == null ? "Configuration Not Yet Loaded" : WorkerConfiguration.Name;
+                    result.ThreadName = Name;
                 }
                 
                 return WorkerObject.Status; 
             }
         }
 
-        public IThreadConfiguration Configuration
-        {
-            set 
-            {
-                WorkerConfiguration = value;
-            }
-        }
+        public IThreadHostConfiguration Configuration { get; set; }
 
-        public IAssemblySource AssemblySource
-        {
-            set
-            {
-                AssemblyLoader = value;
-            }
-        }
         public void LoadAssembly(string name)
         {
-            AssemblyLoader.LoadAssembly(name);
+            AssemblySource.LoadAssembly(name);
         }
 
-        public void CreateWorker(string assemblyPath, string type)
+        protected void CreateWorker()
         {
-            Assembly loadedAssembly = AssemblyLoader.LoadAssembly(assemblyPath);
-            WorkerClass = loadedAssembly.GetType(type);
-            ConstructorInfo constructor = WorkerClass.GetConstructor(new[] { typeof(IThreadConfiguration) });
-            WorkerObject = constructor.Invoke(new object[] {WorkerConfiguration}) as IInformagatorWorkerClass;
+            Assembly loadedAssembly = AssemblySource.LoadAssembly(Configuration.WorkerClassTypeAssembly);
+            WorkerClass = loadedAssembly.GetType(Configuration.WorkerClassTypeName);
+            WorkerObject = Activator.CreateInstance(WorkerClass) as IInformagatorWorker;
+            WorkerObject.Configuration = Configuration;
+            foreach (string requiredAssembly in WorkerObject.RequiredAssemblies)
+            {
+                AssemblySource.LoadAssembly(requiredAssembly);
+            }
         }
+
+
     }
 }

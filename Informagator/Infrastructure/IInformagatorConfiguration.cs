@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Configuration
+namespace Acadian.Informagator.Infrastructure
 {
     public interface IInformagatorConfiguration
     {
@@ -16,6 +16,6 @@ namespace Acadian.Informagator.Configuration
         IPAddress InfoServiceAddress { get; }
         int InfoServicePort { get; }
         string InfoServiceGroup { get; }
-        IDictionary<string, IThreadConfiguration> ThreadConfiguration { get; }
+        IDictionary<string, IThreadIsolatorConfiguration> ThreadConfiguration { get; }
     }
 }

@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Threads
 {
-    public class Worker : IInformagatorWorkerClass
+    public class Worker : IInformagatorWorker
     {
         protected virtual int StopRequestTimeout { get { return 20000;}}
         protected Thread InnerThread { get; private set; }
-        public virtual ThreadConfiguration Configuration { protected get; set; }
+        public virtual IWorkerConfiguration Configuration { get; set; }
         protected virtual bool StopRequested { get; set; }
         protected virtual bool PauseRequested { get; set; }
         protected virtual bool IsRunning { get; set; }
@@ -27,9 +27,12 @@ namespace Acadian.Informagator.Threads
         protected virtual long MessageCount { get; set; }
         protected virtual string Info { get; set; }
 
-        public Worker(ThreadConfiguration configuration)
+        public virtual IMessageStore MessageStore { protected get; set; }
+        public string Name { protected get; set; }
+
+        public virtual IMessageTracker MessageTracker { protected get; set; }
+        public Worker()
         {
-            Configuration = configuration;
             HeartBeat = DateTime.Now;
             Initialized = DateTime.Now;
             Info = "Initialized";
@@ -134,6 +137,18 @@ namespace Acadian.Informagator.Threads
                 }
 
                 return result;
+            }
+        }
+
+
+
+        public IList<string> RequiredAssemblies
+        {
+            get
+            { 
+                return Configuration.StageConfigurations.Select(sc => sc.StageAssemblyName)
+                         .Union(Configuration.StageConfigurations.Select(sc => sc.ErrorHandlerAssemblyName))
+                         .ToList();
             }
         }
     }

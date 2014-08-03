@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acadian.Informagator.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +9,11 @@ namespace Acadian.Informagator.Configuration
 {
     public class InformagatorConfiguration : IInformagatorConfiguration
     {
-        private Dictionary<string, IThreadConfiguration> config { get; set; }
+        private Dictionary<string, IThreadIsolatorConfiguration> config { get; set; }
         private string Host { get; set; }
         public InformagatorConfiguration(string host)
         {
-            config = new Dictionary<string, IThreadConfiguration>();
+            config = new Dictionary<string, IThreadIsolatorConfiguration>();
             Host = host;
         }
 
@@ -24,7 +25,7 @@ namespace Acadian.Informagator.Configuration
             }
         }
 
-        public IDictionary<string, IThreadConfiguration> ThreadConfiguration
+        public IDictionary<string, IThreadIsolatorConfiguration> ThreadConfiguration
         {
             get 
             { 

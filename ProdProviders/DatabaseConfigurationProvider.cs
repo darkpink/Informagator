@@ -6,6 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using Acadian.Informagator.Infrastructure;
 
 namespace Acadian.Informagator.ProdProviders
 {
@@ -55,7 +56,7 @@ namespace Acadian.Informagator.ProdProviders
                                 threadConfig.StageConfigurations.Add(stageConfig);
                             }
 
-                            config.ThreadConfiguration.Add(config.ProcessName, threadConfig);
+                            //config.ThreadConfiguration.Add(config.ProcessName, threadConfig);
                         }
                     }
                 }

@@ -11,21 +11,37 @@ namespace Acadian.Informagator.Threads
 {
     public class Isolator : IInformagatorThreadIsolator
     {
-        public InformagatorThreadStatus Status { get; protected set; }
-        public  IThreadConfiguration ThreadConfiguration { protected get; set; }
-
+        public IInformagatorThreadStatus Status { get; protected set; }
+        private IThreadIsolatorConfiguration _configuration;
+        public  IThreadIsolatorConfiguration Configuration
+        {
+            get
+            {
+                return _configuration;
+            }
+            set
+            {
+                _configuration = value;
+                Name = _configuration.Name;
+            }
+        }
         protected IInformagatorThreadHost CrossDomainProxy { get; set; }
-        
+       
         protected AppDomain InnerThreadDomain { get; set; }
-
         public IAssemblySource AssemblySource { protected get; set; }
+        public IMessageTracker MessageTracker { protected get; set; }
+        public IMessageStore MessageStore { protected get; set; }
+
+        public string Name { get; set; }
 
         public void Start()
         {
-            InnerThreadDomain = AppDomain.CreateDomain(ThreadConfiguration.Name);
-            IInformagatorThreadHost host = InnerThreadDomain.CreateInstanceAndUnwrap(ThreadConfiguration.ThreadHostTypeAssembly, ThreadConfiguration.ThreadHostTypeName) as IInformagatorThreadHost;
-            host.Configuration = ThreadConfiguration;
+            InnerThreadDomain = AppDomain.CreateDomain(Configuration.Name);
+            string x = InnerThreadDomain.BaseDirectory;
+            IInformagatorThreadHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName) as IInformagatorThreadHost;
+            host.Configuration = Configuration;
             host.AssemblySource = AssemblySource;
+            host.MessageStore = MessageStore;
             CrossDomainProxy = host;
             host.Start();
         }
@@ -44,5 +60,7 @@ namespace Acadian.Informagator.Threads
         {
             CrossDomainProxy.Stop();
         }
+
+
     }
 }

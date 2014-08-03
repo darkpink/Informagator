@@ -12,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    [Export(typeof(IConsumerStage))]
-    public class MessageStoreConsumer : IConsumerStage
+    public class MessageStoreConsumer : IProcessingStage
     {
         [ConfigurationParameter]
         public string QueueName { get; set; }
@@ -21,10 +20,12 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
         [InformagatorProvided]
         public IMessageStore MessageStore { get; set; }
 
-        public void ConsumeMessage(IMessage message)
+        public IMessage Execute(IMessage msgIn)
         {
             ValidateSettings();
-            MessageStore.Enqueue(QueueName, message);
+            MessageStore.Enqueue(QueueName, msgIn);
+            
+            return null;
         }
 
         protected void ValidateSettings()

@@ -12,11 +12,16 @@ using Acadian.Informagator.Infrastructure;
 
 namespace Acadian.Informagator.Threads
 {
+    [Serializable]
     public class PollingStageWorker : IntervalExecutionThread
     {
         protected ProcessingSequence Stages { get; set; }
-        public PollingStageWorker(IThreadConfiguration configuration)
-            :base((ThreadConfiguration)configuration)
+
+        protected override void OnInitialize()
+        {
+            BuildStages();
+        }
+        public void BuildStages()
         {
             Stages = new ProcessingSequence();
             foreach (StageConfiguration stageConfig in Configuration.StageConfigurations)
@@ -29,14 +34,13 @@ namespace Acadian.Informagator.Threads
                 Type errorHandlerType = errorHandlerAssembly.GetType(stageConfig.ErrorHandlerType);
                 IMessageErrorHandler errorHandler = Activator.CreateInstance(errorHandlerType) as IMessageErrorHandler;
 
-                ConstructorInfo stageConstructor = stageType.GetConstructor(new[] {typeof(IMessageErrorHandler)});
-                ProcessingStage stage = (ProcessingStage)stageConstructor.Invoke(new object[]{errorHandler});
+                IProcessingStage stage = (IProcessingStage)(Activator.CreateInstance(stageType));
 
                 var configProps = stageType.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<ConfigurationParameterAttribute>().Any());
                 foreach (PropertyInfo pi in configProps)
                 {
                     ConfigurationParameterAttribute[] configParams = pi.GetCustomAttributes().OfType<ConfigurationParameterAttribute>().ToArray();
-                    StageConfigurationParameter param = stageConfig.Parameters.SingleOrDefault(p => p.Name == pi.Name);
+                    StageConfigurationParameter param = stageConfig.Parameters.SingleOrDefault(p => p.Name == pi.Name) as StageConfigurationParameter;
                     if (param != null)
                     {
                         pi.SetValue(stage, param.Value);
