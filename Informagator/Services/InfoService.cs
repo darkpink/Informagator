@@ -7,7 +7,7 @@ using System.ServiceModel;
 namespace Acadian.Informagator.Services
 {
     [ServiceBehavior(ConcurrencyMode=ConcurrencyMode.Single, InstanceContextMode=InstanceContextMode.Single, UseSynchronizationContext=true)]
-    public class InfoService : IInfoService
+    internal class InfoService : IInfoService
     {
         public void Ping()
         {

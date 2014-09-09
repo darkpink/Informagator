@@ -1,27 +1,40 @@
-﻿using Acadian.Informagator.Infrastructure;
+﻿using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Configuration
 {
     [Serializable]
-    public class StageConfiguration : IStageConfiguration
+    [DataContract]
+    public class StageConfiguration
     {
+        [DataMember]
         public string StageAssemblyName { get; set; }
+
+        [DataMember]
         public string StageType { get; set; }
+
+        [DataMember]
         public string ErrorHandlerAssemblyName { get; set; }
+
+        [DataMember]
         public string ErrorHandlerType { get; set; }
+        
+        [DataMember]
         public bool IsTrackingEnabled { get; set; }
-        public IList<IStageConfigurationParameter> Parameters { get; set; }
+
+        [DataMember]
+        public IList<StageConfigurationParameter> Parameters { get; set; }
 
         public StageConfiguration()
         {
-            Parameters = new List<IStageConfigurationParameter>();
+            Parameters = new List<StageConfigurationParameter>();
         }
-        public bool IsSameAs(IStageConfiguration config)
+        public bool IsSameAs(StageConfiguration config)
         {
             bool result = true;
 

@@ -1,5 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.Services;
 using Acadian.Informagator.Threads;
@@ -15,13 +15,15 @@ namespace Acadian.Informagator
 {
     public class InformagatorService
     {
-        public IMessageStore MessageStore { get; set; }
+        protected IMessageStore MessageStore { get; set; }
 
-        protected Dictionary<string, IInformagatorThreadIsolator> Threads { get; set; }
+        internal Dictionary<string, Isolator> Threads { get; set; }
 
         protected IInformagatorConfiguration Configuration { get; set; }
 
         protected IConfigurationProvider ConfigurationProvider { get; set; }
+
+        protected IMessageTracker MessageTracker { get; set; }
 
         protected IAssemblySource AssemblySource { get; set; }
 
@@ -36,6 +38,7 @@ namespace Acadian.Informagator
         {
             LaunchControlService();
             LaunchInfoService();
+            LaunchInternalService();
             BuildThreads();
             StartThreads();
         }
@@ -54,16 +57,15 @@ namespace Acadian.Informagator
 
             foreach (string existingThreadName in newConfiguration.ThreadConfiguration.Keys.Intersect(Configuration.ThreadConfiguration.Keys))
             {
-                IThreadIsolatorConfiguration newThreadConfig = newConfiguration.ThreadConfiguration[existingThreadName];
-                IThreadIsolatorConfiguration oldThreadConfig = Configuration.ThreadConfiguration[existingThreadName];
+                ThreadConfiguration newThreadConfig = newConfiguration.ThreadConfiguration[existingThreadName];
+                ThreadConfiguration oldThreadConfig = Configuration.ThreadConfiguration[existingThreadName];
                 if (!newThreadConfig.IsSameAs(oldThreadConfig))
                 {
-                    IInformagatorThreadIsolator thread = Threads[existingThreadName];
+                    Isolator thread = Threads[existingThreadName];
                     thread.Stop();
                     Threads.Remove(existingThreadName);
                     thread = new Isolator();
-                    thread.AssemblySource = AssemblySource;
-                    thread.Configuration = newConfiguration.ThreadConfiguration[existingThreadName];
+                    thread.Name = existingThreadName;
                     thread.Start();
                     Threads.Add(existingThreadName, thread);
                 }
@@ -74,8 +76,8 @@ namespace Acadian.Informagator
 
         private void LaunchInfoService()
         {
-            InfoService remoteControlService = new InfoService();
-            InfoServiceHost.StartService(remoteControlService);
+            InfoService remoteInfoService = new InfoService();
+            InfoServiceHost.StartService(remoteInfoService);
         }
 
         private void LaunchControlService()
@@ -84,9 +86,15 @@ namespace Acadian.Informagator
             AdminServiceHost.StartService(remoteControlService);
         }
 
+        private void LaunchInternalService()
+        {
+            InternalService internalService = new InternalService(MessageStore, MessageTracker, AssemblySource, ConfigurationProvider);
+            InternalServiceHost.StartService(internalService);
+        }
+
         private void StartThreads()
         {
-            foreach (IInformagatorThreadIsolator thread in Threads.Values)
+            foreach (Isolator thread in Threads.Values)
             {
                 thread.Start();
             }
@@ -94,14 +102,13 @@ namespace Acadian.Informagator
 
         private void BuildThreads()
         {
-            Threads = new Dictionary<string, IInformagatorThreadIsolator>();
+            Threads = new Dictionary<string, Isolator>();
 
             Configuration = ConfigurationProvider.Configuration;
 
             foreach (string threadName in Configuration.ThreadConfiguration.Keys)
             {
                 var thread = new Isolator();
-                thread.AssemblySource = AssemblySource;
                 thread.Configuration = Configuration.ThreadConfiguration[threadName];
                 Threads.Add(threadName, thread);
             }
@@ -116,7 +123,7 @@ namespace Acadian.Informagator
 
         private void StopThreads()
         {
-            foreach (IInformagatorThreadIsolator host in Threads.Values)
+            foreach (Isolator host in Threads.Values)
             {
                 host.Stop();
             }

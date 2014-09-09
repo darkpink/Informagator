@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Infrastructure
+namespace Acadian.Informagator.Configuration
 {
-    public interface ITransformStage
+    public class HostProvidedAttribute : Attribute
     {
-        IMessage TransformMessage(IMessage message);
     }
 }

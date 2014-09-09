@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonComponents", "CommonC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{FA3B53AF-DCBC-48C3-8E06-E620059EE390}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HL7Assist", "HL7Assist\HL7Assist.csproj", "{ABA634DC-029C-4CE6-A32B-CE0EEA11D970}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{FA3B53AF-DCBC-48C3-8E06-E620059EE390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA3B53AF-DCBC-48C3-8E06-E620059EE390}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FA3B53AF-DCBC-48C3-8E06-E620059EE390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ABA634DC-029C-4CE6-A32B-CE0EEA11D970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA634DC-029C-4CE6-A32B-CE0EEA11D970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA634DC-029C-4CE6-A32B-CE0EEA11D970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA634DC-029C-4CE6-A32B-CE0EEA11D970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

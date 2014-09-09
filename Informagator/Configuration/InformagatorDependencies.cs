@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Configuration
 {
-    public class InformagatorProvidedAttribute : Attribute
+    class InformagatorDependencies
     {
     }
 }

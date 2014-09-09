@@ -6,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 
 namespace Acadian.Informagator.ProdProviders
 {

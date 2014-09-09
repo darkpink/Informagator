@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Infrastructure;
+﻿using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -1,6 +1,6 @@
 ﻿using Acadian.Informagator.Configuration;
 using Acadian.Informagator.Exceptions;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,26 +9,44 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Acadian.Informagator.Services;
+using System.ServiceModel;
 
 namespace Acadian.Informagator.Threads
 {
-    public class ThreadHost : MarshalByRefObject, IInformagatorThreadHost
+    internal class ThreadHost : MarshalByRefObject
     {
         protected const int StopTimeoutMilliseconds = 10000;
 
         protected Thread WorkerThread { get; set; }
         protected IInformagatorWorker WorkerObject { get; set; }
         protected Type WorkerClass { get; set; }
-        protected IThreadHostConfiguration WorkerConfiguration { get; set; }
-        protected Dictionary<string, Assembly> LoadedAssemblies { get; set; }
+        protected ThreadConfiguration WorkerConfiguration { get; set; }
         protected Exception WorkerThreadException { get; set; }
-        public IAssemblySource AssemblySource { protected get; set; }
-        public IMessageTracker MessageTracker { protected get; set; }
-        public IMessageStore MessageStore { protected get; set; }
-        public string Name { protected get; set; }
+        protected AssemblyManager AssemblyManager { get; set; }
+        
+        [ProvideToClient(typeof(IMessageStore))]
+        [ProvideToClient(typeof(IMessageTracker))]
+        [ProvideToClient(typeof(IConfigurationSource))]
+        protected internal InternalServiceClient InternalService { get; set; }
+
+        protected string _name;
+        public string Name
+        {
+            protected get
+            { 
+                return _name; 
+            }
+            set
+            {
+                _name = value;
+                Configuration = InternalService.GetThreadHostConfiguration(_name);
+            }
+        }
         public ThreadHost()
         {
-            LoadedAssemblies = new Dictionary<string, Assembly>();
+            InternalService = new InternalServiceClient();
+            AssemblyManager = new AssemblyManager(InternalService);
         }
 
         public void Start()
@@ -102,25 +120,48 @@ namespace Acadian.Informagator.Threads
             }
         }
 
-        public IThreadHostConfiguration Configuration { get; set; }
+
+        protected ThreadConfiguration Configuration { get; set; }
 
         public void LoadAssembly(string name)
         {
-            AssemblySource.LoadAssembly(name);
+            AssemblyManager.GetAssembly(name);
         }
 
         protected void CreateWorker()
         {
-            Assembly loadedAssembly = AssemblySource.LoadAssembly(Configuration.WorkerClassTypeAssembly);
+            Assembly loadedAssembly = AssemblyManager.GetAssembly(Configuration.WorkerClassTypeAssembly);
             WorkerClass = loadedAssembly.GetType(Configuration.WorkerClassTypeName);
             WorkerObject = Activator.CreateInstance(WorkerClass) as IInformagatorWorker;
+            WorkerObject.Name = Name;
             WorkerObject.Configuration = Configuration;
+
             foreach (string requiredAssembly in WorkerObject.RequiredAssemblies)
             {
-                AssemblySource.LoadAssembly(requiredAssembly);
+                AssemblyManager.GetAssembly(requiredAssembly);
             }
+
+            var dependencyProps = WorkerClass.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
+            var myPropsForClients = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic).Where(pi => pi.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any());
+            Dictionary<Type, object> availableDependencies = new Dictionary<Type, object>();
+            foreach (PropertyInfo pi in myPropsForClients)
+            {
+                var attrs = pi.GetCustomAttributes<ProvideToClientAttribute>();
+                var value = pi.GetValue(this);
+                foreach(ProvideToClientAttribute attr in attrs)
+                {
+                    availableDependencies.Add(attr.InterfaceType, value);
+                }
+            }
+
+            foreach (PropertyInfo pi in dependencyProps)
+            {
+                if (availableDependencies.ContainsKey(pi.PropertyType))
+                {
+                    pi.SetValue(WorkerObject, availableDependencies[pi.PropertyType]);
+                }
+            }
+
         }
-
-
     }
 }

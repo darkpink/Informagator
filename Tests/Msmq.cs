@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Acadian.Informagator.CommonComponents.ConsumerStages;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.CommonComponents.SupplierStages;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 
 namespace Tests
 {

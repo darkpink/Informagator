@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Infrastructure
+namespace Acadian.Informagator.Contracts
 {
     public interface IInformagatorThreadStatus
     {

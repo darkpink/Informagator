@@ -1,35 +1,50 @@
-﻿using Acadian.Informagator.Infrastructure;
+﻿using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Configuration
 {
     [Serializable]
-    public class ThreadConfiguration : IThreadIsolatorConfiguration
+    [DataContract]
+    public class ThreadConfiguration
     {
         public ThreadConfiguration()
         {
-            RequiredAssemblies = new List<string>();
-            StageConfigurations = new List<IStageConfiguration>();
+            StageConfigurations = new List<StageConfiguration>();
         }
-        
-        public IList<IStageConfiguration> StageConfigurations { get; set; }
 
-        public IList<string> RequiredAssemblies { get; set; }
-        
+        public ThreadConfiguration(ThreadConfiguration configuration)
+        {
+            StageConfigurations = configuration.StageConfigurations.ToList();
+        }
+
+        [DataMember]
+        public List<StageConfiguration> StageConfigurations { get; set; }
+
+
+        [DataMember]
         public string Name { get; set; }
-        
+
+        [DataMember]
         public string ThreadHostTypeAssembly { get; set; }
-        
+
+        [DataMember]
         public string ThreadHostTypeName { get; set; }
-        
+
+        [DataMember]
         public string WorkerClassTypeAssembly { get; set; }
-        
+
+        [DataMember]
         public string WorkerClassTypeName { get; set; }
-        public bool IsSameAs(IThreadHostConfiguration config)
+
+        [DataMember]
+        public List<string> RequiredAssemblies { get; set; }
+
+        public bool IsSameAs(ThreadConfiguration config)
         {
             bool result = true;
             ThreadConfiguration castedConfig = config as ThreadConfiguration;
@@ -61,7 +76,7 @@ namespace Acadian.Informagator.Configuration
             return result;
         }
 
-        protected bool HasCustomConfigurationDifferences(Informagator.Infrastructure.IThreadHostConfiguration config)
+        protected bool HasCustomConfigurationDifferences(ThreadConfiguration config)
         {
             bool result;
             
@@ -73,8 +88,8 @@ namespace Acadian.Informagator.Configuration
                 {
                     for (int stageIndex = 0; stageIndex < StageConfigurations.Count; stageIndex++)
                     {
-                        IStageConfiguration c1 = StageConfigurations[stageIndex];
-                        IStageConfiguration c2 = castedConfig.StageConfigurations[stageIndex];
+                        StageConfiguration c1 = StageConfigurations[stageIndex];
+                        StageConfiguration c2 = castedConfig.StageConfigurations[stageIndex];
                         result |= !c1.IsSameAs(c2);
                     }
                 }
@@ -89,12 +104,6 @@ namespace Acadian.Informagator.Configuration
             }
             
             return result;
-        }
-
-
-        public bool IsSameAs(IThreadIsolatorConfiguration config)
-        {
-            throw new NotImplementedException();
         }
     }
 }

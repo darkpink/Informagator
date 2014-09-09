@@ -1,5 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Acadian.Informagator.Threads
     {
         protected virtual int StopRequestTimeout { get { return 20000;}}
         protected Thread InnerThread { get; private set; }
-        public virtual IWorkerConfiguration Configuration { get; set; }
+        public virtual ThreadConfiguration Configuration { get; set; }
         protected virtual bool StopRequested { get; set; }
         protected virtual bool PauseRequested { get; set; }
         protected virtual bool IsRunning { get; set; }
@@ -27,10 +27,15 @@ namespace Acadian.Informagator.Threads
         protected virtual long MessageCount { get; set; }
         protected virtual string Info { get; set; }
 
+        [HostProvided]
+        [ProvideToClient(typeof(IMessageStore))]
         public virtual IMessageStore MessageStore { protected get; set; }
         public string Name { protected get; set; }
 
+        [HostProvided]
+        [ProvideToClient(typeof(IMessageTracker))]
         public virtual IMessageTracker MessageTracker { protected get; set; }
+
         public Worker()
         {
             HeartBeat = DateTime.Now;

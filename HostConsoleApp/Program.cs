@@ -1,5 +1,6 @@
 ﻿using Acadian.Informagator;
 using Acadian.Informagator.DevProviders;
+using Acadian.Informagator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,12 @@ namespace HostConsoleApp
     {
         static void Main(string[] args)
         {
+            MemoryMessageStore store = new MemoryMessageStore();
+            store.Enqueue("Demo", new AsciiStringMessage() { Body = "asdfasdf" });
+
             InformagatorService i = new InformagatorService(new HardCodedConfigurationProvider(),
                                                             new FileSystemAssemblySource(),
-                                                            new MemoryMessageStore());
+                                                            store);
             i.Start();
             Console.ReadLine();
             i.ReloadConfiguration();

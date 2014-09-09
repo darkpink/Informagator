@@ -1,12 +1,13 @@
-﻿using System;
+﻿using Acadian.Informagator.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Infrastructure
+namespace Acadian.Informagator.Contracts
 {
-    public interface IInformagatorRunner<TConfig>
+    public interface IInformagatorRunner
     {
         void Start();
         void Pause();
@@ -14,8 +15,5 @@ namespace Acadian.Informagator.Infrastructure
         void Stop();
         string Name { set; }
         IInformagatorThreadStatus Status { get; }
-        IMessageStore MessageStore { set; }
-        IMessageTracker MessageTracker { set; }
-        TConfig Configuration { get; set; }
     }
 }

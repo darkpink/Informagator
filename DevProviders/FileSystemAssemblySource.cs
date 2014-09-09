@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Infrastructure;
+﻿using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,43 +12,31 @@ namespace Acadian.Informagator.DevProviders
     [Serializable]
     public class FileSystemAssemblySource : IAssemblySource
     {
-        private Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
-        public Assembly LoadAssembly(string name)
+        public byte[] GetAssemblyBinary(string assemblyName)
         {
-            Assembly result;
+            byte[] assemblyBytes;
 
-            Assembly[] ha = AppDomain.CurrentDomain.GetAssemblies();
-
-            if (LoadedAssemblies.ContainsKey(name))
+            using (FileStream stream = new FileStream(assemblyName, FileMode.Open, FileAccess.Read))
             {
-                result = LoadedAssemblies[name];
+                assemblyBytes = new byte[stream.Length];
+                stream.Read(assemblyBytes, 0, assemblyBytes.Length);
             }
-            else if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.ManifestModule.ScopeName == name))
+
+
+            return assemblyBytes;
+        }
+
+        public byte[] GetDebuggingSymbolBinary(string assemblyName)
+        {
+            byte[] debuggingSymbolBytes;
+
+            using (FileStream stream = new FileStream(assemblyName.Replace(".dll", ".pdb"), FileMode.Open, FileAccess.Read))
             {
-                result = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.ManifestModule.ScopeName == name);
+                debuggingSymbolBytes = new byte[stream.Length];
+                stream.Read(debuggingSymbolBytes, 0, debuggingSymbolBytes.Length);
             }
-            else
-            {
-                byte[] assemblyBytes;
-                byte[] debuggingSymbolBytes;
 
-                using (FileStream stream = new FileStream(name, FileMode.Open, FileAccess.Read))
-                {
-                    assemblyBytes = new byte[stream.Length];
-                    stream.Read(assemblyBytes, 0, assemblyBytes.Length);
-                }
-
-                using (FileStream stream = new FileStream(name.Replace(".dll", ".pdb"), FileMode.Open, FileAccess.Read))
-                {
-                    debuggingSymbolBytes = new byte[stream.Length];
-                    stream.Read(debuggingSymbolBytes, 0, debuggingSymbolBytes.Length);
-                }
-
-                result = Assembly.Load(assemblyBytes, debuggingSymbolBytes);
-                LoadedAssemblies.Add(name, result);
-            }
-            
-            return result;
+            return debuggingSymbolBytes;
         }
     }
 }

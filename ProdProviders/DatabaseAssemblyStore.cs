@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Infrastructure;
+﻿using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,38 +11,31 @@ namespace Acadian.Informagator.ProdProviders
 {
     public class DatabaseAssemblyStore : IAssemblySource
     {
-        private Dictionary<string, Reflection.Assembly> LoadedAssemblies = new Dictionary<string, Reflection.Assembly>();
-        public Reflection.Assembly LoadAssembly(string name)
+        public byte[] GetAssemblyBinary(string assemblyName)
         {
-            Reflection.Assembly result;
+            byte[] assemblyBytes;
 
-            Reflection.Assembly[] ha = AppDomain.CurrentDomain.GetAssemblies();
-
-            if (LoadedAssemblies.ContainsKey(name))
+            using (AssemblyStoreEntities ent = new AssemblyStoreEntities())
             {
-                result = LoadedAssemblies[name];
-            }
-            else if (AppDomain.CurrentDomain.GetAssemblies().Any(a => a.ManifestModule.ScopeName == name))
-            {
-                result = AppDomain.CurrentDomain.GetAssemblies().Single(a => a.ManifestModule.ScopeName == name);
-            }
-            else
-            {
-                byte[] assemblyBytes;
-                byte[] debuggingSymbolBytes;
-
-                using (AssemblyStoreEntities ent = new AssemblyStoreEntities())
-                {
-                    Assembly asm = ent.Assemblies.Single(a => a.Name == name);
-                    assemblyBytes = asm.Executable;
-                    debuggingSymbolBytes = asm.DebugSymbols;
-                }
-
-                result = Reflection.Assembly.Load(assemblyBytes, debuggingSymbolBytes);
-                LoadedAssemblies.Add(name, result);
+                Assembly asm = ent.Assemblies.Single(a => a.Name == assemblyName);
+                assemblyBytes = asm.Executable;
             }
 
-            return result;
+            return assemblyBytes;
+        }
+
+        public byte[] GetDebuggingSymbolBinary(string assemblyName)
+        {
+            //TODO - this is just going to return the assembly!
+            byte[] debuggingSymbolBytes;
+
+            using (AssemblyStoreEntities ent = new AssemblyStoreEntities())
+            {
+                Assembly asm = ent.Assemblies.Single(a => a.Name == assemblyName);
+                debuggingSymbolBytes = asm.DebugSymbols;
+            }
+
+            return debuggingSymbolBytes;
         }
     }
 }

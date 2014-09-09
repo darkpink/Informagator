@@ -7,7 +7,7 @@ using System.ServiceModel;
 namespace Acadian.Informagator.Services
 {
     [ServiceBehavior(ConcurrencyMode=ConcurrencyMode.Single, InstanceContextMode=InstanceContextMode.Single, UseSynchronizationContext=true)]
-    public class AdminService : IAdminService
+    internal class AdminService : IAdminService
     {
         private InformagatorService Informagator { get; set; }
         public AdminService(InformagatorService informagator)

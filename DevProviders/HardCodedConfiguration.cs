@@ -1,5 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +24,8 @@ namespace Acadian.Informagator.DevProviders
                 else
                 {
                     HardCodedConfiguration config = new HardCodedConfiguration();
-                    IDictionary<string, IThreadIsolatorConfiguration> uncastedStageConfig = config.ThreadConfiguration;
-                    IThreadHostConfiguration un = uncastedStageConfig["Demo"];
+                    IDictionary<string, ThreadConfiguration> uncastedStageConfig = config.ThreadConfiguration;
+                    ThreadConfiguration un = uncastedStageConfig["Demo"];
                     ThreadConfiguration casted = (ThreadConfiguration)un;
                     StageConfiguration stageConfig = casted.StageConfigurations[1] as StageConfiguration;
                     StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
@@ -38,10 +38,10 @@ namespace Acadian.Informagator.DevProviders
     
     public class HardCodedConfiguration : IInformagatorConfiguration
     {
-        private Dictionary<string, IThreadIsolatorConfiguration> config {get; set;}
+        private Dictionary<string, ThreadConfiguration> config {get; set;}
         public HardCodedConfiguration()
         {
-            config = new Dictionary<string, IThreadIsolatorConfiguration>() { 
+            config = new Dictionary<string, ThreadConfiguration>() { 
                     {
                         "Demo", 
                         new ThreadConfiguration() {
@@ -50,17 +50,20 @@ namespace Acadian.Informagator.DevProviders
                             ThreadHostTypeName = "Acadian.Informagator.Threads.ThreadHost",
                             WorkerClassTypeAssembly = "Acadian.Informagator.dll",
                             WorkerClassTypeName = "Acadian.Informagator.Threads.PollingStageWorker",
-                            RequiredAssemblies = new[] {"Acadian.Informagator.CommonComponents.dll", "Acadian.Informagator.dll" },
+                            RequiredAssemblies = new[] {"Acadian.Informagator.CommonComponents.dll", "Acadian.Informagator.dll" }.ToList(),
                             StageConfigurations = new[] { new StageConfiguration()
                                                           { 
-                                                              StageType = "Acadian.Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
+                                                              //StageType = "Acadian.Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
+                                                              StageType = "Acadian.Informagator.CommonComponents.SupplierStages.MessageStoreSupplier",
                                                               StageAssemblyName = "Acadian.Informagator.CommonComponents.dll",
                                                               ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
                                                               ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
                                                               Parameters = new[] { new StageConfigurationParameter() {
-                                                                 Name = "FolderPath",
-                                                                 Value = @"E:\tst\Source"}}
-                                                          } as IStageConfiguration,
+                                                                 //Name = "FolderPath",
+                                                                 //Value = @"C:\Demo\Source"}}
+                                                                 Name = "QueueName",
+                                                                 Value = @"Demo"}}
+                                                          } as StageConfiguration,
                                                           new StageConfiguration()
                                                           { 
                                                               StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
@@ -70,8 +73,8 @@ namespace Acadian.Informagator.DevProviders
                                                               Parameters = new[] { new StageConfigurationParameter() {
                                                                  Name = "FolderPath",
                                                                  Value = @"E:\tst\Dest"}}
-                                                          } as IStageConfiguration
-                                                        }
+                                                          } as StageConfiguration
+                                                        }.ToList()
                         }
                     } };
 
@@ -82,7 +85,7 @@ namespace Acadian.Informagator.DevProviders
             get { return "LocalInformagator"; }
         }
 
-        public IDictionary<string, IThreadIsolatorConfiguration> ThreadConfiguration
+        public Dictionary<string, ThreadConfiguration> ThreadConfiguration
         {
             get 
             {

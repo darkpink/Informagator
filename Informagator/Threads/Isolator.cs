@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using Acadian.Informagator.Configuration;
 
 namespace Acadian.Informagator.Threads
 {
-    public class Isolator : IInformagatorThreadIsolator
+    internal class Isolator
     {
         public IInformagatorThreadStatus Status { get; protected set; }
-        private IThreadIsolatorConfiguration _configuration;
-        public  IThreadIsolatorConfiguration Configuration
+        private ThreadConfiguration _configuration;
+        public  ThreadConfiguration Configuration
         {
             get
             {
@@ -25,10 +25,10 @@ namespace Acadian.Informagator.Threads
                 Name = _configuration.Name;
             }
         }
-        protected IInformagatorThreadHost CrossDomainProxy { get; set; }
+        protected ThreadHost CrossDomainProxy { get; set; }
        
         protected AppDomain InnerThreadDomain { get; set; }
-        public IAssemblySource AssemblySource { protected get; set; }
+        public AssemblyManager AssemblySource { protected get; set; }
         public IMessageTracker MessageTracker { protected get; set; }
         public IMessageStore MessageStore { protected get; set; }
 
@@ -38,29 +38,36 @@ namespace Acadian.Informagator.Threads
         {
             InnerThreadDomain = AppDomain.CreateDomain(Configuration.Name);
             string x = InnerThreadDomain.BaseDirectory;
-            IInformagatorThreadHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName) as IInformagatorThreadHost;
-            host.Configuration = Configuration;
-            host.AssemblySource = AssemblySource;
-            host.MessageStore = MessageStore;
+            ThreadHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName) as ThreadHost;
+            host.Name = Name;
             CrossDomainProxy = host;
             host.Start();
         }
 
         public void Pause()
         {
-            CrossDomainProxy.Pause();
+            if (CrossDomainProxy != null)
+            {
+                CrossDomainProxy.Pause();
+            }
+
         }
 
         public void Resume()
         {
-            CrossDomainProxy.Resume();
+            if (CrossDomainProxy != null)
+            {
+                CrossDomainProxy.Resume();
+            }
         }
 
         public void Stop()
         {
-            CrossDomainProxy.Stop();
+            if (CrossDomainProxy != null)
+            {
+                CrossDomainProxy.Stop();
+                CrossDomainProxy = null;
+            }
         }
-
-
     }
 }

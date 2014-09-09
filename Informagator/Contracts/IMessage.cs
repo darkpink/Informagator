@@ -2,15 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Infrastructure
+namespace Acadian.Informagator.Contracts
 {
     public interface IMessage
     {
         byte[] BinaryData { get; set; }
+        
         IDictionary<string, string> Attributes { get; }
+        
         IList<string> ProcessingTrail { get; }
     }
 

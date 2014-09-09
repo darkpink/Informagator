@@ -1,6 +1,6 @@
 ﻿using Acadian.Informagator.Configuration;
 using Acadian.Informagator.Exceptions;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.Stages;
 using System;
@@ -17,7 +17,7 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
         [ConfigurationParameter]
         public string QueueName { get; set; }
         
-        [InformagatorProvided]
+        [HostProvided]
         public IMessageStore MessageStore { get; set; }
 
         public IMessage Execute(IMessage msgIn)

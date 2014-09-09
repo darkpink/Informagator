@@ -1,6 +1,6 @@
 ﻿using Acadian.Informagator.Configuration;
 using Acadian.Informagator.Exceptions;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 using Acadian.Informagator.Messages;
 using Acadian.Informagator.Stages;
 using System;

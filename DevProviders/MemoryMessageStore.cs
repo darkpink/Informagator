@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Infrastructure;
+﻿using Acadian.Informagator.Contracts;
 using Acadian.Informagator.Messages;
 using System;
 using System.Collections.Concurrent;

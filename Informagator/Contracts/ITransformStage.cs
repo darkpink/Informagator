@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Infrastructure
+namespace Acadian.Informagator.Contracts
 {
-    public interface IProcessingStage
+    public interface ITransformStage
     {
-        IMessage Execute(IMessage msgIn);
+        IMessage TransformMessage(IMessage message);
     }
 }

@@ -8,11 +8,10 @@ using Acadian.Informagator.Stages;
 using System.Threading;
 using System.Reflection;
 using Acadian.Informagator.Threads;
-using Acadian.Informagator.Infrastructure;
+using Acadian.Informagator.Contracts;
 
 namespace Acadian.Informagator.Threads
 {
-    [Serializable]
     public class PollingStageWorker : IntervalExecutionThread
     {
         protected ProcessingSequence Stages { get; set; }
@@ -44,6 +43,27 @@ namespace Acadian.Informagator.Threads
                     if (param != null)
                     {
                         pi.SetValue(stage, param.Value);
+                    }
+                }
+
+                var dependencyProps = stageType.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
+                var myPropsForClients = this.GetType().GetProperties().Where(pi => pi.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any());
+                Dictionary<Type, object> availableDependencies = new Dictionary<Type, object>();
+                foreach (PropertyInfo pi in myPropsForClients)
+                {
+                    var attrs = pi.GetCustomAttributes<ProvideToClientAttribute>();
+                    var value = pi.GetValue(this);
+                    foreach (ProvideToClientAttribute attr in attrs)
+                    {
+                        availableDependencies.Add(attr.InterfaceType, value);
+                    }
+                }
+
+                foreach (PropertyInfo pi in dependencyProps)
+                {
+                    if (availableDependencies.ContainsKey(pi.PropertyType))
+                    {
+                        pi.SetValue(stage, availableDependencies[pi.PropertyType]);
                     }
                 }
 
