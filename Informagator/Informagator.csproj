@@ -83,8 +83,12 @@
     <Compile Include="Services\InternalService.cs" />
     <Compile Include="Services\InternalServiceClient.cs" />
     <Compile Include="Services\InternalServiceHost.cs" />
-    <Compile Include="Services\SerializedMessage.cs" />
-    <Compile Include="Threads\AssemblyManager.cs" />
+    <Compile Include="Services\SerializedMessage.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Threads\AssemblyManager.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Threads\PollingStageWorker.cs" />
     <Compile Include="Contracts\IInformagatorThreadStatus.cs" />
     <Compile Include="Contracts\IInformagatorWorker.cs" />

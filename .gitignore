@@ -48,3 +48,5 @@ ProdProviders/bin/
 ProdProviders/obj/
 Tests/obj/
 Tests/bin/
+HL7Assist/obj/
+HL7Assist/bin/
