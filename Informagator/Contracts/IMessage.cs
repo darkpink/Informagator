@@ -10,6 +10,8 @@ namespace Acadian.Informagator.Contracts
 {
     public interface IMessage
     {
+        Guid Id { get; }
+        
         byte[] BinaryData { get; set; }
         
         IDictionary<string, string> Attributes { get; }

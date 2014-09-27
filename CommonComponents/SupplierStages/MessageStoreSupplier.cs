@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    public class MessageStoreSupplier : IProcessingStage
+    public class MessageStoreSupplier : ISupplierStage
     {
         [ConfigurationParameter]
         public string QueueName { get; set; }
@@ -20,7 +20,7 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
         [HostProvided]
         public IMessageStore MessageStore { get; set; }
 
-        public IMessage Execute(IMessage msgIn)
+        public IMessage Supply()
         {
             IMessage result;
 
@@ -42,6 +42,16 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
                 throw new ConfigurationException("QueueName must be set for MessageStoreSupplier");
             }
 
+        }
+
+        public string ReceviedFrom
+        {
+            get { return "MessageStore queue " + QueueName; }
+        }
+
+        public string Name
+        {
+            get { return "MessageStoreSupplier"; }
         }
     }
 }

@@ -51,10 +51,12 @@
     <Compile Include="Configuration\ProvideToClientAttribute.cs" />
     <Compile Include="Contracts\IAssemblySource.cs" />
     <Compile Include="Contracts\IConfigurationSource.cs" />
+    <Compile Include="Contracts\IConsumerStage.cs" />
     <Compile Include="Contracts\IInformagatorRunner.cs" />
     <Compile Include="Contracts\IMessageTracker.cs" />
     <Compile Include="Contracts\IObserverStage.cs" />
     <Compile Include="Contracts\IProcessingStage.cs" />
+    <Compile Include="Contracts\ISupplierStage.cs" />
     <Compile Include="Contracts\ITransformStage.cs" />
     <Compile Include="Messages\AsciiStringMessage.cs" />
     <Compile Include="Messages\MessageBase.cs" />

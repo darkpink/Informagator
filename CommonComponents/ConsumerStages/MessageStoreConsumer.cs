@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class MessageStoreConsumer : IProcessingStage
+    public class MessageStoreConsumer : IConsumerStage
     {
         [ConfigurationParameter]
         public string QueueName { get; set; }
@@ -20,12 +20,10 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
         [HostProvided]
         public IMessageStore MessageStore { get; set; }
 
-        public IMessage Execute(IMessage msgIn)
+        public void Consume(IMessage message)
         {
             ValidateSettings();
-            MessageStore.Enqueue(QueueName, msgIn);
-            
-            return null;
+            MessageStore.Enqueue(QueueName, message);
         }
 
         protected void ValidateSettings()
@@ -39,6 +37,16 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
             {
                 throw new ConfigurationException("QueueName must be set for MessageStoreConsumer");
             }
+        }
+
+        public string SentTo
+        {
+            get { return "MessageStore queue " + QueueName; }
+        }
+
+        public string Name
+        {
+            get { return "MessageStoreConsumer"; }
         }
     }
 }

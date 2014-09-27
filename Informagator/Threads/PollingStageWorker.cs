@@ -23,6 +23,8 @@ namespace Acadian.Informagator.Threads
         public void BuildStages()
         {
             Stages = new ProcessingSequence();
+            Stages.MessageTracker = MessageTracker;
+            
             foreach (StageConfiguration stageConfig in Configuration.StageConfigurations)
             {
                 Assembly[] loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();

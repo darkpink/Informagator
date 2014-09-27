@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class OutputFolderConsumer : IProcessingStage
+    public class OutputFolderConsumer : IConsumerStage
     {
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public IMessage Execute(IMessage msgIn)
+        public void Consume(IMessage message)
         {
             ValidateSettings();
 
@@ -27,11 +27,9 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
 
             using (FileStream outFileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             {
-                outFileStream.Write(msgIn.BinaryData, 0, msgIn.BinaryData.Length);
+                outFileStream.Write(message.BinaryData, 0, message.BinaryData.Length);
                 outFileStream.Close();
             }
-
-            return null;
         }
 
         protected void ValidateSettings()
@@ -52,6 +50,17 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
                     throw new ConfigurationException("Unable to create directory " + FolderPath, ex);
                 }
             }
+        }
+
+
+        public string SentTo
+        {
+            get { return FolderPath; }
+        }
+
+        public string Name
+        {
+            get { return "OutputFolderConsumer"; }
         }
     }
 }

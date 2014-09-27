@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Contracts
 {
-    public interface IProcessingStage
+    public interface ISupplierStage : IProcessingStage
     {
-        string Name { get; }
+        IMessage Supply();
+        string ReceviedFrom { get; }
     }
 }

@@ -17,7 +17,7 @@ namespace Tests
             consumer.QueueName = @".\private$\TestQueue";
             ByteArrayMessage msg = new ByteArrayMessage();
             msg.Body = new[] { (byte)65, (byte)65, (byte)65, (byte)65 };
-            consumer.Execute(msg);
+            consumer.Consume(msg);
         }
 
         [TestMethod]
@@ -25,7 +25,7 @@ namespace Tests
         {
             TransactionalMsmqBinarySupplier supplier = new TransactionalMsmqBinarySupplier();
             supplier.QueueName = @".\private$\TestQueue";
-            IMessage msg = supplier.Execute(null);
+            IMessage msg = supplier.Supply();
         }
 
     }

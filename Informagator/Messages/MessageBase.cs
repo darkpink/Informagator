@@ -12,6 +12,8 @@ namespace Acadian.Informagator.Messages
         private Dictionary<string, string> _attributes;
         private List<string> _processingTrail;
 
+        public Guid Id { get; protected set; }
+
         public TBody Body { get; set;}
 
         public abstract byte[] BinaryData { get; set; }
@@ -30,6 +32,7 @@ namespace Acadian.Informagator.Messages
         {
             _processingTrail = new List<string>();
             _attributes = new Dictionary<string,string>();
+            Id = Guid.NewGuid();
         }
     }
 }

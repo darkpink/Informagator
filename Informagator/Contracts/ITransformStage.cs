@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Contracts
 {
-    public interface ITransformStage
+    public interface ITransformStage : IProcessingStage
     {
-        IMessage TransformMessage(IMessage message);
+        IEnumerable<IMessage> TransformMessage(IMessage message);
     }
 }

@@ -10,14 +10,19 @@ namespace Acadian.Informagator.CommonComponents.TransformStages
 {
     public class ToStringMessageTransform : ITransformStage
     {
-        public IMessage TransformMessage(IMessage message)
+        IEnumerable<IMessage> ITransformStage.TransformMessage(IMessage message)
         {
             AsciiStringMessage result;
 
             result = new AsciiStringMessage();
             result.BinaryData = message.BinaryData;
 
-            return result;
+            return new IMessage[] { result };
+        }
+
+        public string Name
+        {
+            get { return "ToStringMessageTransform"; }
         }
     }
 }

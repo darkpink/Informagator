@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
-    public class OldestFileFromFolderSupplier : IProcessingStage
+    public class OldestFileFromFolderSupplier : ISupplierStage
     {
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public IMessage Execute(IMessage msgIn)
+        public IMessage Supply()
         {
             ByteArrayMessage result = null;
 
@@ -64,6 +64,16 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
                 throw new ConfigurationException("FolderPath " + FolderPath + " does not exist");
             }
 
+        }
+
+        public string ReceviedFrom
+        {
+            get { return FolderPath; }
+        }
+
+        public string Name
+        {
+            get { return "OldestFileFromFolderSupplier"; }
         }
     }
 }

@@ -42,6 +42,7 @@
     <Compile Include="FileSystemAssemblySource.cs" />
     <Compile Include="HardCodedConfiguration.cs" />
     <Compile Include="MemoryMessageStore.cs" />
+    <Compile Include="MemoryMessageTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

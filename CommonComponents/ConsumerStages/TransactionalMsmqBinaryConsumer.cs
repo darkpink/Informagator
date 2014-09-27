@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class TransactionalMsmqBinaryConsumer : IProcessingStage
+    public class TransactionalMsmqBinaryConsumer : IConsumerStage
     {
         protected MessageQueue Queue { get; set; }
         
@@ -41,14 +41,14 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
             Queue = new MessageQueue(QueueName);
         }
 
-        public IMessage Execute(IMessage msgIn)
+        public void Consume(IMessage message)
         {
             try
             {
                 MessageQueueTransaction trans = new MessageQueueTransaction();
                 trans.Begin();
                 Message msg = new Message();
-                msg.BodyStream = new MemoryStream(msgIn.BinaryData);
+                msg.BodyStream = new MemoryStream(message.BinaryData);
 
                 Queue.Send(msg, "Informagator message " + MessageCount++, trans);
                 trans.Commit();
@@ -57,8 +57,17 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
             {
                 ReopenQueue();
             }
-            
-            return null;
+        }
+
+
+        public string SentTo
+        {
+            get { return "MSMQ " + QueueName; }
+        }
+
+        public string Name
+        {
+            get { return "TransactionalMsmqBinaryConsumer"; }
         }
     }
 }

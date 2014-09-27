@@ -20,6 +20,9 @@ namespace Acadian.Informagator.Services
         [DataMember]
         public List<string> ProcessingTrail { get; set; }
 
+        [DataMember]
+        public Guid Id { get; set; }
+
         IDictionary<string, string> IMessage.Attributes
         {
             get { return Attributes; }
@@ -35,6 +38,7 @@ namespace Acadian.Informagator.Services
             BinaryData = message.BinaryData;
             Attributes = new Dictionary<string, string>(message.Attributes);
             ProcessingTrail = new List<string>(message.ProcessingTrail);
+            Id = message.Id;
         }
     }
 }

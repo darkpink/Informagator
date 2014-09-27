@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Contracts
 {
-    public interface IObserverStage
+    public interface IObserverStage : IProcessingStage
     {
+        void Observe(IMessage message);
     }
 }
