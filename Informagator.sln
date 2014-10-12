@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HL7Assist", "HL7Assist\HL7A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SandboxCustom", "SandboxCustom\SandboxCustom.csproj", "{5B408A04-404F-4D8F-B3D5-282BB9650C9A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Manager", "Manager\Manager.csproj", "{9B2A01AF-1F9D-41E0-B0FD-C47AD1A92B86}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{56F7837E-E705-4A43-AFBB-3E7CE0F8DC5A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +61,14 @@ Global
 		{5B408A04-404F-4D8F-B3D5-282BB9650C9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B408A04-404F-4D8F-B3D5-282BB9650C9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B408A04-404F-4D8F-B3D5-282BB9650C9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B2A01AF-1F9D-41E0-B0FD-C47AD1A92B86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B2A01AF-1F9D-41E0-B0FD-C47AD1A92B86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B2A01AF-1F9D-41E0-B0FD-C47AD1A92B86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B2A01AF-1F9D-41E0-B0FD-C47AD1A92B86}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F7837E-E705-4A43-AFBB-3E7CE0F8DC5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F7837E-E705-4A43-AFBB-3E7CE0F8DC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F7837E-E705-4A43-AFBB-3E7CE0F8DC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F7837E-E705-4A43-AFBB-3E7CE0F8DC5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
