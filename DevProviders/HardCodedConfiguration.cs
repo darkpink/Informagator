@@ -28,8 +28,8 @@ namespace Acadian.Informagator.DevProviders
                     ThreadConfiguration un = uncastedStageConfig["Demo"];
                     ThreadConfiguration casted = (ThreadConfiguration)un;
                     StageConfiguration stageConfig = casted.StageConfigurations[1] as StageConfiguration;
-                    StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
-                    configParam.Value = @"E:\tst\Dest2";
+                    //StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
+                    //configParam.Value = @"E:\tst\Dest2";
                     return config;
                 }
             }
@@ -53,27 +53,36 @@ namespace Acadian.Informagator.DevProviders
                             RequiredAssemblies = new[] {"Acadian.Informagator.CommonComponents.dll", "Acadian.Informagator.dll" }.ToList(),
                             StageConfigurations = new[] { new StageConfiguration()
                                                           { 
-                                                              //StageType = "Acadian.Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
-                                                              StageType = "Acadian.Informagator.CommonComponents.SupplierStages.MessageStoreSupplier",
-                                                              StageAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
-                                                              Parameters = new[] { new StageConfigurationParameter() {
-                                                                 //Name = "FolderPath",
-                                                                 //Value = @"C:\Demo\Source"}}
-                                                                 Name = "QueueName",
-                                                                 Value = @"Demo"}}
-                                                          } as StageConfiguration,
-                                                          new StageConfiguration()
-                                                          { 
-                                                              StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
+                                                              StageType = "Acadian.Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
+                                                              //StageType = "Acadian.Informagator.CommonComponents.SupplierStages.MessageStoreSupplier",
                                                               StageAssemblyName = "Acadian.Informagator.CommonComponents.dll",
                                                               ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
                                                               ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
                                                               Parameters = new[] { new StageConfigurationParameter() {
                                                                  Name = "FolderPath",
-                                                                 Value = @"E:\tst\Dest"}}
-                                                          } as StageConfiguration
+                                                                 Value = @"C:\Demo\Source"}}
+                                                                 //Name = "QueueName",
+                                                                 //Value = @"Demo"}}
+                                                          },
+                                                          new StageConfiguration()
+                                                          { 
+                                                              //StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
+                                                              StageType = "SandboxCustom.AlternatingFolderTransform",
+                                                              StageAssemblyName = "SandboxCustom.dll",
+                                                              ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
+                                                              ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler"
+                                                          },
+                                                          new StageConfiguration()
+                                                          { 
+                                                              //StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
+                                                              StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.DynamicOutputFolderConsumer",
+                                                              StageAssemblyName = "Acadian.Informagator.CommonComponents.dll",
+                                                              ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
+                                                              ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
+                                                              Parameters = new[] { new StageConfigurationParameter() {
+                                                                 Name = "FolderPathAttribute",
+                                                                 Value = @"FolderName"}}
+                                                          }
                                                         }.ToList()
                         }
                     } };

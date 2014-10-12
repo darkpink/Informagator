@@ -30,23 +30,14 @@ namespace Acadian.Informagator.Threads
         [ProvideToClient(typeof(IConfigurationSource))]
         protected internal InternalServiceClient InternalService { get; set; }
 
-        protected string _name;
-        public string Name
-        {
-            protected get
-            { 
-                return _name; 
-            }
-            set
-            {
-                _name = value;
-                Configuration = InternalService.GetThreadHostConfiguration(_name);
-            }
-        }
-        public ThreadHost()
+        protected string Name { get; set; }
+
+        public ThreadHost(string name)
         {
             InternalService = new InternalServiceClient();
             AssemblyManager = new AssemblyManager(InternalService);
+            Name = name;
+            Configuration = InternalService.GetThreadHostConfiguration(Name);
         }
 
         public void Start()

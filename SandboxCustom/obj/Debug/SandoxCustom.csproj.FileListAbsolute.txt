@@ -1,0 +1,7 @@
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\obj\Debug\SandoxCustom.csprojResolveAssemblyReference.cache
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\bin\Debug\SandoxCustom.dll
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\bin\Debug\SandoxCustom.pdb
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\bin\Debug\Acadian.Informagator.dll
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\bin\Debug\Acadian.Informagator.pdb
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\obj\Debug\SandoxCustom.dll
+C:\Users\william.king\Documents\GitHub\Informagator\SandoxCustom\obj\Debug\SandoxCustom.pdb

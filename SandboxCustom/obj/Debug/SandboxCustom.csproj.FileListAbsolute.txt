@@ -1,0 +1,7 @@
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\bin\Debug\Acadian.Informagator.dll
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\bin\Debug\Acadian.Informagator.pdb
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\obj\Debug\SandboxCustom.csprojResolveAssemblyReference.cache
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\bin\Debug\SandboxCustom.dll
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\bin\Debug\SandboxCustom.pdb
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\obj\Debug\SandboxCustom.dll
+C:\Users\william.king\Documents\GitHub\Informagator\SandboxCustom\obj\Debug\SandboxCustom.pdb

@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class OutputFolderConsumer : IConsumerStage
+    public class StaticOutputFolderConsumer : IConsumerStage
     {
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public void Consume(IMessage message)
+        public string Consume(IMessage message)
         {
             ValidateSettings();
 
@@ -30,13 +30,15 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
                 outFileStream.Write(message.BinaryData, 0, message.BinaryData.Length);
                 outFileStream.Close();
             }
+            
+            return FolderPath;
         }
 
         protected void ValidateSettings()
         {
             if (String.IsNullOrWhiteSpace(FolderPath))
             {
-                throw new ConfigurationException("FolderPath must be configured for OutputFolderConsumer");
+                throw new ConfigurationException("FolderPath must be configured for StaticOutputFolderConsumer");
             }
 
             if (!Directory.Exists(FolderPath))
@@ -52,15 +54,9 @@ namespace Acadian.Informagator.CommonComponents.ConsumerStages
             }
         }
 
-
-        public string SentTo
-        {
-            get { return FolderPath; }
-        }
-
         public string Name
         {
-            get { return "OutputFolderConsumer"; }
+            get { return "StaticOutputFolderConsumer"; }
         }
     }
 }

@@ -19,7 +19,8 @@ namespace HostConsoleApp
 
             InformagatorService i = new InformagatorService(new HardCodedConfigurationProvider(),
                                                             new FileSystemAssemblySource(),
-                                                            store);
+                                                            store,
+                                                            new MemoryMessageTracker());
             i.Start();
             Console.ReadLine();
             i.ReloadConfiguration();

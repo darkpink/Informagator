@@ -27,11 +27,12 @@ namespace Acadian.Informagator
 
         protected IAssemblySource AssemblySource { get; set; }
 
-        public InformagatorService(IConfigurationProvider configurationProvider, IAssemblySource assemblySource, IMessageStore messageStore)
+        public InformagatorService(IConfigurationProvider configurationProvider, IAssemblySource assemblySource, IMessageStore messageStore, IMessageTracker messageTracker)
         {
             AssemblySource = assemblySource;
             ConfigurationProvider = configurationProvider;
             MessageStore = messageStore;
+            MessageTracker = messageTracker;
         }
 
         public void Start()

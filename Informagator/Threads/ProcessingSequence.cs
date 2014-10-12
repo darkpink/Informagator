@@ -14,6 +14,28 @@ namespace Acadian.Informagator.Stages
     {
         public IList<IProcessingStage> Stages { get; set; }
 
+        protected ISupplierStage SupplierStage
+        {
+            get
+            {
+                return (ISupplierStage)(Stages.First());
+            }
+        }
+        protected IConsumerStage ConsumerStage
+        {
+            get
+            {
+                return (IConsumerStage)(Stages.Last());
+            }
+        }
+        protected IEnumerable<IProcessingStage> IntermediateStages
+        {
+            get
+            {
+                return Stages.Skip(1).Take(Stages.Count - 2);
+            }
+        }
+
         public IMessageTracker MessageTracker { get; set; }
 
         protected Guid CurrentSequenceId { get; set; }
@@ -32,20 +54,27 @@ namespace Acadian.Informagator.Stages
             {
                 result = true;
                 CurrentSequenceId = Guid.NewGuid();
-                TrackingInfo initialTrackingInfo = GetInitialTrackingInfo();
-                MessageTracker.TrackMessage(initialTrackingInfo, initialMessage);
+                ProcessingSequenceTracker tracker = new ProcessingSequenceTracker(CurrentSequenceId, MessageTracker);
+                tracker.TrackInitialMessage(initialMessage, SupplierStage.Name);
 
-                IEnumerable<IMessage> messagesInProcess = new[] {initialMessage};
+                List<IMessage> messagesInProcess = new List<IMessage>() { initialMessage };
 
-                foreach (IProcessingStage stage in Stages.Skip(1).Take(Stages.Count - 2))
+                foreach(IProcessingStage stage in IntermediateStages)
                 {
+                    tracker.BeginStage(stage.Name);
+
                     if (stage is ITransformStage)
                     {
-                        List<IMessage> newMessagesInProcess = new List<IMessage>();
-                        
+                        var newMessagesInProcess = new List<IMessage>(messagesInProcess.Count);
                         foreach(IMessage mip in messagesInProcess)
                         {
-                           newMessagesInProcess.AddRange(((ITransformStage)stage).TransformMessage(initialMessage));
+                            tracker.BeginInputMessage(mip);
+                            var newMessages = ((ITransformStage)stage).TransformMessage(initialMessage);
+                            foreach(IMessage newMessage in newMessages)
+                            {
+                                tracker.TrackSequenceOutputMessage(newMessage);
+                                newMessagesInProcess.Add(newMessage);
+                            }
                         }
                         
                         messagesInProcess = newMessagesInProcess;
@@ -63,28 +92,29 @@ namespace Acadian.Informagator.Stages
                     }
                 }
 
-                IConsumerStage consumerStage = (IConsumerStage)Stages.Last();
+                tracker.BeginStage(ConsumerStage.Name);
                 foreach (IMessage mip in messagesInProcess)
                 {
-                    consumerStage.Consume(mip);
+                    tracker.BeginInputMessage(mip);
+                    ConsumerStage.Consume(mip);
+                    tracker.TrackSequenceOutputMessage(mip);
                 }
             }
             
             return result;
         }
 
-        private TrackingInfo GetInitialTrackingInfo()
+        private TrackingInfo TrackInitialMessage(IMessage initialMessage)
         {
-            TrackingInfo result = new TrackingInfo();
+            TrackingInfo result = new TrackingInfo(CurrentSequenceId, 0, SupplierStage.Name, 0);
+            MessageTracker.TrackMessage(result, initialMessage);
+            return result;
+        }
 
-            ISupplierStage supplierStage = (ISupplierStage)Stages.First();
-            result.ReceivedFrom = supplierStage.ReceviedFrom;
-            result.SentTo = Stages.Skip(1).First().Name;
-            result.StageSequence = 0;
-            result.Stage = supplierStage.Name;
-            result.TrackDateTime = DateTime.Now;
-            result.ProcessingSequenceId = CurrentSequenceId;
-
+        private TrackingInfo TrackMessage(TrackingInfo previousTrackingInfo, string stage, int messageSequence, IMessage intermediateMessage)
+        {
+            TrackingInfo result = previousTrackingInfo.GetNextInSequence(stage, messageSequence);
+            MessageTracker.TrackMessage(result, intermediateMessage);
             return result;
         }
 

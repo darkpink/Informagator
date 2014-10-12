@@ -8,7 +8,6 @@ namespace Acadian.Informagator.Contracts
 {
     public interface IConsumerStage : IProcessingStage
     {
-        void Consume(IMessage message);
-        string SentTo { get; }
+        string Consume(IMessage message); //returns where it was sent
     }
 }

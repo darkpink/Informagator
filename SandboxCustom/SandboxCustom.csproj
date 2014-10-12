@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F3A4A04C-11EA-490E-8A81-81181D9B3305}</ProjectGuid>
+    <ProjectGuid>{5B408A04-404F-4D8F-B3D5-282BB9650C9A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Acadian.Informagator.CommonComponents</RootNamespace>
-    <AssemblyName>Acadian.Informagator.CommonComponents</AssemblyName>
+    <RootNamespace>SandboxCustom</RootNamespace>
+    <AssemblyName>SandboxCustom</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,9 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Messaging" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -41,26 +39,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsumerStages\DynamicMessageStoreConsumer.cs" />
-    <Compile Include="ConsumerStages\StaticMessageStoreConsumer.cs" />
-    <Compile Include="ConsumerStages\DynamicOutputFolderConsumer.cs" />
-    <Compile Include="ConsumerStages\StaticTransactionalMsmqBinaryConsumer.cs" />
-    <Compile Include="ConsumerStages\StaticOutputFolderConsumer.cs" />
-    <Compile Include="SupplierStages\MessageStoreSupplier.cs" />
-    <Compile Include="SupplierStages\TransactionalMsmqBinarySupplier.cs" />
-    <Compile Include="SupplierStages\OldestFileFromFolderSupplier.cs" />
-    <Compile Include="ErrorHandlers\IgnoreErrorHandler.cs" />
+    <Compile Include="AlternatingFolderConsumer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransformStages\ToStringMessageTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Informagator\Informagator.csproj">
       <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
       <Name>Informagator</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ValidationStages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

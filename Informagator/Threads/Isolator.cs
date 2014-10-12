@@ -38,8 +38,7 @@ namespace Acadian.Informagator.Threads
         {
             InnerThreadDomain = AppDomain.CreateDomain(Configuration.Name);
             string x = InnerThreadDomain.BaseDirectory;
-            ThreadHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName) as ThreadHost;
-            host.Name = Name;
+            ThreadHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName,false, BindingFlags.CreateInstance, null, new object[] {Name}, null, null) as ThreadHost;
             CrossDomainProxy = host;
             host.Start();
         }

@@ -104,6 +104,7 @@
     <Compile Include="Threads\ProcessingSequence.cs" />
     <Compile Include="Threads\ThreadHost.cs" />
     <Compile Include="Threads\Worker.cs" />
+    <Compile Include="Tracking\ProcessingSequenceTracker.cs" />
     <Compile Include="Tracking\TrackingInfo.cs" />
   </ItemGroup>
   <ItemGroup>

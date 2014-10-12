@@ -12,41 +12,38 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.CommonComponents.ConsumerStages
 {
-    public class MessageStoreConsumer : IConsumerStage
+    public class DynamicMessageStoreConsumer : IConsumerStage
     {
         [ConfigurationParameter]
-        public string QueueName { get; set; }
+        public string QueueNameAttribute { get; set; }
         
         [HostProvided]
         public IMessageStore MessageStore { get; set; }
 
-        public void Consume(IMessage message)
+        public string Consume(IMessage message)
         {
             ValidateSettings();
-            MessageStore.Enqueue(QueueName, message);
+            var queueName = message.Attributes[QueueNameAttribute];
+            MessageStore.Enqueue(queueName, message);
+            return "MessageStore queue " + queueName;
         }
 
         protected void ValidateSettings()
         {
             if (MessageStore == null)
             {
-                throw new InformagatorInvalidOperationException("MessageStore must be provided to MessageStoreConsumer");
+                throw new InformagatorInvalidOperationException("MessageStore must be provided to DynamicMessageStoreConsumer");
             }
 
-            if (String.IsNullOrEmpty(QueueName))
+            if (String.IsNullOrEmpty(QueueNameAttribute))
             {
-                throw new ConfigurationException("QueueName must be set for MessageStoreConsumer");
+                throw new ConfigurationException("QueueNameAttribute must be set for DynamicMessageStoreConsumer");
             }
-        }
-
-        public string SentTo
-        {
-            get { return "MessageStore queue " + QueueName; }
         }
 
         public string Name
         {
-            get { return "MessageStoreConsumer"; }
+            get { return "DynamicMessageStoreConsumer"; }
         }
     }
 }

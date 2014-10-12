@@ -13,7 +13,7 @@ namespace Tests
         [TestMethod]
         public void TestConsumer()
         {
-            TransactionalMsmqBinaryConsumer consumer = new TransactionalMsmqBinaryConsumer();
+            StaticTransactionalMsmqBinaryConsumer consumer = new StaticTransactionalMsmqBinaryConsumer();
             consumer.QueueName = @".\private$\TestQueue";
             ByteArrayMessage msg = new ByteArrayMessage();
             msg.Body = new[] { (byte)65, (byte)65, (byte)65, (byte)65 };
