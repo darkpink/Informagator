@@ -1,0 +1,144 @@
+﻿<UserControl x:Class="Acadian.Informagator.Manager.Panels.ListPanelShell"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Acadian.Informagator.Manager"
+      xmlns:localuc="clr-namespace:Acadian.Informagator.Manager.Panels"
+      xmlns:cvt="clr-namespace:Acadian.Informagator.Manager.ValueConverters"
+      mc:Ignorable="d" 
+      d:DesignHeight="300" d:DesignWidth="800"
+	  >
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border Style="{StaticResource CaseSectionBorder}" Margin="10" Padding="10" Background="{StaticResource FunctionalAreaBrush}">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="8*" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Orientation="Horizontal">
+                    <Button Width="80" Style="{StaticResource FunctionalAreaAddNewButton}" Command="{Binding RelativeSource={RelativeSource AncestorType=localuc:ListBase},Path=NewCommand}" IsEnabled="{Binding IsUserAuthorizedForEdit}" >New</Button>
+                    <TextBlock Margin="30,0,0,0" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type localuc:ListBase}}, Path=ScreenTitle}" Style="{DynamicResource CaseSectionHeader}" VerticalAlignment="Center"/>
+                </StackPanel>
+                
+                <Grid Grid.Column="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Search:" Margin="5,5,5,5" VerticalAlignment="Center" Style="{DynamicResource StandardFont}" />
+                        <TextBox Width="100" Margin="5,5,30,5" VerticalAlignment="Center" Text="{Binding Criteria.SearchText,UpdateSourceTrigger=PropertyChanged}" />
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding Criteria.InActive}" Style="{DynamicResource StandardFont}">Show Inactive</CheckBox>
+                    </StackPanel>
+                </Grid>
+            </Grid>
+        </Border>
+        <DataGrid Name="uxGrid" Grid.Row="1" Margin="10" ItemsSource="{Binding SearchResult.Items, NotifyOnTargetUpdated=True}" AutoGenerateColumns="False"
+                  CanUserAddRows="False" Sorting="uxGrid_Sorting" TargetUpdated="uxGrid_TargetUpdated" BorderBrush="Transparent"
+                  RowBackground="{DynamicResource StandardBackground}" AlternatingRowBackground="{DynamicResource AlternateBackground}"
+                  HorizontalGridLinesBrush="LightGray" VerticalGridLinesBrush="LightGray" HorizontalScrollBarVisibility="Disabled"
+                  >
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="BorderThickness" Value="0" />
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="Black" />
+                    </Style.Resources>
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="Transparent" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource HeaderText}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+        <Border Grid.Row="2" Style="{StaticResource CaseSectionBorder}" Margin="10" Padding="10" Background="{StaticResource FunctionalAreaBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Column="0" VerticalAlignment="Center" >
+                    <TextBlock.Style>
+                        <Style BasedOn="{StaticResource StandardFont}">
+                            <Setter Property="TextBlock.Text">
+                                <Setter.Value>
+                                    <MultiBinding StringFormat="{}{0} {1} matched your search criteria." >
+                                        <Binding Path="SearchResult.Total" />
+                                        <Binding RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType={x:Type localuc:ListBase}}" Path="EntityName" />
+                                    </MultiBinding>
+                                </Setter.Value>
+                            </Setter>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding SearchResult.ShowAll}" Value="true">
+                                    <DataTrigger.Setters>
+                                        <Setter Property="TextBlock.Text">
+                                            <Setter.Value>
+                                                <MultiBinding StringFormat="{}Showing all {0} {1}." >
+                                                    <Binding Path="SearchResult.Total" />
+                                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType={x:Type localuc:ListBase}}" Path="EntityName" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger.Setters>
+                                    
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                    
+                </TextBlock>
+
+                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                    <Button Name="uxFirstPage" Width="25" Height="25" Click="uxFirstPage_Click" Style="{StaticResource FunctionalAreaFirstPageButton}" Margin="2" 
+                            IsEnabled="{Binding SearchResult.FirstPage,Converter={pvscvt:ReverseBool}}"
+                            Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsVisible}}"/>
+                    <Button Name="uxPreviousPage" Width="25" Height="25" Click="uxPreviousPage_Click" Style="{StaticResource FunctionalAreaPreviousPageButton}" Margin="2" 
+                            IsEnabled="{Binding SearchResult.FirstPage,Converter={pvscvt:ReverseBool}}"
+                            Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsVisible}}"/>
+
+                    <TextBlock Style="{StaticResource StandardFont}" VerticalAlignment="Center" Margin="10,0,10,0" 
+                               Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsVisible}}">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="Page {0} of {1}" >
+                                <Binding Path="SearchResult.PageNumber" />
+                                <Binding Path="SearchResult.TotalPages" />
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+
+                    <Button Name="uxNextPage" Width="25" Height="25" Click="uxNextPage_Click" Style="{StaticResource FunctionalAreaNextPageButton}" Margin="2"
+                            IsEnabled="{Binding SearchResult.LastPage,Converter={pvscvt:ReverseBool}}" 
+                            Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsVisible}}"/>
+                    <Button Name="uxLastPage" Width="25" Height="25" Click="uxLastPage_Click" Style="{StaticResource FunctionalAreaLastPageButton}" Margin="2" 
+                            IsEnabled="{Binding SearchResult.LastPage,Converter={pvscvt:ReverseBool}}" 
+                            Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsVisible}}"/>
+                    <Button Name="uxShowAll" Width="75" Height="25" Click="uxShowAll_Click" Style="{StaticResource FunctionalAreaButton}" Margin="10,2,2,2"
+                            Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsVisible}}">
+                        Show All
+                    </Button>
+                    <Button Name="uxShowPages" Width="95" Height="25" Click="uxShowPages_Click" Style="{StaticResource FunctionalAreaButton}" Margin="10,2,2,2"
+                            Visibility="{Binding SearchResult.ShowAll,Converter={pvscvt:EmptyIsCollapsed}}">
+                        Show Pages
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>-->
+</UserControl>
