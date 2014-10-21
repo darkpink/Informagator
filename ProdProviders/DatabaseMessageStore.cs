@@ -12,7 +12,7 @@ namespace Acadian.Informagator.ProdProviders
     {
         public void Enqueue(string queueName, IMessage message)
         {
-            using (MessageStoreEntities entities = new MessageStoreEntities())
+            using (MessageEntities entities = new MessageEntities())
             {
                 Message m = entities.Messages.Create();
                 m.Body = Encoding.ASCII.GetString(message.BinaryData);
@@ -25,7 +25,7 @@ namespace Acadian.Informagator.ProdProviders
         {
             ByteArrayMessage result = null;
 
-            using (MessageStoreEntities entities = new MessageStoreEntities())
+            using (MessageEntities entities = new MessageEntities())
             {
                 long? messageId = entities.Dequeue(queueName).SingleOrDefault();
                 if (messageId != null)

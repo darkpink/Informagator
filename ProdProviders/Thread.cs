@@ -19,12 +19,15 @@ namespace Acadian.Informagator.ProdProviders
             this.Stages = new HashSet<Stage>();
         }
     
+        public long Id { get; set; }
+        public long HostId { get; set; }
         public string Name { get; set; }
-        public string HostName { get; set; }
-        public bool IsEnabled { get; set; }
-        public string WorkerAssembly { get; set; }
+        public string WorkerAssemblyName { get; set; }
+        public string WorkerAssemblyDotNetVersion { get; set; }
         public string WorkerType { get; set; }
+        public bool AutoStart { get; set; }
     
+        public virtual Assembly Assembly { get; set; }
         public virtual Host Host { get; set; }
         public virtual ICollection<Stage> Stages { get; set; }
     }

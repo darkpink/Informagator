@@ -19,15 +19,19 @@ namespace Acadian.Informagator.ProdProviders
             this.StageParameters = new HashSet<StageParameter>();
         }
     
+        public long Id { get; set; }
+        public long ThreadId { get; set; }
         public string Name { get; set; }
-        public string ThreadName { get; set; }
         public int Sequence { get; set; }
-        public bool IsEnabled { get; set; }
-        public string StageAssembly { get; set; }
+        public string StageAssemblyName { get; set; }
+        public string StageAssemblyDotNetVersion { get; set; }
         public string StageType { get; set; }
-        public string ErrorHandlerAssembly { get; set; }
+        public string ErrorHandlerAssemblyName { get; set; }
+        public string ErrorHandlerAssemblyDotNetVersion { get; set; }
         public string ErrorHandlerType { get; set; }
     
+        public virtual Assembly Assembly { get; set; }
+        public virtual Assembly Assembly1 { get; set; }
         public virtual Thread Thread { get; set; }
         public virtual ICollection<StageParameter> StageParameters { get; set; }
     }

@@ -12,25 +12,23 @@ namespace Acadian.Informagator.ProdProviders
     using System;
     using System.Collections.Generic;
     
-    public partial class Assembly
+    public partial class ApplicationVersion
     {
-        public Assembly()
+        public ApplicationVersion()
         {
             this.AssemblyApplicationVersions = new HashSet<AssemblyApplicationVersion>();
-            this.AssemblyVersions = new HashSet<AssemblyVersion>();
-            this.Stages = new HashSet<Stage>();
-            this.Stages1 = new HashSet<Stage>();
-            this.Threads = new HashSet<Thread>();
+            this.GlobalSettings = new HashSet<GlobalSetting>();
+            this.Hosts = new HashSet<Host>();
         }
     
-        public string Name { get; set; }
-        public string DotNetVersion { get; set; }
-        public byte[] Description { get; set; }
+        public long Id { get; set; }
+        public System.DateTime CreateDttm { get; set; }
+        public string Description { get; set; }
+        public bool IsCurrent { get; set; }
+        public Nullable<System.DateTime> EffectiveDttm { get; set; }
     
         public virtual ICollection<AssemblyApplicationVersion> AssemblyApplicationVersions { get; set; }
-        public virtual ICollection<AssemblyVersion> AssemblyVersions { get; set; }
-        public virtual ICollection<Stage> Stages { get; set; }
-        public virtual ICollection<Stage> Stages1 { get; set; }
-        public virtual ICollection<Thread> Threads { get; set; }
+        public virtual ICollection<GlobalSetting> GlobalSettings { get; set; }
+        public virtual ICollection<Host> Hosts { get; set; }
     }
 }

@@ -19,8 +19,13 @@ namespace Acadian.Informagator.ProdProviders
             this.Threads = new HashSet<Thread>();
         }
     
+        public long Id { get; set; }
+        public long ApplicationVersionId { get; set; }
         public string Name { get; set; }
+        public string IPAddress { get; set; }
+        public string Description { get; set; }
     
+        public virtual ApplicationVersion ApplicationVersion { get; set; }
         public virtual ICollection<Thread> Threads { get; set; }
     }
 }

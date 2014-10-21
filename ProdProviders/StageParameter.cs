@@ -14,8 +14,9 @@ namespace Acadian.Informagator.ProdProviders
     
     public partial class StageParameter
     {
+        public long Id { get; set; }
+        public long StageId { get; set; }
         public string Name { get; set; }
-        public string StageName { get; set; }
         public string Value { get; set; }
     
         public virtual Stage Stage { get; set; }

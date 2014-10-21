@@ -48,62 +48,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationVersion.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Assembly.cs">
-      <DependentUpon>AssemblyStore.tt</DependentUpon>
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AssemblyStore.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssemblyStore.Context.tt</DependentUpon>
+    <Compile Include="AssemblyApplicationVersion.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="AssemblyStore.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssemblyStore.tt</DependentUpon>
-    </Compile>
-    <Compile Include="AssemblyStore.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AssemblyStore.edmx</DependentUpon>
+    <Compile Include="AssemblyVersion.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationModel.Context.cs">
-      <DependentUpon>ConfigurationModel.Context.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ConfigurationModel.Context.tt</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationModel.cs">
-      <DependentUpon>ConfigurationModel.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ConfigurationModel.Designer.cs">
-      <DependentUpon>ConfigurationModel.edmx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>ConfigurationModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="DatabaseAssemblyStore.cs" />
     <Compile Include="DatabaseConfigurationProvider.cs" />
+    <Compile Include="DatabaseMessageStore.cs" />
+    <Compile Include="GlobalSetting.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Host.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Message.cs">
-      <DependentUpon>MessageStore.tt</DependentUpon>
+      <DependentUpon>MessageModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessageStore.Context.cs">
-      <DependentUpon>MessageStore.Context.tt</DependentUpon>
+    <Compile Include="MessageAttribute.cs">
+      <DependentUpon>MessageModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MessageModel.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="DatabaseMessageStore.cs" />
-    <Compile Include="MessageStore.Designer.cs">
-      <DependentUpon>MessageStore.edmx</DependentUpon>
+    <Compile Include="MessageModel.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>MessageModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="MessageStore1.cs">
+    <Compile Include="MessageModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>MessageStore.tt</DependentUpon>
+      <DependentUpon>MessageModel.edmx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stage.cs">
@@ -115,6 +115,12 @@
     <Compile Include="Thread.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="TrackedMessage.cs">
+      <DependentUpon>MessageModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TrackedMessageAttribute.cs">
+      <DependentUpon>MessageModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -122,23 +128,6 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>ConfigurationModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <EntityDeploy Include="AssemblyStore.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AssemblyStore.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="AssemblyStore.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AssemblyStore.edmx</DependentUpon>
-      <LastGenOutput>AssemblyStore.Context.cs</LastGenOutput>
-    </None>
-    <None Include="AssemblyStore.edmx.diagram">
-      <DependentUpon>AssemblyStore.edmx</DependentUpon>
-    </None>
-    <None Include="AssemblyStore.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AssemblyStore.edmx</DependentUpon>
-      <LastGenOutput>AssemblyStore.cs</LastGenOutput>
-    </None>
     <None Include="ConfigurationModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>ConfigurationModel.edmx</DependentUpon>
@@ -152,22 +141,22 @@
       <DependentUpon>ConfigurationModel.edmx</DependentUpon>
       <LastGenOutput>ConfigurationModel.cs</LastGenOutput>
     </None>
-    <EntityDeploy Include="MessageStore.edmx">
+    <EntityDeploy Include="MessageModel.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>MessageStore.Designer.cs</LastGenOutput>
+      <LastGenOutput>MessageModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <None Include="MessageStore.Context.tt">
+    <None Include="MessageModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MessageStore.edmx</DependentUpon>
-      <LastGenOutput>MessageStore.Context.cs</LastGenOutput>
+      <DependentUpon>MessageModel.edmx</DependentUpon>
+      <LastGenOutput>MessageModel.Context.cs</LastGenOutput>
     </None>
-    <None Include="MessageStore.edmx.diagram">
-      <DependentUpon>MessageStore.edmx</DependentUpon>
+    <None Include="MessageModel.edmx.diagram">
+      <DependentUpon>MessageModel.edmx</DependentUpon>
     </None>
-    <None Include="MessageStore.tt">
+    <None Include="MessageModel.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>MessageStore.edmx</DependentUpon>
-      <LastGenOutput>MessageStore1.cs</LastGenOutput>
+      <DependentUpon>MessageModel.edmx</DependentUpon>
+      <LastGenOutput>MessageModel.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

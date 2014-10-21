@@ -19,28 +19,33 @@ namespace Acadian.Informagator.ProdProviders
                 string hostName = Dns.GetHostName();
                 InformagatorConfiguration config = new InformagatorConfiguration(hostName);
 
-                using (InformagatorEntities entities = new InformagatorEntities())
+                using (ConfigurationEntities entities = new ConfigurationEntities())
                 {
-                    Host dbHostEntity = entities.Hosts.Include(h => h.Threads
-                                                                     .Select(t => t.Stages
-                                                                                   .Select(s => s.StageParameters)))
-                        .SingleOrDefault(h => h.Name == hostName);
+                    var dbHostEntity = entities
+                                        .ApplicationVersions
+                                        .Include(av => av.Hosts.Select(h => h.Threads
+                                                                             .Select(t => t.Stages
+                                                                                           .Select(s => s.StageParameters))))
+                                        .Single(av => av.IsCurrent)
+                                        .Hosts
+                                        .Single(h => h.Name == hostName);
+
                     if (dbHostEntity != null)
                     {
                         foreach (Thread t in dbHostEntity.Threads)
                         {
                             ThreadConfiguration threadConfig = new ThreadConfiguration();
                             threadConfig.Name = t.Name;
-                            threadConfig.ThreadHostTypeAssembly = t.WorkerAssembly;
+                            threadConfig.ThreadHostTypeAssembly = t.WorkerAssemblyName;
                             threadConfig.ThreadHostTypeName = t.WorkerType;
-                            threadConfig.RequiredAssemblies.Add(t.WorkerAssembly);
+                            threadConfig.RequiredAssemblies.Add(t.WorkerAssemblyName);
 
                             foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
                             {
                                 StageConfiguration stageConfig = new StageConfiguration();
-                                stageConfig.StageAssemblyName = s.StageAssembly;
+                                stageConfig.StageAssemblyName = s.StageAssemblyName;
                                 stageConfig.StageType = s.StageType;
-                                stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssembly;
+                                stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyName;
                                 stageConfig.ErrorHandlerType = s.ErrorHandlerType;
                                 threadConfig.RequiredAssemblies.Add(stageConfig.ErrorHandlerAssemblyName);
                                 threadConfig.RequiredAssemblies.Add(stageConfig.StageAssemblyName);
@@ -56,7 +61,7 @@ namespace Acadian.Informagator.ProdProviders
                                 threadConfig.StageConfigurations.Add(stageConfig);
                             }
 
-                            //config.ThreadConfiguration.Add(config.ProcessName, threadConfig);
+                            config.ThreadConfiguration.Add(threadConfig.Name, threadConfig);
                         }
                     }
                 }

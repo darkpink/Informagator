@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MessageModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="QueueName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddDttm" Type="datetime" Nullable="false" />
+          <Property Name="DequeueDttm" Type="datetime" />
+          <Property Name="Body" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MessageAttribute">
+          <Key>
+            <PropertyRef Name="MessageId" />
+            <PropertyRef Name="Attribute" />
+          </Key>
+          <Property Name="MessageId" Type="bigint" Nullable="false" />
+          <Property Name="Attribute" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Value" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TrackedMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="TrackDateTime" Type="datetime" Nullable="false" />
+          <Property Name="MessageId" Type="bigint" Nullable="false" />
+          <Property Name="MessageBody" Type="varchar(max)" Nullable="false" />
+          <Property Name="ProcessingSequenceId" Type="uniqueidentifier" />
+          <Property Name="StageSequence" Type="int" />
+          <Property Name="MessageSequence" Type="int" />
+          <Property Name="StageName" Type="varchar" MaxLength="100" />
+          <Property Name="Exception" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="TrackedMessageAttribute">
+          <Key>
+            <PropertyRef Name="TrackedMessageId" />
+            <PropertyRef Name="Attribute" />
+          </Key>
+          <Property Name="TrackedMessageId" Type="bigint" Nullable="false" />
+          <Property Name="Attribute" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Value" Type="varchar(max)" />
+        </EntityType>
+        <Association Name="FK_MessageAttribute_Message">
+          <End Role="Message" Type="Self.Message" Multiplicity="1" />
+          <End Role="MessageAttribute" Type="Self.MessageAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageAttribute">
+              <PropertyRef Name="MessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrackedMessageAttribute_TrackedMessage">
+          <End Role="TrackedMessage" Type="Self.TrackedMessage" Multiplicity="1" />
+          <End Role="TrackedMessageAttribute" Type="Self.TrackedMessageAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrackedMessage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrackedMessageAttribute">
+              <PropertyRef Name="TrackedMessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="Dequeue" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="Message">
+          <Parameter Name="QueueName" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="MessageModelStoreContainer">
+          <EntitySet Name="Message" EntityType="Self.Message" Schema="Message" store:Type="Tables" />
+          <EntitySet Name="MessageAttribute" EntityType="Self.MessageAttribute" Schema="Message" store:Type="Tables" />
+          <EntitySet Name="TrackedMessage" EntityType="Self.TrackedMessage" Schema="Message" store:Type="Tables" />
+          <EntitySet Name="TrackedMessageAttribute" EntityType="Self.TrackedMessageAttribute" Schema="Message" store:Type="Tables" />
+          <AssociationSet Name="FK_MessageAttribute_Message" Association="Self.FK_MessageAttribute_Message">
+            <End Role="Message" EntitySet="Message" />
+            <End Role="MessageAttribute" EntitySet="MessageAttribute" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrackedMessageAttribute_TrackedMessage" Association="Self.FK_TrackedMessageAttribute_TrackedMessage">
+            <End Role="TrackedMessage" EntitySet="TrackedMessage" />
+            <End Role="TrackedMessageAttribute" EntitySet="TrackedMessageAttribute" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MessageModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QueueName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AddDttm" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DequeueDttm" Type="DateTime" Precision="3" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="MessageAttributes" Relationship="Self.FK_MessageAttribute_Message" FromRole="Message" ToRole="MessageAttribute" />
+        </EntityType>
+        <EntityType Name="MessageAttribute">
+          <Key>
+            <PropertyRef Name="MessageId" />
+            <PropertyRef Name="Attribute" />
+          </Key>
+          <Property Name="MessageId" Type="Int64" Nullable="false" />
+          <Property Name="Attribute" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Message" Relationship="Self.FK_MessageAttribute_Message" FromRole="MessageAttribute" ToRole="Message" />
+        </EntityType>
+        <EntityType Name="TrackedMessage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="TrackDateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="MessageId" Type="Int64" Nullable="false" />
+          <Property Name="MessageBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProcessingSequenceId" Type="Guid" />
+          <Property Name="StageSequence" Type="Int32" />
+          <Property Name="MessageSequence" Type="Int32" />
+          <Property Name="StageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TrackedMessageAttributes" Relationship="Self.FK_TrackedMessageAttribute_TrackedMessage" FromRole="TrackedMessage" ToRole="TrackedMessageAttribute" />
+        </EntityType>
+        <EntityType Name="TrackedMessageAttribute">
+          <Key>
+            <PropertyRef Name="TrackedMessageId" />
+            <PropertyRef Name="Attribute" />
+          </Key>
+          <Property Name="TrackedMessageId" Type="Int64" Nullable="false" />
+          <Property Name="Attribute" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TrackedMessage" Relationship="Self.FK_TrackedMessageAttribute_TrackedMessage" FromRole="TrackedMessageAttribute" ToRole="TrackedMessage" />
+        </EntityType>
+        <Association Name="FK_MessageAttribute_Message">
+          <End Role="Message" Type="Self.Message" Multiplicity="1" />
+          <End Role="MessageAttribute" Type="Self.MessageAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Message">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MessageAttribute">
+              <PropertyRef Name="MessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrackedMessageAttribute_TrackedMessage">
+          <End Role="TrackedMessage" Type="Self.TrackedMessage" Multiplicity="1" />
+          <End Role="TrackedMessageAttribute" Type="Self.TrackedMessageAttribute" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TrackedMessage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TrackedMessageAttribute">
+              <PropertyRef Name="TrackedMessageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MessageEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Messages" EntityType="Self.Message" />
+          <EntitySet Name="MessageAttributes" EntityType="Self.MessageAttribute" />
+          <EntitySet Name="TrackedMessages" EntityType="Self.TrackedMessage" />
+          <EntitySet Name="TrackedMessageAttributes" EntityType="Self.TrackedMessageAttribute" />
+          <AssociationSet Name="FK_MessageAttribute_Message" Association="Self.FK_MessageAttribute_Message">
+            <End Role="Message" EntitySet="Messages" />
+            <End Role="MessageAttribute" EntitySet="MessageAttributes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrackedMessageAttribute_TrackedMessage" Association="Self.FK_TrackedMessageAttribute_TrackedMessage">
+            <End Role="TrackedMessage" EntitySet="TrackedMessages" />
+            <End Role="TrackedMessageAttribute" EntitySet="TrackedMessageAttributes" />
+          </AssociationSet>
+          <FunctionImport Name="Dequeue" ReturnType="Collection(Int64)">
+            <Parameter Name="QueueName" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MessageModelStoreContainer" CdmEntityContainer="MessageEntities">
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="MessageModel.Message">
+              <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="QueueName" ColumnName="QueueName" />
+                <ScalarProperty Name="AddDttm" ColumnName="AddDttm" />
+                <ScalarProperty Name="DequeueDttm" ColumnName="DequeueDttm" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MessageAttributes">
+            <EntityTypeMapping TypeName="MessageModel.MessageAttribute">
+              <MappingFragment StoreEntitySet="MessageAttribute">
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="Attribute" ColumnName="Attribute" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrackedMessages">
+            <EntityTypeMapping TypeName="MessageModel.TrackedMessage">
+              <MappingFragment StoreEntitySet="TrackedMessage">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="TrackDateTime" ColumnName="TrackDateTime" />
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
+                <ScalarProperty Name="MessageBody" ColumnName="MessageBody" />
+                <ScalarProperty Name="ProcessingSequenceId" ColumnName="ProcessingSequenceId" />
+                <ScalarProperty Name="StageSequence" ColumnName="StageSequence" />
+                <ScalarProperty Name="MessageSequence" ColumnName="MessageSequence" />
+                <ScalarProperty Name="StageName" ColumnName="StageName" />
+                <ScalarProperty Name="Exception" ColumnName="Exception" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrackedMessageAttributes">
+            <EntityTypeMapping TypeName="MessageModel.TrackedMessageAttribute">
+              <MappingFragment StoreEntitySet="TrackedMessageAttribute">
+                <ScalarProperty Name="TrackedMessageId" ColumnName="TrackedMessageId" />
+                <ScalarProperty Name="Attribute" ColumnName="Attribute" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Dequeue" FunctionName="MessageModel.Store.Dequeue" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

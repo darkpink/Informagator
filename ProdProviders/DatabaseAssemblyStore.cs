@@ -15,10 +15,13 @@ namespace Acadian.Informagator.ProdProviders
         {
             byte[] assemblyBytes;
 
-            using (AssemblyStoreEntities ent = new AssemblyStoreEntities())
+            using (ConfigurationEntities ent = new ConfigurationEntities())
             {
-                Assembly asm = ent.Assemblies.Single(a => a.Name == assemblyName);
-                assemblyBytes = asm.Executable;
+                assemblyBytes = ent.ApplicationVersions
+                                  .Single(a => a.IsCurrent)
+                                  .AssemblyApplicationVersions
+                                  .Single(aav => aav.AssemblyName == assemblyName && aav.AssemblyDotNetVersion == "1.0.0.0")
+                                  .AssemblyVersion.Executable;
             }
 
             return assemblyBytes;
@@ -26,13 +29,15 @@ namespace Acadian.Informagator.ProdProviders
 
         public byte[] GetDebuggingSymbolBinary(string assemblyName)
         {
-            //TODO - this is just going to return the assembly!
             byte[] debuggingSymbolBytes;
 
-            using (AssemblyStoreEntities ent = new AssemblyStoreEntities())
+            using (ConfigurationEntities ent = new ConfigurationEntities())
             {
-                Assembly asm = ent.Assemblies.Single(a => a.Name == assemblyName);
-                debuggingSymbolBytes = asm.DebugSymbols;
+                debuggingSymbolBytes = ent.ApplicationVersions
+                                  .Single(a => a.IsCurrent)
+                                  .AssemblyApplicationVersions
+                                  .Single(aav => aav.AssemblyName == assemblyName && aav.AssemblyDotNetVersion == "1.0.0.0")
+                                  .AssemblyVersion.DebuggingSymbols;
             }
 
             return debuggingSymbolBytes;

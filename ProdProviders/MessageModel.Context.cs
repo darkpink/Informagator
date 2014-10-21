@@ -15,10 +15,10 @@ namespace Acadian.Informagator.ProdProviders
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class MessageStoreEntities : DbContext
+    public partial class MessageEntities : DbContext
     {
-        public MessageStoreEntities()
-            : base("name=MessageStoreEntities")
+        public MessageEntities()
+            : base("name=MessageEntities")
         {
         }
     
@@ -28,6 +28,9 @@ namespace Acadian.Informagator.ProdProviders
         }
     
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<MessageAttribute> MessageAttributes { get; set; }
+        public virtual DbSet<TrackedMessage> TrackedMessages { get; set; }
+        public virtual DbSet<TrackedMessageAttribute> TrackedMessageAttributes { get; set; }
     
         public virtual ObjectResult<Nullable<long>> Dequeue(string queueName)
         {

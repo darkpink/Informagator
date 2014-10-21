@@ -17,7 +17,7 @@ namespace Acadian.Informagator.Configuration
             Host = host;
         }
 
-        public string ProcessName
+        public string HostName
         {
             get 
             {

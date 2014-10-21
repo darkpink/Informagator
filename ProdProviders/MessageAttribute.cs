@@ -12,19 +12,12 @@ namespace Acadian.Informagator.ProdProviders
     using System;
     using System.Collections.Generic;
     
-    public partial class Message
+    public partial class MessageAttribute
     {
-        public Message()
-        {
-            this.MessageAttributes = new HashSet<MessageAttribute>();
-        }
+        public long MessageId { get; set; }
+        public string Attribute { get; set; }
+        public string Value { get; set; }
     
-        public long Id { get; set; }
-        public string QueueName { get; set; }
-        public System.DateTime AddDttm { get; set; }
-        public Nullable<System.DateTime> DequeueDttm { get; set; }
-        public string Body { get; set; }
-    
-        public virtual ICollection<MessageAttribute> MessageAttributes { get; set; }
+        public virtual Message Message { get; set; }
     }
 }

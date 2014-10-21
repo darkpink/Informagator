@@ -14,5 +14,13 @@ namespace Acadian.Informagator.Manager
     public partial class App : Application
     {
         public static ManagementItemCache ManagementItemCache { get; set;}
+
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            ManagementItemCache = new Manager.ManagementItemCache();
+            ManagementItemCache.LoadVersion(1L);
+            MainWindow.DataContext = new MainWindowVM() { ItemCache = ManagementItemCache, ApplicationVersion = 1, IsEditable = false };
+        }
     }
 }

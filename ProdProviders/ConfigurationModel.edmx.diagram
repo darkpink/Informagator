@@ -4,11 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d6697bde28d940f894bb84c714e083f7" Name="Diagram1">
-        <EntityTypeShape EntityType="InformagatorModel.Host" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformagatorModel.Stage" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformagatorModel.StageParameter" Width="1.5" PointX="7.5" PointY="1.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="InformagatorModel.Thread" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="230bb3f5ad324743a3580936b0325693" Name="Diagram1">
+        <EntityTypeShape EntityType="InformagatorModel.ApplicationVersion" Width="1.5" PointX="1.5" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.Assembly" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.AssemblyApplicationVersion" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.AssemblyVersion" Width="1.5" PointX="3" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.GlobalSetting" Width="1.5" PointX="3.75" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.Host" Width="1.5" PointX="3.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.Stage" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.StageParameter" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="InformagatorModel.Thread" Width="1.5" PointX="6" PointY="5" IsExpanded="true" />
+        <AssociationConnector Association="InformagatorModel.FK_AssemblyApplicationVersion_ApplicationVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_GlobalSettings_ApplicationVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_Host_ApplicationVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_AssemblyApplicationVersion_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_AssemblyVersion_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_Stage_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_Stage_Assembly1" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_Thread_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="InformagatorModel.FK_AssemblyApplicationVersion_AssemblyVersion" ManuallyRouted="false" />
         <AssociationConnector Association="InformagatorModel.FK_Thread_Host" ManuallyRouted="false" />
         <AssociationConnector Association="InformagatorModel.FK_Stage_Thread" ManuallyRouted="false" />
         <AssociationConnector Association="InformagatorModel.FK_StageParameter_Stage" ManuallyRouted="false" />

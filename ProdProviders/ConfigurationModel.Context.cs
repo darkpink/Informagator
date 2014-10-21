@@ -13,10 +13,10 @@ namespace Acadian.Informagator.ProdProviders
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class InformagatorEntities : DbContext
+    public partial class ConfigurationEntities : DbContext
     {
-        public InformagatorEntities()
-            : base("name=InformagatorEntities")
+        public ConfigurationEntities()
+            : base("name=ConfigurationEntities")
         {
         }
     
@@ -25,6 +25,11 @@ namespace Acadian.Informagator.ProdProviders
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<ApplicationVersion> ApplicationVersions { get; set; }
+        public virtual DbSet<Assembly> Assemblies { get; set; }
+        public virtual DbSet<AssemblyApplicationVersion> AssemblyApplicationVersions { get; set; }
+        public virtual DbSet<AssemblyVersion> AssemblyVersions { get; set; }
+        public virtual DbSet<GlobalSetting> GlobalSettings { get; set; }
         public virtual DbSet<Host> Hosts { get; set; }
         public virtual DbSet<Stage> Stages { get; set; }
         public virtual DbSet<StageParameter> StageParameters { get; set; }

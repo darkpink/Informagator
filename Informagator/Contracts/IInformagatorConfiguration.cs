@@ -10,7 +10,7 @@ namespace Acadian.Informagator.Contracts
 {
     public interface IInformagatorConfiguration
     {
-        string ProcessName { get; }
+        string HostName { get; }
         IPAddress AdminServiceAddress { get; }
         int AdminServicePort { get; }
         string AdminServiceGroup { get; }
