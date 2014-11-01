@@ -71,11 +71,9 @@
     <Build Include="Message\Tables\Message.sql" />
     <Build Include="Configuration\Tables\GlobalSettings.sql" />
     <Build Include="Configuration\Tables\StageParameter.sql" />
-    <Build Include="Configuration\Tables\Thread.sql" />
     <Build Include="Configuration\Tables\AssemblyVersion.sql" />
     <Build Include="Configuration\Tables\Assembly.sql" />
     <Build Include="Configuration\Tables\Stage.sql" />
-    <Build Include="Configuration\Tables\Host.sql" />
     <Build Include="Message\Stored Procedures\Dequeue.sql" />
     <Build Include="Security\Message.sql" />
     <Build Include="Security\Configuration.sql" />
