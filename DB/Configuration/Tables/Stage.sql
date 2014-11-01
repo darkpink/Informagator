@@ -12,8 +12,10 @@
     CONSTRAINT [PK_Stage] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Stage_Assembly] FOREIGN KEY ([StageAssemblyName], [StageAssemblyDotNetVersion]) REFERENCES [Configuration].[Assembly] ([Name], [DotNetVersion]),
     CONSTRAINT [FK_Stage_Assembly1] FOREIGN KEY ([ErrorHandlerAssemblyName], [ErrorHandlerAssemblyDotNetVersion]) REFERENCES [Configuration].[Assembly] ([Name], [DotNetVersion]),
-    CONSTRAINT [FK_Stage_Thread] FOREIGN KEY ([ThreadId]) REFERENCES [Configuration].[Thread] ([Id])
+    CONSTRAINT [FK_Stage_Thread] FOREIGN KEY ([ThreadId]) REFERENCES [Configuration].[Worker] ([Id])
 );
+
+
 
 
 GO

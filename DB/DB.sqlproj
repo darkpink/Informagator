@@ -69,11 +69,9 @@
     <Build Include="Message\Tables\TrackedMessage.sql" />
     <Build Include="Message\Tables\MessageAttribute.sql" />
     <Build Include="Message\Tables\Message.sql" />
-    <Build Include="Configuration\Tables\AssemblyApplicationVersion.sql" />
     <Build Include="Configuration\Tables\GlobalSettings.sql" />
     <Build Include="Configuration\Tables\StageParameter.sql" />
     <Build Include="Configuration\Tables\Thread.sql" />
-    <Build Include="Configuration\Tables\ApplicationVersion.sql" />
     <Build Include="Configuration\Tables\AssemblyVersion.sql" />
     <Build Include="Configuration\Tables\Assembly.sql" />
     <Build Include="Configuration\Tables\Stage.sql" />
@@ -81,5 +79,9 @@
     <Build Include="Message\Stored Procedures\Dequeue.sql" />
     <Build Include="Security\Message.sql" />
     <Build Include="Security\Configuration.sql" />
+    <Build Include="Configuration\Tables\Worker.sql" />
+    <Build Include="Configuration\Tables\SystemConfiguration.sql" />
+    <Build Include="Configuration\Tables\Machine.sql" />
+    <Build Include="Configuration\Tables\AssemblySystemConfiguration.sql" />
   </ItemGroup>
 </Project>
