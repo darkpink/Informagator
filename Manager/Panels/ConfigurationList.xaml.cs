@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Acadian.Informagator.Manager
+namespace Acadian.Informagator.Manager.Panels
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for ConfigurationList.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ConfigurationList : UserControl
     {
-        public MainWindow()
+        public ConfigurationList()
         {
             InitializeComponent();
         }

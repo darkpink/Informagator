@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Acadian.Informagator.Manager.Panels
 {
     /// <summary>
-    /// Interaction logic for ProcessList.xaml
+    /// Interaction logic for GlobalSettings.xaml
     /// </summary>
-    public partial class ProcessList : UserControl
+    public partial class GlobalSettings : UserControl
     {
-        public ProcessList()
+        public GlobalSettings()
         {
             InitializeComponent();
         }

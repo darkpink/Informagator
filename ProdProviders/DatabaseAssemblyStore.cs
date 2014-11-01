@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Reflection = System.Reflection;
 using System.IO;
+using Acadian.Informagator.ProdProviders.Configuration;
 
 namespace Acadian.Informagator.ProdProviders
 {
@@ -17,9 +18,9 @@ namespace Acadian.Informagator.ProdProviders
 
             using (ConfigurationEntities ent = new ConfigurationEntities())
             {
-                assemblyBytes = ent.ApplicationVersions
-                                  .Single(a => a.IsCurrent)
-                                  .AssemblyApplicationVersions
+                assemblyBytes = ent.SystemConfigurations
+                                  .Single(a => a.IsActive)
+                                  .AssemblySystemConfigurations
                                   .Single(aav => aav.AssemblyName == assemblyName && aav.AssemblyDotNetVersion == "1.0.0.0")
                                   .AssemblyVersion.Executable;
             }
@@ -33,9 +34,9 @@ namespace Acadian.Informagator.ProdProviders
 
             using (ConfigurationEntities ent = new ConfigurationEntities())
             {
-                debuggingSymbolBytes = ent.ApplicationVersions
-                                  .Single(a => a.IsCurrent)
-                                  .AssemblyApplicationVersions
+                debuggingSymbolBytes = ent.SystemConfigurations
+                                  .Single(a => a.IsActive)
+                                  .AssemblySystemConfigurations
                                   .Single(aav => aav.AssemblyName == assemblyName && aav.AssemblyDotNetVersion == "1.0.0.0")
                                   .AssemblyVersion.DebuggingSymbols;
             }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Acadian.Informagator.Manager.Vms;
+using Acadian.Informagator.ProdProviders;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,14 +15,22 @@ namespace Acadian.Informagator.Manager
     /// </summary>
     public partial class App : Application
     {
-        public static ManagementItemCache ManagementItemCache { get; set;}
+        public event Action ActiveSystemConfigurationChanged;
+
+        internal void NotifyActiveSystemConfigurationChanged()
+        {
+            if (ActiveSystemConfigurationChanged != null)
+            {
+                ActiveSystemConfigurationChanged();
+            }
+        }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            ManagementItemCache = new Manager.ManagementItemCache();
-            ManagementItemCache.LoadVersion(1L);
-            MainWindow.DataContext = new MainWindowVM() { ItemCache = ManagementItemCache, ApplicationVersion = 1, IsEditable = false };
+
+            MainWindow = new MainWindow();
+            MainWindow.Show();
         }
     }
 }
