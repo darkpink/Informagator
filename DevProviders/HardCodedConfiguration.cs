@@ -89,7 +89,7 @@ namespace Acadian.Informagator.DevProviders
 
         }
 
-        public string ProcessName
+        public string HostName
         {
             get { return "LocalInformagator"; }
         }

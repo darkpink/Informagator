@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -15,10 +15,10 @@ namespace Acadian.Informagator.ProdProviders
     public partial class GlobalSetting
     {
         public long Id { get; set; }
-        public long ApplicationVersionId { get; set; }
+        public long SystemConfigurationId { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
     
-        public virtual ApplicationVersion ApplicationVersion { get; set; }
+        public virtual SystemConfiguration SystemConfiguration { get; set; }
     }
 }

@@ -7,25 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Host
+    public partial class StageParameter
     {
-        public Host()
-        {
-            this.Threads = new HashSet<Thread>();
-        }
-    
         public long Id { get; set; }
-        public long ApplicationVersionId { get; set; }
+        public long StageId { get; set; }
         public string Name { get; set; }
-        public string IPAddress { get; set; }
-        public string Description { get; set; }
+        public string Value { get; set; }
     
-        public virtual ApplicationVersion ApplicationVersion { get; set; }
-        public virtual ICollection<Thread> Threads { get; set; }
+        public virtual Stage Stage { get; set; }
     }
 }

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -32,7 +32,7 @@ namespace Acadian.Informagator.ProdProviders
     
         public virtual Assembly Assembly { get; set; }
         public virtual Assembly Assembly1 { get; set; }
-        public virtual Thread Thread { get; set; }
+        public virtual Worker Worker { get; set; }
         public virtual ICollection<StageParameter> StageParameters { get; set; }
     }
 }

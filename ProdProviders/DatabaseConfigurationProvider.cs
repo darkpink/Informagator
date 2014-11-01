@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Acadian.Informagator.Contracts;
+using Acadian.Informagator.ProdProviders.Configuration;
 
 namespace Acadian.Informagator.ProdProviders
 {
@@ -22,17 +23,17 @@ namespace Acadian.Informagator.ProdProviders
                 using (ConfigurationEntities entities = new ConfigurationEntities())
                 {
                     var dbHostEntity = entities
-                                        .ApplicationVersions
-                                        .Include(av => av.Hosts.Select(h => h.Threads
+                                        .SystemConfigurations
+                                        .Include(av => av.Machines.Select(h => h.Workers
                                                                              .Select(t => t.Stages
                                                                                            .Select(s => s.StageParameters))))
-                                        .Single(av => av.IsCurrent)
-                                        .Hosts
+                                        .Single(av => av.IsActive)
+                                        .Machines
                                         .Single(h => h.Name == hostName);
 
                     if (dbHostEntity != null)
                     {
-                        foreach (Thread t in dbHostEntity.Threads)
+                        foreach (Worker t in dbHostEntity.Workers)
                         {
                             ThreadConfiguration threadConfig = new ThreadConfiguration();
                             threadConfig.Name = t.Name;

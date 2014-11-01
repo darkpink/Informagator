@@ -7,18 +7,25 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class StageParameter
+    public partial class Machine
     {
-        public long Id { get; set; }
-        public long StageId { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
+        public Machine()
+        {
+            this.Workers = new HashSet<Worker>();
+        }
     
-        public virtual Stage Stage { get; set; }
+        public long Id { get; set; }
+        public long SystemConfigurationId { get; set; }
+        public string Name { get; set; }
+        public string IPAddress { get; set; }
+        public string Description { get; set; }
+    
+        public virtual SystemConfiguration SystemConfiguration { get; set; }
+        public virtual ICollection<Worker> Workers { get; set; }
     }
 }

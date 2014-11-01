@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -16,21 +16,21 @@ namespace Acadian.Informagator.ProdProviders
     {
         public Assembly()
         {
-            this.AssemblyApplicationVersions = new HashSet<AssemblyApplicationVersion>();
+            this.AssemblySystemConfigurations = new HashSet<AssemblySystemConfiguration>();
             this.AssemblyVersions = new HashSet<AssemblyVersion>();
             this.Stages = new HashSet<Stage>();
             this.Stages1 = new HashSet<Stage>();
-            this.Threads = new HashSet<Thread>();
+            this.Workers = new HashSet<Worker>();
         }
     
         public string Name { get; set; }
         public string DotNetVersion { get; set; }
-        public byte[] Description { get; set; }
+        public string Description { get; set; }
     
-        public virtual ICollection<AssemblyApplicationVersion> AssemblyApplicationVersions { get; set; }
+        public virtual ICollection<AssemblySystemConfiguration> AssemblySystemConfigurations { get; set; }
         public virtual ICollection<AssemblyVersion> AssemblyVersions { get; set; }
         public virtual ICollection<Stage> Stages { get; set; }
         public virtual ICollection<Stage> Stages1 { get; set; }
-        public virtual ICollection<Thread> Threads { get; set; }
+        public virtual ICollection<Worker> Workers { get; set; }
     }
 }

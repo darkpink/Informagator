@@ -7,20 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class AssemblyApplicationVersion
+    public partial class AssemblySystemConfiguration
     {
         public string AssemblyName { get; set; }
         public string AssemblyDotNetVersion { get; set; }
-        public long ApplicationVersionId { get; set; }
+        public long SystemConfigurationId { get; set; }
         public long AssemblyVersionId { get; set; }
     
-        public virtual ApplicationVersion ApplicationVersion { get; set; }
         public virtual Assembly Assembly { get; set; }
+        public virtual SystemConfiguration SystemConfiguration { get; set; }
         public virtual AssemblyVersion AssemblyVersion { get; set; }
     }
 }

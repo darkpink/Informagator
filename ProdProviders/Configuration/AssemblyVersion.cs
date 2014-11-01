@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -16,7 +16,7 @@ namespace Acadian.Informagator.ProdProviders
     {
         public AssemblyVersion()
         {
-            this.AssemblyApplicationVersions = new HashSet<AssemblyApplicationVersion>();
+            this.AssemblySystemConfigurations = new HashSet<AssemblySystemConfiguration>();
         }
     
         public long Id { get; set; }
@@ -27,6 +27,6 @@ namespace Acadian.Informagator.ProdProviders
         public byte[] DebuggingSymbols { get; set; }
     
         public virtual Assembly Assembly { get; set; }
-        public virtual ICollection<AssemblyApplicationVersion> AssemblyApplicationVersions { get; set; }
+        public virtual ICollection<AssemblySystemConfiguration> AssemblySystemConfigurations { get; set; }
     }
 }

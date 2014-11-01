@@ -7,20 +7,20 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Acadian.Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Thread
+    public partial class Worker
     {
-        public Thread()
+        public Worker()
         {
             this.Stages = new HashSet<Stage>();
         }
     
         public long Id { get; set; }
-        public long HostId { get; set; }
+        public long MachineId { get; set; }
         public string Name { get; set; }
         public string WorkerAssemblyName { get; set; }
         public string WorkerAssemblyDotNetVersion { get; set; }
@@ -28,7 +28,7 @@ namespace Acadian.Informagator.ProdProviders
         public bool AutoStart { get; set; }
     
         public virtual Assembly Assembly { get; set; }
-        public virtual Host Host { get; set; }
+        public virtual Machine Machine { get; set; }
         public virtual ICollection<Stage> Stages { get; set; }
     }
 }
