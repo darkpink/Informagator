@@ -61,19 +61,38 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\CancelEditCommand.cs" />
     <Compile Include="Commands\ChangeActiveSystemConfigurationCommand.cs" />
-    <Compile Include="Commands\ParameterKeyedActionCommand.cs" />
+    <Compile Include="Commands\PanelChangeCommand.cs" />
+    <Compile Include="Commands\PanelChangeCommandManager.cs" />
+    <Compile Include="Commands\SaveEntityCommand.cs" />
     <Compile Include="Controls\SystemConfigurationPicker.cs" />
     <Compile Include="ExportedHostConfiguration.cs" />
     <Compile Include="ExportedApplicationVersion.cs" />
+    <Compile Include="Panels\AssemblyEdit.xaml.cs">
+      <DependentUpon>AssemblyEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ConfigurationEdit.xaml.cs">
+      <DependentUpon>ConfigurationEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Panels\GlobalSettings.xaml.cs">
       <DependentUpon>GlobalSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\MachineEdit.xaml.cs">
+      <DependentUpon>MachineEdit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panels\StartStop.xaml.cs">
       <DependentUpon>StartStop.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panels\WorkerEdit.xaml.cs">
+      <DependentUpon>WorkerEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Vms\AssemblyEditVm.cs" />
     <Compile Include="Vms\AssemblyListVm.cs" />
+    <Compile Include="Vms\ConfigurationEditVm.cs" />
+    <Compile Include="Vms\EntityEditVmBase.cs" />
     <Compile Include="Vms\GlobalSettingsVm.cs" />
+    <Compile Include="Vms\MachineEditVm.cs" />
     <Compile Include="Vms\MachineListVm.cs" />
     <Compile Include="Vms\MainWindowVm.cs" />
     <Compile Include="Panels\ConfigurationList.xaml.cs">
@@ -86,6 +105,7 @@
     <Compile Include="Vms\SelectedConfigurationVmBase.cs" />
     <Compile Include="Vms\StartStopVm.cs" />
     <Compile Include="Vms\VmBase.cs" />
+    <Compile Include="Vms\WorkerEditVm.cs" />
     <Compile Include="Vms\WorkerListVm.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -99,7 +119,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Panels\AssemblyEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Panels\AssemblyList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\ConfigurationEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -111,11 +139,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Panels\MachineEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Panels\MachineList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panels\StartStop.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\WorkerEdit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

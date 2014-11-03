@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Manager.Vms
 {
-    public class GlobalSettingsVm
+    public class GlobalSettingsVm : VmBase
     {
         public ObservableCollection<GlobalSetting> GlobalSettings { get; protected set; }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Manager.Vms
 {
-    public class StartStopVm : VmBase
+    class WorkerEditVm : VmBase
     {
     }
 }

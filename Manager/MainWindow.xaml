@@ -2,6 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:Acadian.Informagator.Manager.Vms"
+        xmlns:cmd="clr-namespace:Acadian.Informagator.Manager.Commands"
         xmlns:panel="clr-namespace:Acadian.Informagator.Manager.Panels"
         Title="Informagator Manager" Height="600" Width="800">
     <Window.DataContext>
@@ -25,6 +26,18 @@
         </DataTemplate>
         <DataTemplate DataType="{x:Type vm:ConfigurationListVm}">
             <panel:ConfigurationList />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:ConfigurationEditVm}">
+            <panel:ConfigurationEdit />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:AssemblyEditVm}">
+            <panel:AssemblyEdit />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:WorkerEditVm}">
+            <panel:WorkerEdit />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type vm:MachineEditVm}">
+            <panel:MachineEdit />
         </DataTemplate>
     </Window.Resources>
     <Grid>
@@ -60,12 +73,12 @@
                     <TextBlock Text="{Binding ActiveConfiguration}" HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>
-            <Button Grid.Row="1" Command="{Binding ChangePanelView}" CommandParameter="{x:Static vm:MainWindowVm+PanelView.ConfigurationList}">Configurations</Button>
-            <Button Grid.Row="2" Command="{Binding ChangePanelView}" CommandParameter="{x:Static vm:MainWindowVm+PanelView.MachineList}">Machines</Button>
-            <Button Grid.Row="3" Command="{Binding ChangePanelView}" CommandParameter="{x:Static vm:MainWindowVm+PanelView.WorkerList}">Workers</Button>
-            <Button Grid.Row="4" Command="{Binding ChangePanelView}" CommandParameter="{x:Static vm:MainWindowVm+PanelView.AssemblyList}">Assemblies</Button>
-            <Button Grid.Row="5" Command="{Binding ChangePanelView}" CommandParameter="{x:Static vm:MainWindowVm+PanelView.StartStop}">Start/Stop</Button>
-            <Button Grid.Row="6" Command="{Binding ChangePanelView}" CommandParameter="{x:Static vm:MainWindowVm+PanelView.GlobalSettings}">Global Settings</Button>
+            <Button Grid.Row="1" Command="{x:Static cmd:PanelChangeCommandManager.GoToConfigurationList}" >Configurations</Button>
+            <Button Grid.Row="2" Command="{x:Static cmd:PanelChangeCommandManager.GoToMachineList}" >Machines</Button>
+            <Button Grid.Row="3" Command="{x:Static cmd:PanelChangeCommandManager.GoToWorkerList}" >Workers</Button>
+            <Button Grid.Row="4" Command="{x:Static cmd:PanelChangeCommandManager.GoToAssemblyList}" >Assemblies</Button>
+            <Button Grid.Row="5" Command="{x:Static cmd:PanelChangeCommandManager.GoToStartStop}">Start/Stop</Button>
+            <Button Grid.Row="6" Command="{x:Static cmd:PanelChangeCommandManager.GoToGlobalSettings}">Global Settings</Button>
         </Grid>
         <ContentControl Grid.Column="1" Content="{Binding PanelVm}" />
     </Grid>
