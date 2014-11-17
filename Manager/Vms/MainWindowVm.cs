@@ -68,6 +68,7 @@ namespace Acadian.Informagator.Manager.Vms
         {
             PanelVm = ModePanelMap[view];
             PanelVm.Parameter = parameter;
+            PanelVm.Refresh();
         }
 
         private void GetCurrentConfiguration()

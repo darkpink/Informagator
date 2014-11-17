@@ -15,6 +15,14 @@ namespace Acadian.Informagator.Manager
     /// </summary>
     public partial class App : Application
     {
+        public static App CurrentApplication
+        {
+            get
+            {
+                return (App.Current as App);
+            }
+        }
+
         public event Action ActiveSystemConfigurationChanged;
 
         internal void NotifyActiveSystemConfigurationChanged()

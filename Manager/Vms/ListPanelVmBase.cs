@@ -15,6 +15,13 @@ namespace Acadian.Informagator.Manager.Vms
         {
         }
 
+        public override void Refresh()
+        {
+            base.Refresh();
+
+            Entities = GetEntities();
+        }
+
         private T[] _entities;
         public T[] Entities
         { 

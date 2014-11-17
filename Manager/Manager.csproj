@@ -66,7 +66,17 @@
     <Compile Include="Commands\PanelChangeCommand.cs" />
     <Compile Include="Commands\PanelChangeCommandManager.cs" />
     <Compile Include="Commands\SaveEntityCommand.cs" />
+    <Compile Include="Controls\AssemblyNamePicker.cs" />
+    <Compile Include="Controls\ErrorHandlerPicker.cs" />
+    <Compile Include="Controls\MachinePicker.cs" />
+    <Compile Include="Controls\StageEditor\SingleStageEditor.cs" />
+    <Compile Include="Controls\StageEditor\Stage.cs" />
+    <Compile Include="Controls\StageEditor\StageParameter.cs" />
+    <Compile Include="Controls\StageEditor\WorkerStageEditor.cs" />
+    <Compile Include="Controls\StageTypePicker.cs" />
     <Compile Include="Controls\SystemConfigurationPicker.cs" />
+    <Compile Include="Controls\TypePicker.cs" />
+    <Compile Include="Controls\WorkerTypePicker.cs" />
     <Compile Include="ExportedHostConfiguration.cs" />
     <Compile Include="ExportedApplicationVersion.cs" />
     <Compile Include="Panels\AssemblyEdit.xaml.cs">
@@ -81,6 +91,7 @@
     <Compile Include="Panels\MachineEdit.xaml.cs">
       <DependentUpon>MachineEdit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Panels\OldestFileFromFolderSupplier.cs" />
     <Compile Include="Panels\StartStop.xaml.cs">
       <DependentUpon>StartStop.xaml</DependentUpon>
     </Compile>
@@ -158,6 +169,10 @@
     <Page Include="Panels\WorkerList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <ItemGroup>

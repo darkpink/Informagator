@@ -14,7 +14,7 @@ namespace Acadian.Informagator.CommonComponents.SupplierStages
 {
     public class OldestFileFromFolderSupplier : ISupplierStage
     {
-        [ConfigurationParameter]
+        [ConfigurationParameter(DisplayName="Source Folder")]
         public string FolderPath { get; set; }
 
         public IMessage Supply()

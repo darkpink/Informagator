@@ -10,14 +10,26 @@ using System.Windows.Input;
 
 namespace Acadian.Informagator.Manager.Vms
 {
-    public abstract class EntityEditVmBase<T> : VmBase
+    public abstract class EntityEditVmBase<T> : SelectedConfigurationVmBase
     {
         protected ConfigurationEntities Entities { get; set; }
         protected long? EntityId { get; set; }
         public ObservableCollection<string> ValidationErrors { get; protected set; }
         protected abstract bool IsValid { get; }
 
-        public T Entity { get; protected set; }
+        private T _entity;
+        public T Entity { 
+            get
+            {
+                return _entity;
+            }
+
+            protected set
+            {
+                _entity = value;
+                NotifyPropertyChanged("Entity");
+            }
+        }
         public override object Parameter
         {
             get
@@ -51,8 +63,8 @@ namespace Acadian.Informagator.Manager.Vms
         
         public virtual void CancelEditEntity()
         {
-            Entities.Dispose();
             PanelChangeCommandManager.GoToPreviousView.Execute(null);
+            Entities.Dispose();
         }
     }
 }

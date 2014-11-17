@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acadian.Informagator.Manager.Controls.StageEditor;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace Acadian.Informagator.Manager.Panels
         public ConfigurationList()
         {
             InitializeComponent();
+            ux.Stage = new Stage() { Name = "yoo hoo" };
         }
     }
 }

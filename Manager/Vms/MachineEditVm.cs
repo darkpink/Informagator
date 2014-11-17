@@ -21,7 +21,10 @@ namespace Acadian.Informagator.Manager.Vms
 
         protected override Machine CreateNewEntity()
         {
-            return Entities.Machines.Create();
+            var mach = Entities.Machines.Create();
+            mach.SystemConfiguration = Entities.SystemConfigurations.Single(sc => sc.Description == SelectedConfiguration);
+            Entities.Machines.Add(mach);
+            return mach;
         }
     }
 }

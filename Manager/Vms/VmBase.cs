@@ -11,6 +11,10 @@ namespace Acadian.Informagator.Manager.Vms
     {
         public virtual object Parameter { get; set; }
 
+        public virtual void Refresh()
+        {
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged(string propertyName)
