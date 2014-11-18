@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace Acadian.Informagator.Manager.Controls.StageEditor
 {
@@ -69,6 +71,31 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
         {
         }
 
+        public static DependencyProperty TmpProperty = DependencyProperty.Register("Tmp", typeof(string), typeof(SingleStageEditor), new PropertyMetadata(new PropertyChangedCallback(TmpPropertyChanged)));
+        public string Tmp
+        {
+            get
+            {
+                return (string)GetValue(TmpProperty);
+            }
+            set
+            {
+                SetValue(TmpProperty, value);
+            }
+        }
+        public static void TmpPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            SingleStageEditor editor = sender as SingleStageEditor;
+            if (editor != null)
+            {
+                editor.TmpChanged();
+            }
+        }
+        protected virtual void TmpChanged()
+        {
+        }
+
+        protected Border PART_IsExpandedClickBorder { get; set; }
         protected Grid PART_StageParametersGrid { get; set; }
         protected Grid PART_ErrorHandlerParametersGrid { get; set; }
         protected StageTypePicker PART_StageTypePicker { get; set; }
@@ -77,6 +104,7 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
         {
             base.OnApplyTemplate();
 
+            PART_IsExpandedClickBorder = GetTemplateChild("PART_IsExpandedClickBorder") as Border;
             PART_ErrorHandlerParametersGrid = GetTemplateChild("PART_ErrorHandlerParametersGrid") as Grid;
             PART_StageParametersGrid = GetTemplateChild("PART_StageParametersGrid") as Grid;
             PART_ErrorHandlerTypePicker = GetTemplateChild("PART_ErrorHandlerTypePicker") as ErrorHandlerPicker;
@@ -84,18 +112,31 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
 
             PART_ErrorHandlerTypePicker.SelectedTypeChanged += PART_ErrorHandlerTypePicker_SelectedTypeChanged;
             PART_StageTypePicker.SelectedTypeChanged += PART_StageTypePicker_SelectedTypeChanged;
+
+            PART_IsExpandedClickBorder.MouseDown += delegate(object sender, MouseButtonEventArgs args) { IsExpanded = !IsExpanded; };
         }
 
         protected void PART_StageTypePicker_SelectedTypeChanged(TypePicker<Contracts.IProcessingStage> obj)
         {
             Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_StageTypePicker.SelectedAssemblyName, PART_StageTypePicker.SelectedAssemblyDotNetVersion,
                                               PART_StageTypePicker.SelectedType);
+            
+            var parametersToDelete = Stage.StageParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
+            parametersToDelete.ToList().ForEach(p => Stage.StageParameters.Remove(p));
+
             BuildParameterGrid(configParams, PART_StageParametersGrid);
         }
 
 
         protected void PART_ErrorHandlerTypePicker_SelectedTypeChanged(TypePicker<Contracts.IMessageErrorHandler> obj)
         {
+            Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_ErrorHandlerTypePicker.SelectedAssemblyName, PART_ErrorHandlerTypePicker.SelectedAssemblyDotNetVersion,
+                                              PART_ErrorHandlerTypePicker.SelectedType);
+
+            var parametersToDelete = Stage.ErrorHandlerParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
+            parametersToDelete.ToList().ForEach(p => Stage.ErrorHandlerParameters.Remove(p));
+
+            BuildParameterGrid(configParams, PART_ErrorHandlerParametersGrid);
             
         }
 
@@ -131,8 +172,31 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             foreach(var name in configParams.Keys)
             {
                 Control editControl;
+                if (!Stage.StageParameters.Any(p => p.Name == name))
+                {
+                    Stage.StageParameters.Add(new StageParameter() { Name = name});
+                }
+
+                var stageParameter = Stage.StageParameters.Single(p => p.Name == name);
+                Binding editBinding = new Binding();
+                editBinding.Source = stageParameter;
+                editBinding.Path = new PropertyPath("Value");
+                editBinding.Mode = BindingMode.TwoWay;
+                editBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+
+                if (configParams[name] == typeof(bool))
+                {
+                    editControl = new CheckBox();
+                    BindingOperations.SetBinding(editControl, CheckBox.IsCheckedProperty, editBinding);
+                }
+                else
+                {
+                    editControl = new TextBox();
+                    BindingOperations.SetBinding(editControl, TextBox.TextProperty, editBinding);
+                }
+                
                 TextBlock caption = new TextBlock() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Text = name };
-                editControl = new TextBox();
+                
                 Grid.SetColumn(editControl, 1);
                 Grid.SetRow(caption, rowNumber);
                 Grid.SetRow(editControl, rowNumber);
@@ -154,7 +218,6 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
                 System.Reflection.Assembly asm = System.Reflection.Assembly.Load(toReflect);
                 
                 Type t = asm.GetType(type);
-                var x = t.GetProperties().SelectMany(p => p.CustomAttributes);
                 var propsWithAttribute = t.GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType.FullName == typeof(ConfigurationParameterAttribute).FullName));
                 foreach (PropertyInfo info in propsWithAttribute)
                 {
@@ -184,7 +247,7 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
                                                    )
                                              .Select(av => av.Executable)
                                              .SingleOrDefault();
-                    result = System.Reflection.Assembly.ReflectionOnlyLoad(assemblyBinary);
+                    result = System.Reflection.Assembly.Load(assemblyBinary);
                 }
 
                 return result;

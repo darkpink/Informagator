@@ -41,7 +41,7 @@
 
                             <ComboBox Grid.Row ="0" Grid.Column="1" HorizontalAlignment="Left" 
                                       ItemsSource="{Binding AssemblyNames, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      SelectedItem="{Binding SelectedAssemblyName, RelativeSource={RelativeSource TemplatedParent}}" 
+                                      SelectedItem="{Binding SelectedAssemblyName, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                       />
                             <ComboBox Grid.Row ="1" Grid.Column="1" HorizontalAlignment="Left" 
                                       ItemsSource="{Binding AssemblyVersions, RelativeSource={RelativeSource TemplatedParent}}" 
@@ -59,72 +59,163 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:WorkerTypePicker" />
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:StageTypePicker" />
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:ErrorHandlerPicker" />
-    
+
     <Style TargetType="stgedt:SingleStageEditor">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="stgedt:SingleStageEditor">
-                    <Grid>
-                        <Grid.Resources>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Margin" Value="3" />
-                            </Style>
-                            <Style TargetType="TextBox">
-                                <Setter Property="Margin" Value="3" />
-                                <Setter Property="MinWidth" Value="266" />
-                            </Style>
-                            <Style TargetType="CheckBox">
-                                <Setter Property="Margin" Value="3" />
-                            </Style>
-                            <Style TargetType="ctrl:StageTypePicker">
-                                <Setter Property="Margin" Value="3" />
-                            </Style>
-                        </Grid.Resources>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <!--<Border CornerRadius="2" HorizontalAlignment="Stretch" BorderThickness="1" BorderBrush="Black" Background="LightGray" x:Name="PART_ClosedBorder">
-                            <Grid Margin="3">
+                    <Border Background="LightGray" BorderThickness="1" BorderBrush="Black" CornerRadius="2" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                        <Grid HorizontalAlignment="Stretch">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="3" />
+                                </Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="MinWidth" Value="266" />
+                                </Style>
+                                <Style TargetType="CheckBox">
+                                    <Setter Property="Margin" Value="3" />
+                                </Style>
+                                <Style TargetType="ctrl:StageTypePicker">
+                                    <Setter Property="Margin" Value="3" />
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Polygon Grid.Column="1" Fill="Black" Points="0,0 5,10 10,0" />
+                                <TextBlock Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Stretch" TextAlignment="Center"/>
+                                <Polygon x:Name="uxArrow" Grid.Column="1" Fill="Black" Points="0,0 4,6 8,0" Margin="3,3,8,3" VerticalAlignment="Center"/>
+                                <Border Background="Transparent" Grid.ColumnSpan="2" x:Name="PART_IsExpandedClickBorder" CornerRadius="2" BorderThickness="1">
+                                    <Border.Style>
+                                        <Style TargetType="Border">
+                                            <Setter Property="BorderBrush" Value="Transparent" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Border.IsMouseOver" Value="True">
+                                                    <Setter Property="Border.BorderBrush" Value="Blue" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Border.Style>
+                                </Border>
                             </Grid>
-                        </Border>-->
-                        <Grid HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-                            <TextBlock HorizontalAlignment="Right" Text="Name:" />
-                            <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Grid x:Name="uxEditGrid" Grid.Row="1" Visibility="Collapsed">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock HorizontalAlignment="Right" Text="Name:" />
+                                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Grid>
+                                <ctrl:StageTypePicker Grid.Row="1" x:Name="PART_StageTypePicker" TypeCaption="Stage" HorizontalAlignment="Stretch"
+                                      SelectedAssemblyName="Acadian.Informagator.dll"  />
+                                <Grid Grid.Row="2" x:Name="PART_StageParametersGrid" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                </Grid>
+                                <ctrl:ErrorHandlerPicker Grid.Row="3" x:Name="PART_ErrorHandlerTypePicker" TypeCaption="Error Handler" HorizontalAlignment="Stretch"
+                                      SelectedAssemblyName="{Binding Stage.ErrorHandlerAssemblyName, RelativeSource={RelativeSource TemplatedParent}}" 
+                                      SelectedAssemblyDotNetVersion="{Binding Stage.ErrorHandlerAssemblyDotNetVersion, RelativeSource={RelativeSource TemplatedParent}}"
+                                      SelectedType="{Binding Stage.ErrorHandlerType, RelativeSource={RelativeSource TemplatedParent}}"/>
+                                <Grid Grid.Row="4" x:Name="PART_ErrorHandlerParametersGrid" HorizontalAlignment="Stretch">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                </Grid>
+                            </Grid>
                         </Grid>
-                        <ctrl:StageTypePicker Grid.Row="1" x:Name="PART_StageTypePicker" TypeCaption="Stage" HorizontalAlignment="Stretch" />
-                        <Grid Grid.Row="2" x:Name="PART_StageParametersGrid" HorizontalAlignment="Stretch">
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsExpanded" Value="True">
+                            <Setter TargetName="uxEditGrid" Property="Visibility" Value="Visible" />
+                            <Setter TargetName="uxArrow" Property="Points" Value="0,6 4,0 8,6" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="stgedt:WorkerStageEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="stgedt:WorkerStageEditor">
+                    <Border Background="LightGray" BorderThickness="1" BorderBrush="Black" CornerRadius="2" VerticalAlignment="Top">
+                        <Grid x:Name="PART_PrimaryGrid">
+                            <Grid.Resources>
+                                <Style TargetType="Button" x:Key="AddStage">
+                                    <Setter Property="Height" Value="20" />
+                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Polygon Fill="Green" Points="0,3 0,6 3,6 3,9 6,9 6,6 9,6 9,3 6,3 6,0 3,0 3,3" Margin="3" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                                <Style TargetType="stgedt:SingleStageEditor">
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <TranslateTransform Y="-15" />
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch" />
+                                    <Setter Property="Margin" Value="3,5,3,5" />
+                                </Style>
+                                <Style TargetType="Button" x:Key="RemoveStage">
+                                    <Setter Property="Height" Value="20" />
+                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Polygon Fill="Red" Points="0,0 0,3 9,3 9,0" Margin="3" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="RenderTransform">
+                                        <Setter.Value>
+                                            <TranslateTransform Y="-15" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="30" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="30" />
                             </Grid.ColumnDefinitions>
+                            <Button x:Name="PART_SupplierButton" Style="{StaticResource ResourceKey=AddStage}" VerticalAlignment="Bottom" />
                         </Grid>
-                        <ctrl:ErrorHandlerPicker Grid.Row="3" x:Name="PART_ErrorHandlerTypePicker" TypeCaption="Error Handler" HorizontalAlignment="Stretch"/>
-                        <Grid Grid.Row="4" x:Name="PART_ErrorHandlerParametersGrid" HorizontalAlignment="Stretch">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                        </Grid>
-                    </Grid>
+                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

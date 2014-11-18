@@ -12,7 +12,35 @@ using System.Windows.Controls;
 
 namespace Acadian.Informagator.Manager.Controls
 {
-    public class TypePicker<T> : Control, INotifyPropertyChanged
+    public class TypePicker : Control
+    {
+        public static DependencyProperty SelectedAssemblyNameProperty = DependencyProperty.Register("SelectedAssemblyName", typeof(string), typeof(TypePicker), new PropertyMetadata(new PropertyChangedCallback(SelectedAssemblyNameChanged)));
+        public string SelectedAssemblyName
+        {
+            get
+            {
+                return (string)GetValue(SelectedAssemblyNameProperty);
+            }
+            set
+            {
+                SetValue(SelectedAssemblyNameProperty, value);
+            }
+        }
+
+        public static void SelectedAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            TypePicker picker = sender as TypePicker;
+            if (picker != null)
+            {
+                picker.OnSelectedAssemblyNameChanged();
+            }
+        }
+
+        protected virtual void OnSelectedAssemblyNameChanged()
+        {
+        }
+    }
+    public class TypePicker<T> : TypePicker, INotifyPropertyChanged
     {
         private ObservableCollection<string> _assemblyNames;
         public ObservableCollection<string> AssemblyNames
@@ -33,6 +61,12 @@ namespace Acadian.Informagator.Manager.Controls
         {
             get { return _assemblyTypes; }
             private set { _assemblyTypes = value; NotifyPropertyChanged("AssemblyTypes"); }
+        }
+
+        protected override void OnSelectedAssemblyNameChanged()
+        {
+            LoadVersionsForSelectedAssembly();
+            EvaluateProperties();
         }
 
         private string _typeCaption;
@@ -85,33 +119,6 @@ namespace Acadian.Informagator.Manager.Controls
             }
         }
 
-        public static DependencyProperty SelectedAssemblyNameProperty = DependencyProperty.Register("SelectedAssemblyName", typeof(string), typeof(TypePicker<T>), new PropertyMetadata(new PropertyChangedCallback(SelectedAssemblyNameChanged)));
-        public string SelectedAssemblyName
-        {
-            get
-            {
-                return (string)GetValue(SelectedAssemblyNameProperty);
-            }
-            set
-            {
-                SetValue(SelectedAssemblyNameProperty, value);
-            }
-        }
-
-        public static void SelectedAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            TypePicker<T> picker = sender as TypePicker<T>;
-            if (picker != null)
-            {
-                picker.OnSelectedAssemblyNameChanged();
-            }
-        }
-
-        protected virtual void OnSelectedAssemblyNameChanged()
-        {
-            LoadVersionsForSelectedAssembly();
-            EvaluateProperties();
-        }
 
         public static DependencyProperty SelectedAssemblyDotNetVersionProperty = DependencyProperty.Register("SelectedAssemblyDotNetVersion", typeof(string), typeof(TypePicker<T>), new PropertyMetadata(new PropertyChangedCallback(SelectedAssemblyDotNetVersionChanged)));
         public string SelectedAssemblyDotNetVersion

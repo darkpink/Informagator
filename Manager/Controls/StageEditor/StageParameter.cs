@@ -23,8 +23,8 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private string _value;
-        public string Value
+        private object _value;
+        public object Value
         {
             get
             {

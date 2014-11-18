@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Acadian.Informagator.Manager.Controls.StageEditor
 {
-    public class Stage : INotifyPropertyChanged
+    public class Stage : DependencyObject, INotifyPropertyChanged
     {
         private string _name;
         public string Name
@@ -23,18 +24,35 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private string _stageAssemblyName;
+        //private string _stageAssemblyName;
+        //public string StageAssemblyName
+        //{
+        //    get
+        //    {
+        //        return _stageAssemblyName;
+        //    }
+        //    set
+        //    {
+        //        _stageAssemblyName = value;
+        //        NotifyPropertyChanged("StageAssemblyName");
+        //    }
+        //}
+
+        public static DependencyProperty StageAssemblyNameProperty = DependencyProperty.Register("StageAssemblyName", typeof(string), typeof(Stage), new PropertyMetadata(new PropertyChangedCallback(StageAssemblyNameChanged)));
         public string StageAssemblyName
         {
             get
             {
-                return _stageAssemblyName;
+                return (string)GetValue(StageAssemblyNameProperty);
             }
             set
             {
-                _stageAssemblyName = value;
-                NotifyPropertyChanged("StageAssemblyName");
+                SetValue(StageAssemblyNameProperty, value);
             }
+        }
+
+        public static void StageAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
         }
 
         private string _stageAssemblyDotNetVersion;
@@ -107,17 +125,31 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private List<StageParameter> _parameters;
-        public List<StageParameter> Parameters
+        private List<StageParameter> _stageParameters;
+        public List<StageParameter> StageParameters
         {
             get
             {
-                return _parameters;
+                return _stageParameters;
             }
             set
             {
-                _parameters = value;
-                NotifyPropertyChanged("Parameters");
+                _stageParameters = value;
+                NotifyPropertyChanged("StageParameters");
+            }
+        }
+
+        private List<StageParameter> _errorHandlerParameters;
+        public List<StageParameter> ErrorHandlerParameters
+        {
+            get
+            {
+                return _errorHandlerParameters;
+            }
+            set
+            {
+                _errorHandlerParameters = value;
+                NotifyPropertyChanged("ErrorHandlerParameters");
             }
         }
 
@@ -130,5 +162,11 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public Stage()
+        {
+            StageParameters = new List<StageParameter>();
+            ErrorHandlerParameters = new List<StageParameter>();
+        }
     }
 }
