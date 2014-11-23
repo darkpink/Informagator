@@ -16,22 +16,22 @@ namespace Acadian.Informagator.ProdProviders.Configuration
     {
         public Stage()
         {
+            this.ErrorHandlerParameters = new HashSet<ErrorHandlerParameter>();
             this.StageParameters = new HashSet<StageParameter>();
         }
     
         public long Id { get; set; }
-        public long ThreadId { get; set; }
+        public long WorkerId { get; set; }
         public string Name { get; set; }
         public int Sequence { get; set; }
-        public string StageAssemblyName { get; set; }
-        public string StageAssemblyDotNetVersion { get; set; }
+        public long StageAssemblyVersionId { get; set; }
         public string StageType { get; set; }
-        public string ErrorHandlerAssemblyName { get; set; }
-        public string ErrorHandlerAssemblyDotNetVersion { get; set; }
+        public long ErrorHandlerAssemblyVersionId { get; set; }
         public string ErrorHandlerType { get; set; }
     
-        public virtual Assembly Assembly { get; set; }
-        public virtual Assembly Assembly1 { get; set; }
+        public virtual AssemblyVersion ErrorHandlerAssemblyVersion { get; set; }
+        public virtual AssemblyVersion StageAssemblyVersion { get; set; }
+        public virtual ICollection<ErrorHandlerParameter> ErrorHandlerParameters { get; set; }
         public virtual Worker Worker { get; set; }
         public virtual ICollection<StageParameter> StageParameters { get; set; }
     }

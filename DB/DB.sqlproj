@@ -72,7 +72,6 @@
     <Build Include="Configuration\Tables\GlobalSettings.sql" />
     <Build Include="Configuration\Tables\StageParameter.sql" />
     <Build Include="Configuration\Tables\AssemblyVersion.sql" />
-    <Build Include="Configuration\Tables\Assembly.sql" />
     <Build Include="Configuration\Tables\Stage.sql" />
     <Build Include="Message\Stored Procedures\Dequeue.sql" />
     <Build Include="Security\Message.sql" />
@@ -81,5 +80,6 @@
     <Build Include="Configuration\Tables\SystemConfiguration.sql" />
     <Build Include="Configuration\Tables\Machine.sql" />
     <Build Include="Configuration\Tables\AssemblySystemConfiguration.sql" />
+    <Build Include="Configuration\Tables\ErrorHandlerParameter.sql" />
   </ItemGroup>
 </Project>

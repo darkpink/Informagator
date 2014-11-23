@@ -4,16 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Assembly">
-          <Key>
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="DotNetVersion" />
-          </Key>
-          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="DotNetVersion" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
-        </EntityType>
+      <Schema Namespace="ConfigurationModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AssemblySystemConfiguration">
           <Key>
             <PropertyRef Name="AssemblyName" />
@@ -35,6 +26,15 @@
           <Property Name="LoadDttm" Type="datetime" Nullable="false" />
           <Property Name="Executable" Type="varbinary(max)" Nullable="false" />
           <Property Name="DebuggingSymbols" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="ErrorHandlerParameter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StageId" Type="bigint" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Value" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="GlobalSettings">
           <Key>
@@ -60,14 +60,12 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ThreadId" Type="bigint" Nullable="false" />
+          <Property Name="WorkerId" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Sequence" Type="int" Nullable="false" />
-          <Property Name="StageAssemblyName" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="StageAssemblyDotNetVersion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="StageAssemblyVersionId" Type="bigint" Nullable="false" />
           <Property Name="StageType" Type="varchar" MaxLength="1000" Nullable="false" />
-          <Property Name="ErrorHandlerAssemblyName" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="ErrorHandlerAssemblyDotNetVersion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="ErrorHandlerAssemblyVersionId" Type="bigint" Nullable="false" />
           <Property Name="ErrorHandlerType" Type="varchar" MaxLength="1000" Nullable="false" />
         </EntityType>
         <EntityType Name="StageParameter">
@@ -96,8 +94,7 @@
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="MachineId" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
-          <Property Name="WorkerAssemblyName" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="WorkerAssemblyDotNetVersion" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="WorkerAssemblyVersionId" Type="bigint" Nullable="false" />
           <Property Name="WorkerType" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="AutoStart" Type="bit" Nullable="false" />
         </EntityType>
@@ -113,20 +110,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AssemblyApplicationVersion_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="AssemblySystemConfiguration" Type="Self.AssemblySystemConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="AssemblySystemConfiguration">
-              <PropertyRef Name="AssemblyName" />
-              <PropertyRef Name="AssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AssemblyApplicationVersion_AssemblyVersion">
           <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
           <End Role="AssemblySystemConfiguration" Type="Self.AssemblySystemConfiguration" Multiplicity="*" />
@@ -139,17 +122,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_AssemblyVersion_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="*" />
+        <Association Name="FK_ErrorHandlerParameter_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="1" />
+          <End Role="ErrorHandlerParameter" Type="Self.ErrorHandlerParameter" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
+            <Principal Role="Stage">
+              <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="AssemblyVersion">
-              <PropertyRef Name="AssemblyName" />
-              <PropertyRef Name="AssemblyDotNetVersion" />
+            <Dependent Role="ErrorHandlerParameter">
+              <PropertyRef Name="StageId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -177,31 +158,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Stage_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
+        <Association Name="FK_Stage_AssemblyVersion_ErrorHandler">
+          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
           <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
+            <Principal Role="AssemblyVersion">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Stage">
-              <PropertyRef Name="StageAssemblyName" />
-              <PropertyRef Name="StageAssemblyDotNetVersion" />
+              <PropertyRef Name="ErrorHandlerAssemblyVersionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Stage_Assembly1">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
+        <Association Name="FK_Stage_AssemblyVersion_Stage">
+          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
           <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
+            <Principal Role="AssemblyVersion">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Stage">
-              <PropertyRef Name="ErrorHandlerAssemblyName" />
-              <PropertyRef Name="ErrorHandlerAssemblyDotNetVersion" />
+              <PropertyRef Name="StageAssemblyVersionId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -213,7 +190,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Stage">
-              <PropertyRef Name="ThreadId" />
+              <PropertyRef Name="WorkerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -229,20 +206,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Thread_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="Worker">
-              <PropertyRef Name="WorkerAssemblyName" />
-              <PropertyRef Name="WorkerAssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Thread_Host">
           <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
           <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
@@ -255,10 +218,22 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ModelStoreContainer">
-          <EntitySet Name="Assembly" EntityType="Self.Assembly" Schema="Configuration" store:Type="Tables" />
+        <Association Name="FK_Worker_AssemblyVersion">
+          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
+          <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssemblyVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Worker">
+              <PropertyRef Name="WorkerAssemblyVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConfigurationModelStoreContainer">
           <EntitySet Name="AssemblySystemConfiguration" EntityType="Self.AssemblySystemConfiguration" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="AssemblyVersion" EntityType="Self.AssemblyVersion" Schema="Configuration" store:Type="Tables" />
+          <EntitySet Name="ErrorHandlerParameter" EntityType="Self.ErrorHandlerParameter" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="GlobalSettings" EntityType="Self.GlobalSettings" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="Machine" EntityType="Self.Machine" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="Stage" EntityType="Self.Stage" Schema="Configuration" store:Type="Tables" />
@@ -269,17 +244,13 @@
             <End Role="SystemConfiguration" EntitySet="SystemConfiguration" />
             <End Role="AssemblySystemConfiguration" EntitySet="AssemblySystemConfiguration" />
           </AssociationSet>
-          <AssociationSet Name="FK_AssemblyApplicationVersion_Assembly" Association="Self.FK_AssemblyApplicationVersion_Assembly">
-            <End Role="Assembly" EntitySet="Assembly" />
-            <End Role="AssemblySystemConfiguration" EntitySet="AssemblySystemConfiguration" />
-          </AssociationSet>
           <AssociationSet Name="FK_AssemblyApplicationVersion_AssemblyVersion" Association="Self.FK_AssemblyApplicationVersion_AssemblyVersion">
             <End Role="AssemblyVersion" EntitySet="AssemblyVersion" />
             <End Role="AssemblySystemConfiguration" EntitySet="AssemblySystemConfiguration" />
           </AssociationSet>
-          <AssociationSet Name="FK_AssemblyVersion_Assembly" Association="Self.FK_AssemblyVersion_Assembly">
-            <End Role="Assembly" EntitySet="Assembly" />
-            <End Role="AssemblyVersion" EntitySet="AssemblyVersion" />
+          <AssociationSet Name="FK_ErrorHandlerParameter_Stage" Association="Self.FK_ErrorHandlerParameter_Stage">
+            <End Role="Stage" EntitySet="Stage" />
+            <End Role="ErrorHandlerParameter" EntitySet="ErrorHandlerParameter" />
           </AssociationSet>
           <AssociationSet Name="FK_GlobalSettings_ApplicationVersion" Association="Self.FK_GlobalSettings_ApplicationVersion">
             <End Role="SystemConfiguration" EntitySet="SystemConfiguration" />
@@ -289,12 +260,12 @@
             <End Role="SystemConfiguration" EntitySet="SystemConfiguration" />
             <End Role="Machine" EntitySet="Machine" />
           </AssociationSet>
-          <AssociationSet Name="FK_Stage_Assembly" Association="Self.FK_Stage_Assembly">
-            <End Role="Assembly" EntitySet="Assembly" />
+          <AssociationSet Name="FK_Stage_AssemblyVersion_ErrorHandler" Association="Self.FK_Stage_AssemblyVersion_ErrorHandler">
+            <End Role="AssemblyVersion" EntitySet="AssemblyVersion" />
             <End Role="Stage" EntitySet="Stage" />
           </AssociationSet>
-          <AssociationSet Name="FK_Stage_Assembly1" Association="Self.FK_Stage_Assembly1">
-            <End Role="Assembly" EntitySet="Assembly" />
+          <AssociationSet Name="FK_Stage_AssemblyVersion_Stage" Association="Self.FK_Stage_AssemblyVersion_Stage">
+            <End Role="AssemblyVersion" EntitySet="AssemblyVersion" />
             <End Role="Stage" EntitySet="Stage" />
           </AssociationSet>
           <AssociationSet Name="FK_Stage_Thread" Association="Self.FK_Stage_Thread">
@@ -305,12 +276,12 @@
             <End Role="Stage" EntitySet="Stage" />
             <End Role="StageParameter" EntitySet="StageParameter" />
           </AssociationSet>
-          <AssociationSet Name="FK_Thread_Assembly" Association="Self.FK_Thread_Assembly">
-            <End Role="Assembly" EntitySet="Assembly" />
-            <End Role="Worker" EntitySet="Worker" />
-          </AssociationSet>
           <AssociationSet Name="FK_Thread_Host" Association="Self.FK_Thread_Host">
             <End Role="Machine" EntitySet="Machine" />
+            <End Role="Worker" EntitySet="Worker" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Worker_AssemblyVersion" Association="Self.FK_Worker_AssemblyVersion">
+            <End Role="AssemblyVersion" EntitySet="AssemblyVersion" />
             <End Role="Worker" EntitySet="Worker" />
           </AssociationSet>
         </EntityContainer>
@@ -318,21 +289,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Assembly">
-          <Key>
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="DotNetVersion" />
-          </Key>
-          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="DotNetVersion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="AssemblySystemConfigurations" Relationship="Self.FK_AssemblyApplicationVersion_Assembly" FromRole="Assembly" ToRole="AssemblySystemConfiguration" />
-          <NavigationProperty Name="AssemblyVersions" Relationship="Self.FK_AssemblyVersion_Assembly" FromRole="Assembly" ToRole="AssemblyVersion" />
-          <NavigationProperty Name="Stages" Relationship="Self.FK_Stage_Assembly" FromRole="Assembly" ToRole="Stage" />
-          <NavigationProperty Name="Stages1" Relationship="Self.FK_Stage_Assembly1" FromRole="Assembly" ToRole="Stage" />
-          <NavigationProperty Name="Workers" Relationship="Self.FK_Thread_Assembly" FromRole="Assembly" ToRole="Worker" />
-        </EntityType>
+      <Schema Namespace="ConfigurationModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AssemblySystemConfiguration">
           <Key>
             <PropertyRef Name="AssemblyName" />
@@ -343,7 +300,6 @@
           <Property Name="AssemblyDotNetVersion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="SystemConfigurationId" Type="Int64" Nullable="false" />
           <Property Name="AssemblyVersionId" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="Assembly" Relationship="Self.FK_AssemblyApplicationVersion_Assembly" FromRole="AssemblySystemConfiguration" ToRole="Assembly" />
           <NavigationProperty Name="SystemConfiguration" Relationship="Self.FK_AssemblyApplicationVersion_ApplicationVersion" FromRole="AssemblySystemConfiguration" ToRole="SystemConfiguration" />
           <NavigationProperty Name="AssemblyVersion" Relationship="Self.FK_AssemblyApplicationVersion_AssemblyVersion" FromRole="AssemblySystemConfiguration" ToRole="AssemblyVersion" />
         </EntityType>
@@ -357,8 +313,20 @@
           <Property Name="LoadDttm" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Executable" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
           <Property Name="DebuggingSymbols" Type="Binary" MaxLength="Max" FixedLength="false" />
-          <NavigationProperty Name="Assembly" Relationship="Self.FK_AssemblyVersion_Assembly" FromRole="AssemblyVersion" ToRole="Assembly" />
           <NavigationProperty Name="AssemblySystemConfigurations" Relationship="Self.FK_AssemblyApplicationVersion_AssemblyVersion" FromRole="AssemblyVersion" ToRole="AssemblySystemConfiguration" />
+          <NavigationProperty Name="StagesUsingErrorHandlers" Relationship="Self.FK_Stage_AssemblyVersion_ErrorHandler" FromRole="AssemblyVersion" ToRole="Stage" />
+          <NavigationProperty Name="StagesUsingStages" Relationship="Self.FK_Stage_AssemblyVersion_Stage" FromRole="AssemblyVersion" ToRole="Stage" />
+          <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_AssemblyVersion" FromRole="AssemblyVersion" ToRole="Worker" />
+        </EntityType>
+        <EntityType Name="ErrorHandlerParameter">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StageId" Type="Int64" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Stage" Relationship="Self.FK_ErrorHandlerParameter_Stage" FromRole="ErrorHandlerParameter" ToRole="Stage" />
         </EntityType>
         <EntityType Name="GlobalSetting">
           <Key>
@@ -387,17 +355,16 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ThreadId" Type="Int64" Nullable="false" />
+          <Property Name="WorkerId" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Sequence" Type="Int32" Nullable="false" />
-          <Property Name="StageAssemblyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="StageAssemblyDotNetVersion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StageAssemblyVersionId" Type="Int64" Nullable="false" />
           <Property Name="StageType" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ErrorHandlerAssemblyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ErrorHandlerAssemblyDotNetVersion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ErrorHandlerAssemblyVersionId" Type="Int64" Nullable="false" />
           <Property Name="ErrorHandlerType" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Assembly" Relationship="Self.FK_Stage_Assembly" FromRole="Stage" ToRole="Assembly" />
-          <NavigationProperty Name="Assembly1" Relationship="Self.FK_Stage_Assembly1" FromRole="Stage" ToRole="Assembly" />
+          <NavigationProperty Name="ErrorHandlerAssemblyVersion" Relationship="Self.FK_Stage_AssemblyVersion_ErrorHandler" FromRole="Stage" ToRole="AssemblyVersion" />
+          <NavigationProperty Name="StageAssemblyVersion" Relationship="Self.FK_Stage_AssemblyVersion_Stage" FromRole="Stage" ToRole="AssemblyVersion" />
+          <NavigationProperty Name="ErrorHandlerParameters" Relationship="Self.FK_ErrorHandlerParameter_Stage" FromRole="Stage" ToRole="ErrorHandlerParameter" />
           <NavigationProperty Name="Worker" Relationship="Self.FK_Stage_Thread" FromRole="Stage" ToRole="Worker" />
           <NavigationProperty Name="StageParameters" Relationship="Self.FK_StageParameter_Stage" FromRole="Stage" ToRole="StageParameter" />
         </EntityType>
@@ -431,84 +398,13 @@
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MachineId" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="WorkerAssemblyName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="WorkerAssemblyDotNetVersion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="WorkerAssemblyVersionId" Type="Int64" Nullable="false" />
           <Property Name="WorkerType" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="AutoStart" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Assembly" Relationship="Self.FK_Thread_Assembly" FromRole="Worker" ToRole="Assembly" />
+          <NavigationProperty Name="WorkerAssemblyVersion" Relationship="Self.FK_Worker_AssemblyVersion" FromRole="Worker" ToRole="AssemblyVersion" />
           <NavigationProperty Name="Machine" Relationship="Self.FK_Thread_Host" FromRole="Worker" ToRole="Machine" />
           <NavigationProperty Name="Stages" Relationship="Self.FK_Stage_Thread" FromRole="Worker" ToRole="Stage" />
         </EntityType>
-        <Association Name="FK_AssemblyApplicationVersion_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="AssemblySystemConfiguration" Type="Self.AssemblySystemConfiguration" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="AssemblySystemConfiguration">
-              <PropertyRef Name="AssemblyName" />
-              <PropertyRef Name="AssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_AssemblyVersion_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="AssemblyVersion">
-              <PropertyRef Name="AssemblyName" />
-              <PropertyRef Name="AssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Stage_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="Stage">
-              <PropertyRef Name="StageAssemblyName" />
-              <PropertyRef Name="StageAssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Stage_Assembly1">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="Stage">
-              <PropertyRef Name="ErrorHandlerAssemblyName" />
-              <PropertyRef Name="ErrorHandlerAssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Thread_Assembly">
-          <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
-          <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Assembly">
-              <PropertyRef Name="Name" />
-              <PropertyRef Name="DotNetVersion" />
-            </Principal>
-            <Dependent Role="Worker">
-              <PropertyRef Name="WorkerAssemblyName" />
-              <PropertyRef Name="WorkerAssemblyDotNetVersion" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_AssemblyApplicationVersion_ApplicationVersion">
           <End Role="SystemConfiguration" Type="Self.SystemConfiguration" Multiplicity="1" />
           <End Role="AssemblySystemConfiguration" Type="Self.AssemblySystemConfiguration" Multiplicity="*" />
@@ -530,6 +426,54 @@
             </Principal>
             <Dependent Role="AssemblySystemConfiguration">
               <PropertyRef Name="AssemblyVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stage_AssemblyVersion_ErrorHandler">
+          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
+          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssemblyVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stage">
+              <PropertyRef Name="ErrorHandlerAssemblyVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Stage_AssemblyVersion_Stage">
+          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
+          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssemblyVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Stage">
+              <PropertyRef Name="StageAssemblyVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Worker_AssemblyVersion">
+          <End Role="AssemblyVersion" Type="Self.AssemblyVersion" Multiplicity="1" />
+          <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AssemblyVersion">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Worker">
+              <PropertyRef Name="WorkerAssemblyVersionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ErrorHandlerParameter_Stage">
+          <End Role="Stage" Type="Self.Stage" Multiplicity="1" />
+          <End Role="ErrorHandlerParameter" Type="Self.ErrorHandlerParameter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Stage">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ErrorHandlerParameter">
+              <PropertyRef Name="StageId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -577,7 +521,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Stage">
-              <PropertyRef Name="ThreadId" />
+              <PropertyRef Name="WorkerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -594,35 +538,15 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="ConfigurationEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Assemblies" EntityType="Self.Assembly" />
           <EntitySet Name="AssemblySystemConfigurations" EntityType="Self.AssemblySystemConfiguration" />
           <EntitySet Name="AssemblyVersions" EntityType="Self.AssemblyVersion" />
+          <EntitySet Name="ErrorHandlerParameters" EntityType="Self.ErrorHandlerParameter" />
           <EntitySet Name="GlobalSettings" EntityType="Self.GlobalSetting" />
           <EntitySet Name="Machines" EntityType="Self.Machine" />
           <EntitySet Name="Stages" EntityType="Self.Stage" />
           <EntitySet Name="StageParameters" EntityType="Self.StageParameter" />
           <EntitySet Name="SystemConfigurations" EntityType="Self.SystemConfiguration" />
           <EntitySet Name="Workers" EntityType="Self.Worker" />
-          <AssociationSet Name="FK_AssemblyApplicationVersion_Assembly" Association="Self.FK_AssemblyApplicationVersion_Assembly">
-            <End Role="Assembly" EntitySet="Assemblies" />
-            <End Role="AssemblySystemConfiguration" EntitySet="AssemblySystemConfigurations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_AssemblyVersion_Assembly" Association="Self.FK_AssemblyVersion_Assembly">
-            <End Role="Assembly" EntitySet="Assemblies" />
-            <End Role="AssemblyVersion" EntitySet="AssemblyVersions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Stage_Assembly" Association="Self.FK_Stage_Assembly">
-            <End Role="Assembly" EntitySet="Assemblies" />
-            <End Role="Stage" EntitySet="Stages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Stage_Assembly1" Association="Self.FK_Stage_Assembly1">
-            <End Role="Assembly" EntitySet="Assemblies" />
-            <End Role="Stage" EntitySet="Stages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Thread_Assembly" Association="Self.FK_Thread_Assembly">
-            <End Role="Assembly" EntitySet="Assemblies" />
-            <End Role="Worker" EntitySet="Workers" />
-          </AssociationSet>
           <AssociationSet Name="FK_AssemblyApplicationVersion_ApplicationVersion" Association="Self.FK_AssemblyApplicationVersion_ApplicationVersion">
             <End Role="SystemConfiguration" EntitySet="SystemConfigurations" />
             <End Role="AssemblySystemConfiguration" EntitySet="AssemblySystemConfigurations" />
@@ -630,6 +554,22 @@
           <AssociationSet Name="FK_AssemblyApplicationVersion_AssemblyVersion" Association="Self.FK_AssemblyApplicationVersion_AssemblyVersion">
             <End Role="AssemblyVersion" EntitySet="AssemblyVersions" />
             <End Role="AssemblySystemConfiguration" EntitySet="AssemblySystemConfigurations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stage_AssemblyVersion_ErrorHandler" Association="Self.FK_Stage_AssemblyVersion_ErrorHandler">
+            <End Role="AssemblyVersion" EntitySet="AssemblyVersions" />
+            <End Role="Stage" EntitySet="Stages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Stage_AssemblyVersion_Stage" Association="Self.FK_Stage_AssemblyVersion_Stage">
+            <End Role="AssemblyVersion" EntitySet="AssemblyVersions" />
+            <End Role="Stage" EntitySet="Stages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Worker_AssemblyVersion" Association="Self.FK_Worker_AssemblyVersion">
+            <End Role="AssemblyVersion" EntitySet="AssemblyVersions" />
+            <End Role="Worker" EntitySet="Workers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ErrorHandlerParameter_Stage" Association="Self.FK_ErrorHandlerParameter_Stage">
+            <End Role="Stage" EntitySet="Stages" />
+            <End Role="ErrorHandlerParameter" EntitySet="ErrorHandlerParameters" />
           </AssociationSet>
           <AssociationSet Name="FK_GlobalSettings_ApplicationVersion" Association="Self.FK_GlobalSettings_ApplicationVersion">
             <End Role="SystemConfiguration" EntitySet="SystemConfigurations" />
@@ -657,18 +597,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="ConfigurationEntities">
-          <EntitySetMapping Name="Assemblies">
-            <EntityTypeMapping TypeName="Model.Assembly">
-              <MappingFragment StoreEntitySet="Assembly">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DotNetVersion" ColumnName="DotNetVersion" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="ConfigurationModelStoreContainer" CdmEntityContainer="ConfigurationEntities">
           <EntitySetMapping Name="AssemblySystemConfigurations">
-            <EntityTypeMapping TypeName="Model.AssemblySystemConfiguration">
+            <EntityTypeMapping TypeName="ConfigurationModel.AssemblySystemConfiguration">
               <MappingFragment StoreEntitySet="AssemblySystemConfiguration">
                 <ScalarProperty Name="AssemblyName" ColumnName="AssemblyName" />
                 <ScalarProperty Name="AssemblyDotNetVersion" ColumnName="AssemblyDotNetVersion" />
@@ -678,7 +609,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AssemblyVersions">
-            <EntityTypeMapping TypeName="Model.AssemblyVersion">
+            <EntityTypeMapping TypeName="ConfigurationModel.AssemblyVersion">
               <MappingFragment StoreEntitySet="AssemblyVersion">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AssemblyName" ColumnName="AssemblyName" />
@@ -689,8 +620,18 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ErrorHandlerParameters">
+            <EntityTypeMapping TypeName="ConfigurationModel.ErrorHandlerParameter">
+              <MappingFragment StoreEntitySet="ErrorHandlerParameter">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="StageId" ColumnName="StageId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="GlobalSettings">
-            <EntityTypeMapping TypeName="Model.GlobalSetting">
+            <EntityTypeMapping TypeName="ConfigurationModel.GlobalSetting">
               <MappingFragment StoreEntitySet="GlobalSettings">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SystemConfigurationId" ColumnName="SystemConfigurationId" />
@@ -700,7 +641,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Machines">
-            <EntityTypeMapping TypeName="Model.Machine">
+            <EntityTypeMapping TypeName="ConfigurationModel.Machine">
               <MappingFragment StoreEntitySet="Machine">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SystemConfigurationId" ColumnName="SystemConfigurationId" />
@@ -711,23 +652,21 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Stages">
-            <EntityTypeMapping TypeName="Model.Stage">
+            <EntityTypeMapping TypeName="ConfigurationModel.Stage">
               <MappingFragment StoreEntitySet="Stage">
                 <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="ThreadId" ColumnName="ThreadId" />
+                <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Sequence" ColumnName="Sequence" />
-                <ScalarProperty Name="StageAssemblyName" ColumnName="StageAssemblyName" />
-                <ScalarProperty Name="StageAssemblyDotNetVersion" ColumnName="StageAssemblyDotNetVersion" />
+                <ScalarProperty Name="StageAssemblyVersionId" ColumnName="StageAssemblyVersionId" />
                 <ScalarProperty Name="StageType" ColumnName="StageType" />
-                <ScalarProperty Name="ErrorHandlerAssemblyName" ColumnName="ErrorHandlerAssemblyName" />
-                <ScalarProperty Name="ErrorHandlerAssemblyDotNetVersion" ColumnName="ErrorHandlerAssemblyDotNetVersion" />
+                <ScalarProperty Name="ErrorHandlerAssemblyVersionId" ColumnName="ErrorHandlerAssemblyVersionId" />
                 <ScalarProperty Name="ErrorHandlerType" ColumnName="ErrorHandlerType" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="StageParameters">
-            <EntityTypeMapping TypeName="Model.StageParameter">
+            <EntityTypeMapping TypeName="ConfigurationModel.StageParameter">
               <MappingFragment StoreEntitySet="StageParameter">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StageId" ColumnName="StageId" />
@@ -737,7 +676,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SystemConfigurations">
-            <EntityTypeMapping TypeName="Model.SystemConfiguration">
+            <EntityTypeMapping TypeName="ConfigurationModel.SystemConfiguration">
               <MappingFragment StoreEntitySet="SystemConfiguration">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreateDttm" ColumnName="CreateDttm" />
@@ -748,13 +687,12 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Workers">
-            <EntityTypeMapping TypeName="Model.Worker">
+            <EntityTypeMapping TypeName="ConfigurationModel.Worker">
               <MappingFragment StoreEntitySet="Worker">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="MachineId" ColumnName="MachineId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="WorkerAssemblyName" ColumnName="WorkerAssemblyName" />
-                <ScalarProperty Name="WorkerAssemblyDotNetVersion" ColumnName="WorkerAssemblyDotNetVersion" />
+                <ScalarProperty Name="WorkerAssemblyVersionId" ColumnName="WorkerAssemblyVersionId" />
                 <ScalarProperty Name="WorkerType" ColumnName="WorkerType" />
                 <ScalarProperty Name="AutoStart" ColumnName="AutoStart" />
               </MappingFragment>

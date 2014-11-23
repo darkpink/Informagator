@@ -37,16 +37,16 @@ namespace Acadian.Informagator.ProdProviders
                         {
                             ThreadConfiguration threadConfig = new ThreadConfiguration();
                             threadConfig.Name = t.Name;
-                            threadConfig.ThreadHostTypeAssembly = t.WorkerAssemblyName;
+                            threadConfig.ThreadHostTypeAssembly = t.WorkerAssemblyVersion.AssemblyName;
                             threadConfig.ThreadHostTypeName = t.WorkerType;
-                            threadConfig.RequiredAssemblies.Add(t.WorkerAssemblyName);
+                            threadConfig.RequiredAssemblies.Add(t.WorkerAssemblyVersion.AssemblyName);
 
                             foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
                             {
                                 StageConfiguration stageConfig = new StageConfiguration();
-                                stageConfig.StageAssemblyName = s.StageAssemblyName;
+                                stageConfig.StageAssemblyName = s.StageAssemblyVersion.AssemblyName;
                                 stageConfig.StageType = s.StageType;
-                                stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyName;
+                                stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyVersion.AssemblyName;
                                 stageConfig.ErrorHandlerType = s.ErrorHandlerType;
                                 threadConfig.RequiredAssemblies.Add(stageConfig.ErrorHandlerAssemblyName);
                                 threadConfig.RequiredAssemblies.Add(stageConfig.StageAssemblyName);

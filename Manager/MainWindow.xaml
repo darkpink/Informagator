@@ -69,7 +69,7 @@
             </Grid.RowDefinitions>
             <Border Grid.Row="0" Margin="8" BorderThickness="1" CornerRadius="2" BorderBrush="Black" Padding="5" >
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    <TextBlock Text="Current Configuration:" HorizontalAlignment="Center" />
+                    <TextBlock Text="Active Configuration:" HorizontalAlignment="Center" />
                     <TextBlock Text="{Binding ActiveConfiguration}" HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>

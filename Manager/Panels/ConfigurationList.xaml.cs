@@ -24,13 +24,6 @@ namespace Acadian.Informagator.Manager.Panels
         public ConfigurationList()
         {
             InitializeComponent();
-            //DataContext = new Stage() { StageAssemblyName = "Acadian.Informagator.dll" };
-            ux.Stage = new Stage() { StageAssemblyName = "Acadian.Informagator.dll" };
-        }
-
-        private void ux_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
         }
     }
 }

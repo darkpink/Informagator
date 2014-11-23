@@ -19,7 +19,6 @@ namespace Acadian.Informagator.ProdProviders.Configuration
         public long SystemConfigurationId { get; set; }
         public long AssemblyVersionId { get; set; }
     
-        public virtual Assembly Assembly { get; set; }
         public virtual SystemConfiguration SystemConfiguration { get; set; }
         public virtual AssemblyVersion AssemblyVersion { get; set; }
     }

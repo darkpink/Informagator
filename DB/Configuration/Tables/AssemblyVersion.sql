@@ -5,9 +5,10 @@
     [LoadDttm]              DATETIME        CONSTRAINT [DF_AssemblyVersion_LoadDttm] DEFAULT (getdate()) NOT NULL,
     [Executable]            VARBINARY (MAX) NOT NULL,
     [DebuggingSymbols]      VARBINARY (MAX) NULL,
-    CONSTRAINT [PK_AssemblyVersion_1] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_AssemblyVersion_Assembly] FOREIGN KEY ([AssemblyName], [AssemblyDotNetVersion]) REFERENCES [Configuration].[Assembly] ([Name], [DotNetVersion])
+    CONSTRAINT [PK_AssemblyVersion_1] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

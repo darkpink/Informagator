@@ -18,240 +18,142 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
         static SingleStageEditor()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SingleStageEditor), new FrameworkPropertyMetadata(typeof(SingleStageEditor)));
-            //FocusableProperty.OverrideMetadata(typeof(SingleStageEditor), new FrameworkPropertyMetadata(false));
+            FocusableProperty.OverrideMetadata(typeof(SingleStageEditor), new FrameworkPropertyMetadata(false));
         }
 
-        public static DependencyProperty IsExpandedProperty = DependencyProperty.Register("IsExpanded", typeof(bool), typeof(SingleStageEditor), new PropertyMetadata(new PropertyChangedCallback(IsExpandedChanged)));
-        public bool IsExpanded
-        {
-            get
-            {
-                return (bool)GetValue(IsExpandedProperty);
-            }
-            set
-            {
-                SetValue(IsExpandedProperty, value);
-            }
-        }
-        public static void IsExpandedChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            SingleStageEditor editor = sender as SingleStageEditor;
-            if (editor != null)
-            {
-                editor.IsExpandedChanged();
-            }
-        }
-        protected virtual void IsExpandedChanged()
-        {
-        }
+        //public static DependencyProperty IsExpandedProperty = DependencyProperty.Register("IsExpanded", typeof(bool), typeof(SingleStageEditor), new PropertyMetadata(new PropertyChangedCallback(IsExpandedChanged)));
+        //public bool IsExpanded
+        //{
+        //    get
+        //    {
+        //        return (bool)GetValue(IsExpandedProperty);
+        //    }
+        //    set
+        //    {
+        //        SetValue(IsExpandedProperty, value);
+        //    }
+        //}
+        //public static void IsExpandedChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        //{
+        //    SingleStageEditor editor = sender as SingleStageEditor;
+        //    if (editor != null)
+        //    {
+        //        editor.IsExpandedChanged();
+        //    }
+        //}
+        //protected virtual void IsExpandedChanged()
+        //{
+        //}
 
-        public string SelectedSystemConfiguration { get; set; }
+        //protected Border PART_IsExpandedClickBorder { get; set; }
+        //protected Grid PART_StageParametersGrid { get; set; }
+        //protected Grid PART_ErrorHandlerParametersGrid { get; set; }
+        //protected StageTypePicker PART_StageTypePicker { get; set; }
+        //protected ErrorHandlerPicker PART_ErrorHandlerTypePicker { get; set; }
+        //public override void OnApplyTemplate()
+        //{
+        //    base.OnApplyTemplate();
 
-        public static DependencyProperty StageProperty = DependencyProperty.Register("Stage", typeof(Stage), typeof(SingleStageEditor), new PropertyMetadata(new PropertyChangedCallback(StageChanged)));
-        public Stage Stage
-        {
-            get
-            {
-                return (Stage)GetValue(StageProperty);
-            }
-            set
-            {
-                SetValue(StageProperty, value);
-            }
-        }
-        public static void StageChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            SingleStageEditor editor = sender as SingleStageEditor;
-            if (editor != null)
-            {
-                editor.StageChanged();
-            }
-        }
-        protected virtual void StageChanged()
-        {
-        }
+        //    PART_IsExpandedClickBorder = GetTemplateChild("PART_IsExpandedClickBorder") as Border;
+        //    PART_ErrorHandlerParametersGrid = GetTemplateChild("PART_ErrorHandlerParametersGrid") as Grid;
+        //    PART_StageParametersGrid = GetTemplateChild("PART_StageParametersGrid") as Grid;
+        //    PART_ErrorHandlerTypePicker = GetTemplateChild("PART_ErrorHandlerTypePicker") as ErrorHandlerPicker;
+        //    PART_StageTypePicker = GetTemplateChild("PART_StageTypePicker") as StageTypePicker;
 
-        public static DependencyProperty TmpProperty = DependencyProperty.Register("Tmp", typeof(string), typeof(SingleStageEditor), new PropertyMetadata(new PropertyChangedCallback(TmpPropertyChanged)));
-        public string Tmp
-        {
-            get
-            {
-                return (string)GetValue(TmpProperty);
-            }
-            set
-            {
-                SetValue(TmpProperty, value);
-            }
-        }
-        public static void TmpPropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            SingleStageEditor editor = sender as SingleStageEditor;
-            if (editor != null)
-            {
-                editor.TmpChanged();
-            }
-        }
-        protected virtual void TmpChanged()
-        {
-        }
+        //    PART_ErrorHandlerTypePicker.SelectedTypeChanged += PART_ErrorHandlerTypePicker_SelectedTypeChanged;
+        //    PART_StageTypePicker.SelectedTypeChanged += PART_StageTypePicker_SelectedTypeChanged;
 
-        protected Border PART_IsExpandedClickBorder { get; set; }
-        protected Grid PART_StageParametersGrid { get; set; }
-        protected Grid PART_ErrorHandlerParametersGrid { get; set; }
-        protected StageTypePicker PART_StageTypePicker { get; set; }
-        protected ErrorHandlerPicker PART_ErrorHandlerTypePicker { get; set; }
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
+        //    PART_IsExpandedClickBorder.MouseDown += delegate(object sender, MouseButtonEventArgs args) { IsExpanded = !IsExpanded; };
+        //}
 
-            PART_IsExpandedClickBorder = GetTemplateChild("PART_IsExpandedClickBorder") as Border;
-            PART_ErrorHandlerParametersGrid = GetTemplateChild("PART_ErrorHandlerParametersGrid") as Grid;
-            PART_StageParametersGrid = GetTemplateChild("PART_StageParametersGrid") as Grid;
-            PART_ErrorHandlerTypePicker = GetTemplateChild("PART_ErrorHandlerTypePicker") as ErrorHandlerPicker;
-            PART_StageTypePicker = GetTemplateChild("PART_StageTypePicker") as StageTypePicker;
+        //protected void PART_StageTypePicker_SelectedTypeChanged(TypePicker obj)
+        //{
+        //    Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_StageTypePicker.SelectedAssemblyName, PART_StageTypePicker.SelectedAssemblyDotNetVersion,
+        //                                      PART_StageTypePicker.SelectedType);
 
-            PART_ErrorHandlerTypePicker.SelectedTypeChanged += PART_ErrorHandlerTypePicker_SelectedTypeChanged;
-            PART_StageTypePicker.SelectedTypeChanged += PART_StageTypePicker_SelectedTypeChanged;
+        //    var parametersToDelete = Stage.StageParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
+        //    parametersToDelete.ToList().ForEach(p => Stage.StageParameters.Remove(p));
 
-            PART_IsExpandedClickBorder.MouseDown += delegate(object sender, MouseButtonEventArgs args) { IsExpanded = !IsExpanded; };
-        }
-
-        protected void PART_StageTypePicker_SelectedTypeChanged(TypePicker<Contracts.IProcessingStage> obj)
-        {
-            Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_StageTypePicker.SelectedAssemblyName, PART_StageTypePicker.SelectedAssemblyDotNetVersion,
-                                              PART_StageTypePicker.SelectedType);
-            
-            var parametersToDelete = Stage.StageParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
-            parametersToDelete.ToList().ForEach(p => Stage.StageParameters.Remove(p));
-
-            BuildParameterGrid(configParams, PART_StageParametersGrid);
-        }
+        //    BuildParameterGrid(configParams, PART_StageParametersGrid);
+        //}
 
 
-        protected void PART_ErrorHandlerTypePicker_SelectedTypeChanged(TypePicker<Contracts.IMessageErrorHandler> obj)
-        {
-            Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_ErrorHandlerTypePicker.SelectedAssemblyName, PART_ErrorHandlerTypePicker.SelectedAssemblyDotNetVersion,
-                                              PART_ErrorHandlerTypePicker.SelectedType);
+        //protected void PART_ErrorHandlerTypePicker_SelectedTypeChanged(TypePicker obj)
+        //{
+        //    Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_ErrorHandlerTypePicker.SelectedAssemblyName, PART_ErrorHandlerTypePicker.SelectedAssemblyDotNetVersion,
+        //                                      PART_ErrorHandlerTypePicker.SelectedType);
 
-            var parametersToDelete = Stage.ErrorHandlerParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
-            parametersToDelete.ToList().ForEach(p => Stage.ErrorHandlerParameters.Remove(p));
+        //    var parametersToDelete = Stage.ErrorHandlerParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
+        //    parametersToDelete.ToList().ForEach(p => Stage.ErrorHandlerParameters.Remove(p));
 
-            BuildParameterGrid(configParams, PART_ErrorHandlerParametersGrid);
-            
-        }
+        //    BuildParameterGrid(configParams, PART_ErrorHandlerParametersGrid);
 
-        private Dictionary<string, Type> GetConfigurationParametersForType(string name, string version, string type)
-        {
-            Dictionary<string, Type> result = new Dictionary<string, Type>();
+        //}
 
-            using (ConfigurationEntities entities = new ConfigurationEntities())
-            {
-                byte[] assemblyBinary = entities.AssemblyVersions
-                                        .Where(av => av.AssemblyName == name &&
-                                                               av.AssemblyDotNetVersion == version &&
-                                                               av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedSystemConfiguration)
-                                               )
-                                         .Select(av => av.Executable)
-                                         .SingleOrDefault();
-                AppDomain tempDomain = AppDomain.CreateDomain("tempDomain");
-                AssemblyInspector inspector = tempDomain.CreateInstanceAndUnwrap(this.GetType().Assembly.FullName, typeof(AssemblyInspector).FullName) as AssemblyInspector;
-                result = inspector.Inspect(SelectedSystemConfiguration, assemblyBinary, type);
-                AppDomain.Unload(tempDomain);
-            }
+        //private Dictionary<string, Type> GetConfigurationParametersForType(string name, string version, string type)
+        //{
+        //    Dictionary<string, Type> result = new Dictionary<string, Type>();
 
-            return result;
-        }
+        //    using (ConfigurationEntities entities = new ConfigurationEntities())
+        //    {
+        //        byte[] assemblyBinary = entities.AssemblyVersions
+        //                                .Where(av => av.AssemblyName == name &&
+        //                                                       av.AssemblyDotNetVersion == version &&
+        //                                                       av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedSystemConfiguration)
+        //                                       )
+        //                                 .Select(av => av.Executable)
+        //                                 .SingleOrDefault();
+        //        AppDomain tempDomain = AppDomain.CreateDomain("tempDomain");
+        //        AssemblyInspector inspector = tempDomain.CreateInstanceAndUnwrap(this.GetType().Assembly.FullName, typeof(AssemblyInspector).FullName) as AssemblyInspector;
+        //        result = inspector.Inspect(SelectedSystemConfiguration, assemblyBinary, type);
+        //        AppDomain.Unload(tempDomain);
+        //    }
 
-        private void BuildParameterGrid(Dictionary<string, Type> configParams, Grid grid)
-        {
-            grid.Children.Clear();
-            grid.RowDefinitions.Clear();
-            Enumerable.Range(0, configParams.Count).ToList().ForEach(n => grid.RowDefinitions.Add(new RowDefinition()));
-            
-            int rowNumber = 0;
-            foreach(var name in configParams.Keys)
-            {
-                Control editControl;
-                if (!Stage.StageParameters.Any(p => p.Name == name))
-                {
-                    Stage.StageParameters.Add(new StageParameter() { Name = name});
-                }
+        //    return result;
+        //}
 
-                var stageParameter = Stage.StageParameters.Single(p => p.Name == name);
-                Binding editBinding = new Binding();
-                editBinding.Source = stageParameter;
-                editBinding.Path = new PropertyPath("Value");
-                editBinding.Mode = BindingMode.TwoWay;
-                editBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+        //private void BuildParameterGrid(Dictionary<string, Type> configParams, Grid grid)
+        //{
+        //    grid.Children.Clear();
+        //    grid.RowDefinitions.Clear();
+        //    Enumerable.Range(0, configParams.Count).ToList().ForEach(n => grid.RowDefinitions.Add(new RowDefinition()));
 
-                if (configParams[name] == typeof(bool))
-                {
-                    editControl = new CheckBox();
-                    BindingOperations.SetBinding(editControl, CheckBox.IsCheckedProperty, editBinding);
-                }
-                else
-                {
-                    editControl = new TextBox();
-                    BindingOperations.SetBinding(editControl, TextBox.TextProperty, editBinding);
-                }
-                
-                TextBlock caption = new TextBlock() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Text = name };
-                
-                Grid.SetColumn(editControl, 1);
-                Grid.SetRow(caption, rowNumber);
-                Grid.SetRow(editControl, rowNumber);
-                grid.Children.Add(caption);
-                grid.Children.Add(editControl);
-                rowNumber++;
-            }
-        }
+        //    int rowNumber = 0;
+        //    foreach (var name in configParams.Keys)
+        //    {
+        //        Control editControl;
+        //        if (!Stage.StageParameters.Any(p => p.Name == name))
+        //        {
+        //            Stage.StageParameters.Add(new StageParameter() { Name = name });
+        //        }
 
-        public class AssemblyInspector : MarshalByRefObject
-        {
-            protected string SelectedSystemConfiguration { get; set; }
-            
-            public Dictionary<string, Type> Inspect(string selectedSystemConfiguration, byte[] toReflect, string type)
-            {
-                Dictionary<string, Type> result = new Dictionary<string, Type>();
+        //        var stageParameter = Stage.StageParameters.Single(p => p.Name == name);
+        //        Binding editBinding = new Binding();
+        //        editBinding.Source = stageParameter;
+        //        editBinding.Path = new PropertyPath("Value");
+        //        editBinding.Mode = BindingMode.TwoWay;
+        //        editBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
 
-                AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-                System.Reflection.Assembly asm = System.Reflection.Assembly.Load(toReflect);
-                
-                Type t = asm.GetType(type);
-                var propsWithAttribute = t.GetProperties().Where(p => p.CustomAttributes.Any(a => a.AttributeType.FullName == typeof(ConfigurationParameterAttribute).FullName));
-                foreach (PropertyInfo info in propsWithAttribute)
-                {
-                    ConfigurationParameterAttribute attr = (ConfigurationParameterAttribute)info.GetCustomAttributes().Single(a => a.GetType() == typeof(ConfigurationParameterAttribute));
-                    string displayName = attr.DisplayName ?? info.Name;
-                    Type propType = info.PropertyType;
-                    result.Add(displayName, propType);
-                }
-                
-                return result;
-            }
+        //        if (configParams[name] == typeof(bool))
+        //        {
+        //            editControl = new CheckBox();
+        //            BindingOperations.SetBinding(editControl, CheckBox.IsCheckedProperty, editBinding);
+        //        }
+        //        else
+        //        {
+        //            editControl = new TextBox();
+        //            BindingOperations.SetBinding(editControl, TextBox.TextProperty, editBinding);
+        //        }
 
-            protected System.Reflection.Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
-            {
-                System.Reflection.Assembly result = null;
+        //        TextBlock caption = new TextBlock() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Text = name };
 
-                var asmName = new System.Reflection.AssemblyName(args.Name);
-                string n = asmName.Name + ".dll";
-                string v = asmName.Version.ToString();
-
-                using (ConfigurationEntities entities = new ConfigurationEntities())
-                {
-                    byte[] assemblyBinary = entities.AssemblyVersions
-                                            .Where(av => av.AssemblyName == n &&
-                                                                   av.AssemblyDotNetVersion == v &&
-                                                                   av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedSystemConfiguration)
-                                                   )
-                                             .Select(av => av.Executable)
-                                             .SingleOrDefault();
-                    result = System.Reflection.Assembly.Load(assemblyBinary);
-                }
-
-                return result;
-            }
-        }
+        //        Grid.SetColumn(editControl, 1);
+        //        Grid.SetRow(caption, rowNumber);
+        //        Grid.SetRow(editControl, rowNumber);
+        //        grid.Children.Add(caption);
+        //        grid.Children.Add(editControl);
+        //        rowNumber++;
+        //    }
+        //}
     }
 }

@@ -4,8 +4,53 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Margin" Value="3" />
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="Margin" Value="5" />
+            </Style>
+            <Style TargetType="CheckBox">
+                <Setter Property="Margin" Value="5" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="New/Edit Assembly" />
+
+        <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="Name:" />
+        <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="Dot Net Version:" />
+        <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="Load Date/Time:" />
+        <TextBlock Grid.Row="4" HorizontalAlignment="Right" Text="Assembly:" />
+        <TextBlock Grid.Row="5" HorizontalAlignment="Right" Text="Debugging Symbols:" />
+
+        <TextBlock Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding AssemblyName}" />
+        <TextBlock Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding AssemblyDotNetVersion}" />
+        <TextBlock Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding LoadDttm}"/>
+        <StackPanel Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Orientation="Horizontal">
+            <TextBlock Text="{Binding AssemblyByteCount, StringFormat='{}{0} Bytes'}" />
+            <Button Width="50" Command="{Binding LoadAssembly}">Load</Button>
+        </StackPanel>
+        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding DebuggingSymbolByteCount, StringFormat='{}{0} Bytes'}" />
+
+        
+        <Button Grid.Row="6" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
+        <Button Grid.Row="6" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
+
     </Grid>
 </UserControl>

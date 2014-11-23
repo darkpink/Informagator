@@ -88,10 +88,10 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
                     Stage stg = Stages[index];
 
                     SingleStageEditor editor = new SingleStageEditor();
-                    editor.Stage = stg;
+                    //editor.Stage = stg;
                     Grid.SetColumn(editor, 1);
                     Grid.SetRow(editor, index + 1);
-                    editor.SelectedSystemConfiguration = SelectedSystemConfiguration;
+                    //editor.SelectedSystemConfiguration = SelectedSystemConfiguration;
                     PART_PrimaryGrid.Children.Add(editor);
 
                     Button addButton = new Button();

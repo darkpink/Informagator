@@ -12,22 +12,13 @@ namespace Acadian.Informagator.ProdProviders.Configuration
     using System;
     using System.Collections.Generic;
     
-    public partial class Worker
+    public partial class ErrorHandlerParameter
     {
-        public Worker()
-        {
-            this.Stages = new HashSet<Stage>();
-        }
-    
         public long Id { get; set; }
-        public long MachineId { get; set; }
+        public long StageId { get; set; }
         public string Name { get; set; }
-        public long WorkerAssemblyVersionId { get; set; }
-        public string WorkerType { get; set; }
-        public bool AutoStart { get; set; }
+        public string Value { get; set; }
     
-        public virtual AssemblyVersion WorkerAssemblyVersion { get; set; }
-        public virtual Machine Machine { get; set; }
-        public virtual ICollection<Stage> Stages { get; set; }
+        public virtual Stage Stage { get; set; }
     }
 }

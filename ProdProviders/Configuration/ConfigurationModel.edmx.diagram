@@ -4,28 +4,27 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="90b37e61320b4e8eb76709e8fcd641a9" Name="Diagram1">
-        <EntityTypeShape EntityType="Model.Assembly" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.AssemblySystemConfiguration" Width="1.5" PointX="5.25" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.AssemblyVersion" Width="1.5" PointX="3" PointY="10.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.GlobalSetting" Width="1.5" PointX="3.75" PointY="17.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Machine" Width="1.5" PointX="3.75" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Stage" Width="1.5" PointX="3" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.StageParameter" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.SystemConfiguration" Width="1.5" PointX="1.5" PointY="14.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Worker" Width="1.5" PointX="6" PointY="5" IsExpanded="true" />
-        <AssociationConnector Association="Model.FK_AssemblyApplicationVersion_Assembly" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_AssemblyVersion_Assembly" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Stage_Assembly" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Stage_Assembly1" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Thread_Assembly" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_AssemblyApplicationVersion_ApplicationVersion" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_AssemblyApplicationVersion_AssemblyVersion" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_GlobalSettings_ApplicationVersion" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Host_ApplicationVersion" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Thread_Host" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_Stage_Thread" ManuallyRouted="false" />
-        <AssociationConnector Association="Model.FK_StageParameter_Stage" ManuallyRouted="false" />
+      <Diagram DiagramId="f9866b65fd4147eeb5c2f3c9eb70526c" Name="Diagram1">
+        <EntityTypeShape EntityType="ConfigurationModel.AssemblySystemConfiguration" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.AssemblyVersion" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.ErrorHandlerParameter" Width="1.5" PointX="8.25" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.GlobalSetting" Width="1.5" PointX="3.75" PointY="10" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.Machine" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.Stage" Width="1.5" PointX="6" PointY="5.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.StageParameter" Width="1.5" PointX="10.5" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.SystemConfiguration" Width="1.5" PointX="1.5" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConfigurationModel.Worker" Width="1.5" PointX="5.125" PointY="1.125" IsExpanded="true" />
+        <AssociationConnector Association="ConfigurationModel.FK_AssemblyApplicationVersion_ApplicationVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_AssemblyApplicationVersion_AssemblyVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_Stage_AssemblyVersion_ErrorHandler" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_Stage_AssemblyVersion_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_Worker_AssemblyVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_ErrorHandlerParameter_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_GlobalSettings_ApplicationVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_Host_ApplicationVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_Thread_Host" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_Stage_Thread" ManuallyRouted="false" />
+        <AssociationConnector Association="ConfigurationModel.FK_StageParameter_Stage" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -63,19 +63,28 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CancelEditCommand.cs" />
     <Compile Include="Commands\ChangeActiveSystemConfigurationCommand.cs" />
+    <Compile Include="Commands\LoadAssemblyAndDebuggingSymbolsCommand.cs" />
     <Compile Include="Commands\PanelChangeCommand.cs" />
     <Compile Include="Commands\PanelChangeCommandManager.cs" />
     <Compile Include="Commands\SaveEntityCommand.cs" />
     <Compile Include="Controls\AssemblyNamePicker.cs" />
     <Compile Include="Controls\ErrorHandlerPicker.cs" />
     <Compile Include="Controls\MachinePicker.cs" />
+    <Compile Include="Controls\StageEditor\AssemblyInspector.cs" />
     <Compile Include="Controls\StageEditor\SingleStageEditor.cs" />
     <Compile Include="Controls\StageEditor\Stage.cs" />
+    <Compile Include="Controls\StageEditor\StageEdit.xaml.cs">
+      <DependentUpon>StageEdit.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StageEditor\StageParameter.cs" />
+    <Compile Include="Controls\StageEditor\StageSequenceEditor.xaml.cs">
+      <DependentUpon>StageSequenceEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\StageEditor\WorkerStageEditor.cs" />
     <Compile Include="Controls\StageTypePicker.cs" />
     <Compile Include="Controls\SystemConfigurationPicker.cs" />
     <Compile Include="Controls\TypePicker.cs" />
+    <Compile Include="Controls\TypeSelection.cs" />
     <Compile Include="Controls\WorkerTypePicker.cs" />
     <Compile Include="ExportedHostConfiguration.cs" />
     <Compile Include="ExportedApplicationVersion.cs" />
@@ -98,6 +107,7 @@
     <Compile Include="Panels\WorkerEdit.xaml.cs">
       <DependentUpon>WorkerEdit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ValueConverters\PassthroughConverter.cs" />
     <Compile Include="Vms\AssemblyEditVm.cs" />
     <Compile Include="Vms\AssemblyListVm.cs" />
     <Compile Include="Vms\ConfigurationEditVm.cs" />
@@ -118,6 +128,14 @@
     <Compile Include="Vms\VmBase.cs" />
     <Compile Include="Vms\WorkerEditVm.cs" />
     <Compile Include="Vms\WorkerListVm.cs" />
+    <Page Include="Controls\StageEditor\StageEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\StageEditor\StageSequenceEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -17,6 +17,9 @@ namespace Acadian.Informagator.ProdProviders.Configuration
         public AssemblyVersion()
         {
             this.AssemblySystemConfigurations = new HashSet<AssemblySystemConfiguration>();
+            this.StagesUsingErrorHandlers = new HashSet<Stage>();
+            this.StagesUsingStages = new HashSet<Stage>();
+            this.Workers = new HashSet<Worker>();
         }
     
         public long Id { get; set; }
@@ -26,7 +29,9 @@ namespace Acadian.Informagator.ProdProviders.Configuration
         public byte[] Executable { get; set; }
         public byte[] DebuggingSymbols { get; set; }
     
-        public virtual Assembly Assembly { get; set; }
         public virtual ICollection<AssemblySystemConfiguration> AssemblySystemConfigurations { get; set; }
+        public virtual ICollection<Stage> StagesUsingErrorHandlers { get; set; }
+        public virtual ICollection<Stage> StagesUsingStages { get; set; }
+        public virtual ICollection<Worker> Workers { get; set; }
     }
 }

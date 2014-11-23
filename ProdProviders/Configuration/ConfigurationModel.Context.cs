@@ -25,9 +25,9 @@ namespace Acadian.Informagator.ProdProviders.Configuration
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Assembly> Assemblies { get; set; }
         public virtual DbSet<AssemblySystemConfiguration> AssemblySystemConfigurations { get; set; }
         public virtual DbSet<AssemblyVersion> AssemblyVersions { get; set; }
+        public virtual DbSet<ErrorHandlerParameter> ErrorHandlerParameters { get; set; }
         public virtual DbSet<GlobalSetting> GlobalSettings { get; set; }
         public virtual DbSet<Machine> Machines { get; set; }
         public virtual DbSet<Stage> Stages { get; set; }

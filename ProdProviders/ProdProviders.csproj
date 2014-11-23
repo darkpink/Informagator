@@ -48,9 +48,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Assembly.cs">
-      <DependentUpon>ConfigurationModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Configuration\AssemblySystemConfiguration.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
@@ -71,6 +68,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConfigurationModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\ErrorHandlerParameter.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Configuration\GlobalSetting.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>

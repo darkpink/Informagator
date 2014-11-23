@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -24,35 +25,18 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             }
         }
 
-        //private string _stageAssemblyName;
-        //public string StageAssemblyName
-        //{
-        //    get
-        //    {
-        //        return _stageAssemblyName;
-        //    }
-        //    set
-        //    {
-        //        _stageAssemblyName = value;
-        //        NotifyPropertyChanged("StageAssemblyName");
-        //    }
-        //}
-
-        public static DependencyProperty StageAssemblyNameProperty = DependencyProperty.Register("StageAssemblyName", typeof(string), typeof(Stage), new PropertyMetadata(new PropertyChangedCallback(StageAssemblyNameChanged)));
+        private string _stageAssemblyName;
         public string StageAssemblyName
         {
             get
             {
-                return (string)GetValue(StageAssemblyNameProperty);
+                return _stageAssemblyName;
             }
             set
             {
-                SetValue(StageAssemblyNameProperty, value);
+                _stageAssemblyName = value;
+                NotifyPropertyChanged("StageAssemblyName");
             }
-        }
-
-        public static void StageAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
         }
 
         private string _stageAssemblyDotNetVersion;
@@ -125,8 +109,8 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private List<StageParameter> _stageParameters;
-        public List<StageParameter> StageParameters
+        private ObservableCollection<StageParameter> _stageParameters;
+        public ObservableCollection<StageParameter> StageParameters
         {
             get
             {
@@ -139,8 +123,8 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private List<StageParameter> _errorHandlerParameters;
-        public List<StageParameter> ErrorHandlerParameters
+        private ObservableCollection<StageParameter> _errorHandlerParameters;
+        public ObservableCollection<StageParameter> ErrorHandlerParameters
         {
             get
             {
@@ -165,8 +149,8 @@ namespace Acadian.Informagator.Manager.Controls.StageEditor
 
         public Stage()
         {
-            StageParameters = new List<StageParameter>();
-            ErrorHandlerParameters = new List<StageParameter>();
+            StageParameters = new ObservableCollection<StageParameter>();
+            ErrorHandlerParameters = new ObservableCollection<StageParameter>();
         }
     }
 }

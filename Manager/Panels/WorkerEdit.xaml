@@ -43,11 +43,11 @@
 
         <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Name}" />
         <ctrl:MachinePicker Grid.Row="2" Grid.Column="1" Width="200" HorizontalAlignment="Left" Margin="3" SelectedItem="{Binding MachineName}"/>
-        <ctrl:WorkerTypePicker Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" SelectedAssemblyName="{Binding AssemblyName, Mode=TwoWay}" SelectedAssemblyDotNetVersion="{Binding AssemblyDotNetVersion, Mode=TwoWay}" SelectedType="{Binding Entity.WorkerType, Mode=TwoWay}" />
+        <ctrl:WorkerTypePicker Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" SelectedConfiguration="{Binding SelectedConfiguration}" SelectedAssemblyName="{Binding WorkerAssemblyName, Mode=TwoWay}" SelectedAssemblyDotNetVersion="{Binding WorkerAssemblyDotNetVersion, Mode=TwoWay}" SelectedType="{Binding Entity.WorkerType, Mode=TwoWay}" TypeCaption="Worker" />
         <CheckBox Grid.Row="6" Grid.Column="1" IsChecked="{Binding Entity.AutoStart}" />
 
         <ScrollViewer Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <stgedt:WorkerStageEditor SelectedSystemConfiguration="{Binding SelectedConfiguration}" Stages="{Binding Stages}" Margin="20,5,20,5" />
+            <stgedt:StageSequenceEditor SelectedSystemConfiguration="{Binding SelectedConfiguration}" Stages="{Binding Stages}" Margin="20,5,20,5" />
         </ScrollViewer>
         <Button Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
         <Button Grid.Row="8" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>

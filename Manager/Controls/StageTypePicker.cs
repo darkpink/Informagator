@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Acadian.Informagator.Manager.Controls
 {
@@ -15,5 +16,7 @@ namespace Acadian.Informagator.Manager.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StageTypePicker), new FrameworkPropertyMetadata(typeof(StageTypePicker)));
             FocusableProperty.OverrideMetadata(typeof(StageTypePicker), new FrameworkPropertyMetadata(false));
         }
+
+
     }
 }

@@ -12,9 +12,36 @@ using System.Windows.Controls;
 
 namespace Acadian.Informagator.Manager.Controls
 {
-    public class TypePicker : Control
+    public class TypePicker<T> : Control, INotifyPropertyChanged
     {
-        public static DependencyProperty SelectedAssemblyNameProperty = DependencyProperty.Register("SelectedAssemblyName", typeof(string), typeof(TypePicker), new PropertyMetadata(new PropertyChangedCallback(SelectedAssemblyNameChanged)));
+
+        public static readonly DependencyProperty SelectedConfigurationProperty = DependencyProperty.Register("SelectedConfiguration", typeof(string), typeof(TypePicker<T>), new FrameworkPropertyMetadata(new PropertyChangedCallback(SelectedConfigurationChanged)) { BindsTwoWayByDefault = true });
+        public string SelectedConfiguration
+        {
+            get
+            {
+                return (string)GetValue(SelectedConfigurationProperty);
+            }
+            set
+            {
+                SetValue(SelectedConfigurationProperty, value);
+            }
+        }
+        public static void SelectedConfigurationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var picker = sender as TypePicker<T>;
+            if (picker != null)
+            {
+                picker.OnSelectedConfigurationChanged();
+            }
+        }
+
+        private void OnSelectedConfigurationChanged()
+        {
+            LoadAssembliesForSelectedConfiguraiton();
+        }
+
+        public static DependencyProperty SelectedAssemblyNameProperty = DependencyProperty.Register("SelectedAssemblyName", typeof(string), typeof(TypePicker<T>), new PropertyMetadata(new PropertyChangedCallback(SelectedAssemblyNameChanged)));
         public string SelectedAssemblyName
         {
             get
@@ -29,19 +56,13 @@ namespace Acadian.Informagator.Manager.Controls
 
         public static void SelectedAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            TypePicker picker = sender as TypePicker;
+            TypePicker<T> picker = sender as TypePicker<T>;
             if (picker != null)
             {
                 picker.OnSelectedAssemblyNameChanged();
             }
         }
 
-        protected virtual void OnSelectedAssemblyNameChanged()
-        {
-        }
-    }
-    public class TypePicker<T> : TypePicker, INotifyPropertyChanged
-    {
         private ObservableCollection<string> _assemblyNames;
         public ObservableCollection<string> AssemblyNames
         {
@@ -63,7 +84,7 @@ namespace Acadian.Informagator.Manager.Controls
             private set { _assemblyTypes = value; NotifyPropertyChanged("AssemblyTypes"); }
         }
 
-        protected override void OnSelectedAssemblyNameChanged()
+        protected void OnSelectedAssemblyNameChanged()
         {
             LoadVersionsForSelectedAssembly();
             EvaluateProperties();
@@ -114,7 +135,7 @@ namespace Acadian.Informagator.Manager.Controls
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 App.CurrentApplication.ActiveSystemConfigurationChanged += CurrentApplication_ActiveSystemConfigurationChanged;
-                LoadAssembliesForActiveConfiguraiton();
+                LoadAssembliesForSelectedConfiguraiton();
                 EvaluateProperties();
             }
         }
@@ -180,15 +201,15 @@ namespace Acadian.Informagator.Manager.Controls
         }
 
             
-        private void LoadAssembliesForActiveConfiguraiton()
+        private void LoadAssembliesForSelectedConfiguraiton()
         {
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
                 AssemblyNames.ToList().ForEach(n => AssemblyNames.Remove(n));
                 entities.SystemConfigurations
                         .Include(c => c.AssemblySystemConfigurations)
-                        .Single(c => c.IsActive)
-                        .AssemblySystemConfigurations
+                        .Where(c => c.Description == SelectedConfiguration)
+                        .SelectMany( c=> c.AssemblySystemConfigurations)
                         .Select(asc => asc.AssemblyName)
                         .Distinct()
                         .OrderBy(n => n)
@@ -204,8 +225,8 @@ namespace Acadian.Informagator.Manager.Controls
                 AssemblyVersions.ToList().ForEach(v => AssemblyVersions.Remove(v));
                 entities.SystemConfigurations
                         .Include(c => c.AssemblySystemConfigurations)
-                        .Single(c => c.IsActive)
-                        .AssemblySystemConfigurations
+                        .Where(c => c.Description == SelectedConfiguration)
+                        .SelectMany(c => c.AssemblySystemConfigurations)
                         .Where(asc => asc.AssemblyName == SelectedAssemblyName)
                         .Select(asc => asc.AssemblyDotNetVersion)
                         .Distinct()
@@ -219,9 +240,9 @@ namespace Acadian.Informagator.Manager.Controls
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
                 byte[] asmBin = entities.SystemConfigurations
-                                            .Include(c => c.AssemblySystemConfigurations.Select(asc => asc.AssemblyVersion.Assembly))
-                                            .Single(c => c.IsActive)
-                                            .AssemblySystemConfigurations
+                                            .Include(c => c.AssemblySystemConfigurations.Select(asc => asc.AssemblyVersion))
+                                            .Where(c => c.Description == SelectedConfiguration)
+                                            .SelectMany(c => c.AssemblySystemConfigurations)
                                             .Where(asc => asc.AssemblyName == SelectedAssemblyName && asc.AssemblyDotNetVersion == SelectedAssemblyDotNetVersion)
                                             .Select(asc => asc.AssemblyVersion.Executable)
                                             .SingleOrDefault();
@@ -254,7 +275,7 @@ namespace Acadian.Informagator.Manager.Controls
 
         private void CurrentApplication_ActiveSystemConfigurationChanged()
         {
-            LoadAssembliesForActiveConfiguraiton();
+            LoadAssembliesForSelectedConfiguraiton();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
