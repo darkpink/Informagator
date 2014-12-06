@@ -63,6 +63,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\CancelEditCommand.cs" />
     <Compile Include="Commands\ChangeActiveSystemConfigurationCommand.cs" />
+    <Compile Include="Commands\DeleteEntityCommand.cs" />
     <Compile Include="Commands\LoadAssemblyAndDebuggingSymbolsCommand.cs" />
     <Compile Include="Commands\PanelChangeCommand.cs" />
     <Compile Include="Commands\PanelChangeCommandManager.cs" />

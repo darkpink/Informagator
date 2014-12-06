@@ -466,7 +466,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_ErrorHandlerParameter_Stage">
-          <End Role="Stage" Type="Self.Stage" Multiplicity="1" />
+          <End Role="Stage" Type="Self.Stage" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="ErrorHandlerParameter" Type="Self.ErrorHandlerParameter" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Stage">
@@ -514,8 +516,11 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Stage_Thread">
-          <End Role="Worker" Type="Self.Worker" Multiplicity="1" />
-          <End Role="Stage" Type="Self.Stage" Multiplicity="*" />
+          <End Role="Worker" Type="Self.Worker" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Stage" Type="Self.Stage" Multiplicity="*" >
+          </End>
           <ReferentialConstraint>
             <Principal Role="Worker">
               <PropertyRef Name="Id" />
@@ -526,7 +531,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_StageParameter_Stage">
-          <End Role="Stage" Type="Self.Stage" Multiplicity="1" />
+          <End Role="Stage" Type="Self.Stage" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="StageParameter" Type="Self.StageParameter" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Stage">

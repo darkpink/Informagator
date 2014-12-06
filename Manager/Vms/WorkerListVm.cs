@@ -6,11 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
+using System.Windows.Input;
+using Acadian.Informagator.Manager.Commands;
 
 namespace Acadian.Informagator.Manager.Vms
 {
     public class WorkerListVm : ListPanelVmBase<Worker>
     {
+        public ICommand DeleteWorker
+        { 
+            get 
+            { 
+                return new DeleteEntityCommand<Worker>(entities => entities.Workers, (workers, id) => workers.Single(w => w.Id == (long)id), null); 
+            } 
+        }
+
         protected override Worker[] GetEntities()
         {
             Worker[] result;
