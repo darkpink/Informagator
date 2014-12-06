@@ -21,11 +21,5 @@ namespace Acadian.Informagator.Services
 
         [OperationContract]
         void StopThread(string threadName);
-
-        [OperationContract]
-        void PauseThread(string threadName);
-
-        [OperationContract]
-        void ResumeThread(string threadName);
     }
 }

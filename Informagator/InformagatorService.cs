@@ -27,6 +27,10 @@ namespace Acadian.Informagator
 
         protected IAssemblySource AssemblySource { get; set; }
 
+        private InfoService RemoteInfoService { get; set; }
+
+        private AdminService RemoteAdminService { get; set; }
+
         public InformagatorService(IConfigurationProvider configurationProvider, IAssemblySource assemblySource, IMessageStore messageStore, IMessageTracker messageTracker)
         {
             AssemblySource = assemblySource;
@@ -77,14 +81,14 @@ namespace Acadian.Informagator
 
         private void LaunchInfoService()
         {
-            InfoService remoteInfoService = new InfoService();
-            InfoServiceHost.StartService(remoteInfoService);
+            RemoteInfoService = new InfoService(this);
+            InfoServiceHost.StartService(RemoteInfoService);
         }
 
         private void LaunchControlService()
         {
-            AdminService remoteControlService = new AdminService(this);
-            AdminServiceHost.StartService(remoteControlService);
+            RemoteAdminService = new AdminService(this);
+            AdminServiceHost.StartService(RemoteAdminService);
         }
 
         private void LaunchInternalService()
@@ -132,25 +136,22 @@ namespace Acadian.Informagator
 
         private void StopInfoService()
         {
+            InfoServiceHost.StopService();
         }
 
         private void StopControlService()
         {
+            AdminServiceHost.StopService();
         }
 
         public void StopThread(string threadName)
         {
+            Threads[threadName].Stop();
         }
 
         public void StartThread(string threadName)
         {
+            Threads[threadName].Start();
         }
-        public void PauseThread(string threadName)
-        {
-        }
-        public void ResumeThread(string threadName)
-        {
-        }
-
     }
 }

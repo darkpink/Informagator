@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acadian.Informagator.Threads;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
@@ -12,5 +13,8 @@ namespace Acadian.Informagator.Services
     {
         [OperationContract]
         void Ping();
+
+        [OperationContract]
+        InformagatorThreadStatus GetStatus(string threadName);
     }
 }

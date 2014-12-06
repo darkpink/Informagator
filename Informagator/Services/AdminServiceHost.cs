@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Net;
 
 namespace Acadian.Informagator.Services
 {
@@ -11,10 +12,10 @@ namespace Acadian.Informagator.Services
     {
         private static ServiceHost adminServiceHost = null;
 
-        internal static void StartService(AdminService instance)
+        internal static void StartService(AdminService instance, IPAddress address, int port)
         {
             adminServiceHost = new ServiceHost(instance);
-            adminServiceHost.AddServiceEndpoint(typeof(IAdminService), new NetNamedPipeBinding(), "net.pipe://localhost/AdminService");
+            adminServiceHost.AddServiceEndpoint(typeof(IAdminService), new WSHttpBinding(), "http://" + address.ToString() + ":" + port + "/AdminService");
             adminServiceHost.Open();
         }
 

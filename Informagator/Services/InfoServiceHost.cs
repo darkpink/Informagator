@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.Net;
 
 namespace Acadian.Informagator.Services
 {
@@ -11,7 +12,7 @@ namespace Acadian.Informagator.Services
     {
         private static ServiceHost infoServiceHost = null;
 
-        internal static void StartService(InfoService instance)
+        internal static void StartService(InfoService instance, IPAddress address, int port)
         {
             infoServiceHost = new ServiceHost(instance);
             infoServiceHost.AddServiceEndpoint(typeof(IInfoService), new NetNamedPipeBinding(), "net.pipe://localhost/InfoService");

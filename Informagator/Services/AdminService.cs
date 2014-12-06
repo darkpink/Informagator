@@ -33,15 +33,5 @@ namespace Acadian.Informagator.Services
         {
             Informagator.StopThread(threadName);
         }
-
-        public void PauseThread(string threadName)
-        {
-            Informagator.PauseThread(threadName);
-        }
-
-        public void ResumeThread(string threadName)
-        {
-            Informagator.ResumeThread(threadName);
-        }
     }
 }

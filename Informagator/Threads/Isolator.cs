@@ -11,7 +11,7 @@ namespace Acadian.Informagator.Threads
 {
     internal class Isolator
     {
-        public IInformagatorThreadStatus Status { get; protected set; }
+        public InformagatorThreadStatus Status { get; protected set; }
         private ThreadConfiguration _configuration;
         public  ThreadConfiguration Configuration
         {
