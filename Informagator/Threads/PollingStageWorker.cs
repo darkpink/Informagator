@@ -74,7 +74,15 @@ namespace Acadian.Informagator.Threads
         }
         protected override bool Execute()
         {
-            return Stages.Execute();
+            bool result = Stages.Execute();
+            
+            if (result)
+            {
+                LastMessage = DateTime.Now;
+                MessageCount++;
+            }
+
+            return result;
         }
     }
 }

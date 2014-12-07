@@ -1,4 +1,5 @@
 ﻿using Acadian.Informagator.Configuration;
+using Acadian.Informagator.Threads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +11,8 @@ namespace Acadian.Informagator.Contracts
     public interface IInformagatorRunner
     {
         void Start();
-        void Pause();
-        void Resume();
         void Stop();
         string Name { set; }
-        IInformagatorThreadStatus Status { get; }
+        InformagatorThreadStatus Status { get; }
     }
 }

@@ -100,8 +100,11 @@ namespace Acadian.Informagator.Services
                 }
             }
 
-            InternalServiceChannelFactory = new ChannelFactory<IInternalService>(new NetNamedPipeBinding(), new EndpointAddress(InternalService.Endpoint));
+            InternalServiceChannelFactory = new ChannelFactory<IInternalService>(
+                new NetNamedPipeBinding(NetNamedPipeSecurityMode.None), 
+                new EndpointAddress(InternalService.Endpoint));
             ServiceProxy = InternalServiceChannelFactory.CreateChannel();
+            ((ICommunicationObject)ServiceProxy).Open();
         }
 
 

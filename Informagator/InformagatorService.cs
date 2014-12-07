@@ -41,6 +41,7 @@ namespace Acadian.Informagator
 
         public void Start()
         {
+            Configuration = ConfigurationProvider.Configuration;
             LaunchControlService();
             LaunchInfoService();
             LaunchInternalService();
@@ -82,13 +83,13 @@ namespace Acadian.Informagator
         private void LaunchInfoService()
         {
             RemoteInfoService = new InfoService(this);
-            InfoServiceHost.StartService(RemoteInfoService);
+            InfoServiceHost.StartService(RemoteInfoService, Configuration.InfoServiceAddress, Configuration.InfoServicePort);
         }
 
         private void LaunchControlService()
         {
             RemoteAdminService = new AdminService(this);
-            AdminServiceHost.StartService(RemoteAdminService);
+            AdminServiceHost.StartService(RemoteAdminService, Configuration.AdminServiceAddress, Configuration.AdminServicePort);
         }
 
         private void LaunchInternalService()

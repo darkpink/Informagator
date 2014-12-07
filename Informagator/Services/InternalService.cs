@@ -12,7 +12,7 @@ namespace Acadian.Informagator.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Single, InstanceContextMode = InstanceContextMode.Single, UseSynchronizationContext = true)]
     internal class InternalService : IInternalService, IAssemblySource
     {
-        internal const string Endpoint = "net.pipe://localhost/Informagator/InternalService";
+        internal const string Endpoint = "net.pipe://localhost/asdf/InternalService";
         private IMessageStore MessageStore { get; set; }
         private IAssemblySource AssemblySource { get; set; }
         private IMessageTracker MessageTracker { get; set; }

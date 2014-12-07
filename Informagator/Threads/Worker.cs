@@ -77,24 +77,6 @@ namespace Acadian.Informagator.Threads
         {
         }
 
-        public virtual void Pause()
-        {
-            if (!PauseRequested)
-            {
-                PauseRequested = true;
-                Info = "Pause Requested";
-            }
-        }
-
-        public virtual void Resume()
-        {
-            if (PauseRequested)
-            {
-                PauseRequested = false;
-                Info = "Resume Requested";
-            }
-        }
-
         public virtual void Stop()
         {
             if (IsRunning)
@@ -117,7 +99,7 @@ namespace Acadian.Informagator.Threads
             }
         }
 
-        public virtual IInformagatorThreadStatus Status
+        public virtual InformagatorThreadStatus Status
         {
             get 
             {

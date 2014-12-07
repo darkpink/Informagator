@@ -15,7 +15,7 @@ namespace Acadian.Informagator.Services
         internal static void StartService(InfoService instance, IPAddress address, int port)
         {
             infoServiceHost = new ServiceHost(instance);
-            infoServiceHost.AddServiceEndpoint(typeof(IInfoService), new NetNamedPipeBinding(), "net.pipe://localhost/InfoService");
+            infoServiceHost.AddServiceEndpoint(typeof(IInfoService), new WSHttpBinding(), "http://localhost:" + port + "/InfoService");
             infoServiceHost.Open();
         }
 

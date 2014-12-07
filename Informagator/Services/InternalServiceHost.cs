@@ -14,7 +14,10 @@ namespace Acadian.Informagator.Services
         internal static void StartService(InternalService instance)
         {
             internalServiceHost = new ServiceHost(instance);
-            internalServiceHost.AddServiceEndpoint(typeof(IInternalService), new NetNamedPipeBinding(), InternalService.Endpoint);
+            internalServiceHost.AddServiceEndpoint(
+                typeof(IInternalService),
+                new NetNamedPipeBinding(NetNamedPipeSecurityMode.None),
+                new Uri(InternalService.Endpoint));
             internalServiceHost.Open();
         }
 

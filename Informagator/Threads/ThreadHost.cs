@@ -69,16 +69,6 @@ namespace Acadian.Informagator.Threads
             }
         }
 
-        public void Pause()
-        {
-            WorkerObject.Pause();
-        }
-
-        public void Resume()
-        {
-            WorkerObject.Resume();
-        }
-
         public void Stop()
         {
             WorkerObject.Stop();
@@ -89,11 +79,11 @@ namespace Acadian.Informagator.Threads
             }
         }
 
-        public IInformagatorThreadStatus Status
+        public InformagatorThreadStatus Status
         {
             get
             {
-                IInformagatorThreadStatus result;
+                InformagatorThreadStatus result;
 
                 if (WorkerObject != null)
                 {
@@ -102,7 +92,7 @@ namespace Acadian.Informagator.Threads
                 else
                 {
                     result = new InformagatorThreadStatus();
-                    result.HostName = Dns.GetHostName();
+                    result.HostName = Environment.MachineName;
                     result.Info = "Not Started";
                     result.ThreadName = Name;
                 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Acadian.Informagator.Services
 {
     [ServiceContract]
-    internal interface IAdminService
+    public interface IAdminService
     {
         [OperationContract]
         void Ping();

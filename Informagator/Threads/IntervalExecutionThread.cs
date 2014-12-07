@@ -22,6 +22,7 @@ namespace Acadian.Informagator.Threads
             int currentSleepTime = 0;
             while(!StopRequested)
             {
+                HeartBeat = DateTime.Now;
                 while (!(StopRequested || PauseRequested))
                 if (Execute())
                 {

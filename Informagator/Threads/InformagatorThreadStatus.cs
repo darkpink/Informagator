@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator.Threads
 {
+    [Serializable]
     public class InformagatorThreadStatus : IInformagatorThreadStatus
     {
         public virtual string ThreadName { get; set; }
