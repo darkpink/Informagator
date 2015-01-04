@@ -81,7 +81,7 @@
     <Compile Include="Exceptions\ConfigurationException.cs" />
     <Compile Include="Exceptions\InformagatorException.cs" />
     <Compile Include="Exceptions\InformagatorInvalidOperationException.cs" />
-    <Compile Include="InformagatorService.cs" />
+    <Compile Include="Informagator.cs" />
     <Compile Include="Services\InternalService.cs" />
     <Compile Include="Services\InternalServiceClient.cs" />
     <Compile Include="Services\InternalServiceHost.cs" />

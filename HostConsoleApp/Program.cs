@@ -1,6 +1,7 @@
 ﻿using Acadian.Informagator;
 using Acadian.Informagator.DevProviders;
 using Acadian.Informagator.Messages;
+using Acadian.Informagator.ProdProviders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace HostConsoleApp
             MemoryMessageStore store = new MemoryMessageStore();
             store.Enqueue("Demo", new AsciiStringMessage() { Body = "asdfasdf" });
 
-            InformagatorService i = new InformagatorService(new HardCodedConfigurationProvider(),
+            Informagator i = new Informagator(new DatabaseConfigurationProvider(),
                                                             new FileSystemAssemblySource(),
                                                             store,
                                                             new MemoryMessageTracker());

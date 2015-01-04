@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Acadian.Informagator
 {
-    public class InformagatorService
+    public class Informagator
     {
         protected IMessageStore MessageStore { get; set; }
 
@@ -31,7 +31,7 @@ namespace Acadian.Informagator
 
         private AdminService RemoteAdminService { get; set; }
 
-        public InformagatorService(IConfigurationProvider configurationProvider, IAssemblySource assemblySource, IMessageStore messageStore, IMessageTracker messageTracker)
+        public Informagator(IConfigurationProvider configurationProvider, IAssemblySource assemblySource, IMessageStore messageStore, IMessageTracker messageTracker)
         {
             AssemblySource = assemblySource;
             ConfigurationProvider = configurationProvider;

@@ -9,8 +9,8 @@ namespace Acadian.Informagator.Services
     [ServiceBehavior(ConcurrencyMode=ConcurrencyMode.Single, InstanceContextMode=InstanceContextMode.Single, UseSynchronizationContext=true)]
     internal class AdminService : IAdminService
     {
-        private InformagatorService Informagator { get; set; }
-        public AdminService(InformagatorService informagator)
+        private Informagator Informagator { get; set; }
+        public AdminService(Informagator informagator)
         {
             Informagator = informagator;
         }

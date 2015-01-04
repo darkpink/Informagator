@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Acadian.Informagator.ProdProviders;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,21 +9,30 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Service
+namespace Acadian.Informagator.Service
 {
-    public partial class Service1 : ServiceBase
+    public partial class InformagatorService : ServiceBase
     {
-        public Service1()
+        protected Informagator Informagator { get; set; }
+        public InformagatorService()
         {
             InitializeComponent();
         }
 
         protected override void OnStart(string[] args)
         {
+            Informagator = new Informagator(
+                new DatabaseConfigurationProvider(),
+                new DatabaseAssemblyStore(),
+                new DatabaseMessageStore(),
+                null
+                );
+            Informagator.Start();
         }
 
         protected override void OnStop()
         {
+            Informagator.Stop();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace Service
+﻿namespace Acadian.Informagator.Service
 {
-    partial class Service1
+    partial class InformagatorService
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,8 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
-            this.ServiceName = "Service1";
+            // 
+            // InformagatorService
+            // 
+            this.ServiceName = "InformagatorService";
+
         }
 
         #endregion
