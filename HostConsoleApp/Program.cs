@@ -24,8 +24,8 @@ namespace HostConsoleApp
                                                             new MemoryMessageTracker());
             i.Start();
             Console.ReadLine();
-            i.ReloadConfiguration();
-            Console.ReadLine();
+            //i.ReloadConfiguration();
+            //Console.ReadLine();
             i.Stop();
             Console.ReadLine();
         }

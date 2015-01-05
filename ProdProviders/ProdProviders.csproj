@@ -93,6 +93,7 @@
     <Compile Include="DatabaseAssemblyStore.cs" />
     <Compile Include="DatabaseConfigurationProvider.cs" />
     <Compile Include="DatabaseMessageStore.cs" />
+    <Compile Include="DatabaseMessageTracker.cs" />
     <Compile Include="Message.cs">
       <DependentUpon>MessageModel.tt</DependentUpon>
     </Compile>

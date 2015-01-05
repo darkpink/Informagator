@@ -40,6 +40,8 @@
             // 
             // InformagatorServiceInstaller
             // 
+            this.InformagatorServiceInstaller.Description = "Informagator Service";
+            this.InformagatorServiceInstaller.DisplayName = "Informagator";
             this.InformagatorServiceInstaller.ServiceName = "InformagatorService";
             // 
             // ProjectInstaller
