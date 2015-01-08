@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Contracts;
+﻿using Informagator.Configuration;
+using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.CommonComponents.ConsumerStages
+namespace Informagator.CommonComponents.ConsumerStages
 {
     public class StaticTransactionalMsmqBinaryConsumer : IConsumerStage
     {

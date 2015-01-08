@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.HL7Assist
+namespace Informagator.HL7Assist
 {
     public class HL7FieldComponent
     {

@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Acadian.Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls.StageEditor
 {
     /// <summary>
     /// Interaction logic for StageEdit.xaml

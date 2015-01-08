@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using System.Windows.Input;
-using Acadian.Informagator.Manager.Commands;
+using Informagator.Manager.Commands;
 
-namespace Acadian.Informagator.Manager.Vms
+namespace Informagator.Manager.Vms
 {
     public class WorkerListVm : ListPanelVmBase<Worker>
     {

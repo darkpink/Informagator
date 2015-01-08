@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls.StageEditor
 {
     public class StageParameter : INotifyPropertyChanged
     {

@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Stages;
+using Informagator.Configuration;
+using Informagator.Stages;
 using System.Threading;
 using System.Reflection;
-using Acadian.Informagator.Threads;
-using Acadian.Informagator.Contracts;
+using Informagator.Threads;
+using Informagator.Contracts;
 
-namespace Acadian.Informagator.Threads
+namespace Informagator.Threads
 {
     public class PollingStageWorker : IntervalExecutionThread
     {

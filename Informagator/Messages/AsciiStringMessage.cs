@@ -1,11 +1,11 @@
-﻿using Acadian.Informagator.Contracts;
+﻿using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Messages
+namespace Informagator.Messages
 {
     public class AsciiStringMessage : MessageBase<string>, IMessage<string>
     {

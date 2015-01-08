@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Acadian.Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls.StageEditor
 {
     public class WorkerStageEditor : Control
     {

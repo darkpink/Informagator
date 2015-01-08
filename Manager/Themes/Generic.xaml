@@ -1,9 +1,9 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:Acadian.Informagator.Manager"
-    xmlns:ctrl="clr-namespace:Acadian.Informagator.Manager.Controls"
-    xmlns:stgedt="clr-namespace:Acadian.Informagator.Manager.Controls.StageEditor"
+    xmlns:local="clr-namespace:Informagator.Manager"
+    xmlns:ctrl="clr-namespace:Informagator.Manager.Controls"
+    xmlns:stgedt="clr-namespace:Informagator.Manager.Controls.StageEditor"
     >
 
 
@@ -129,7 +129,7 @@
                                     <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </Grid>
                                 <ctrl:StageTypePicker Grid.Row="1" x:Name="PART_StageTypePicker" TypeCaption="Stage" HorizontalAlignment="Stretch"
-                                      SelectedAssemblyName="Acadian.Informagator.dll"  />
+                                      SelectedAssemblyName="Informagator.dll"  />
                                 <Grid Grid.Row="2" x:Name="PART_StageParametersGrid" HorizontalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />

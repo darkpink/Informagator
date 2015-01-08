@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Manager.Commands;
-using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.Manager.Commands;
+using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Acadian.Informagator.Manager.Vms
+namespace Informagator.Manager.Vms
 {
     public abstract class EntityEditVmBase<T> : SelectedConfigurationVmBase
     {

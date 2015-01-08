@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Configuration;
+﻿using Informagator.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +6,10 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Acadian.Informagator.Contracts;
-using Acadian.Informagator.ProdProviders.Configuration;
+using Informagator.Contracts;
+using Informagator.ProdProviders.Configuration;
 
-namespace Acadian.Informagator.ProdProviders
+namespace Informagator.ProdProviders
 {
     public class DatabaseConfigurationProvider : IConfigurationProvider
     {
@@ -30,8 +30,8 @@ namespace Acadian.Informagator.ProdProviders
                         {
                             ThreadConfiguration threadConfig = new ThreadConfiguration();
                             threadConfig.Name = t.Name;
-                            threadConfig.ThreadHostTypeAssembly = "Acadian.Informagator.dll";
-                            threadConfig.ThreadHostTypeName = "Acadian.Informagator.Threads.ThreadHost";
+                            threadConfig.ThreadHostTypeAssembly = "Informagator.dll";
+                            threadConfig.ThreadHostTypeName = "Informagator.Threads.ThreadHost";
                             threadConfig.WorkerClassTypeAssembly = t.WorkerAssemblyVersion.AssemblyName;
                             threadConfig.WorkerClassTypeName = t.WorkerType;
 
@@ -71,7 +71,7 @@ namespace Acadian.Informagator.ProdProviders
             }
         }
 
-        private static Machine GetMachineEntity(string hostName, ConfigurationEntities entities)
+        private static Informagator.ProdProviders.Configuration.Machine GetMachineEntity(string hostName, ConfigurationEntities entities)
         {
             var dbHostEntity = entities
                                 .SystemConfigurations

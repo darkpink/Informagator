@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
-using Acadian.Informagator.Contracts;
-using Acadian.Informagator.Configuration;
+using Informagator.Contracts;
+using Informagator.Configuration;
 using System.Net;
 
-namespace Acadian.Informagator.Threads
+namespace Informagator.Threads
 {
     internal class Isolator
     {

@@ -5,7 +5,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Services
+namespace Informagator.Services
 {
     [ServiceContract]
     public interface IAdminService

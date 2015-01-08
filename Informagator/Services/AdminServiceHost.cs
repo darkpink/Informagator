@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Net;
 
-namespace Acadian.Informagator.Services
+namespace Informagator.Services
 {
     internal static class AdminServiceHost
     {

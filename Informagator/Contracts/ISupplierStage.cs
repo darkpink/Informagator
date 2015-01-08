@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Contracts
+namespace Informagator.Contracts
 {
     public interface ISupplierStage : IProcessingStage
     {

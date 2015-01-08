@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.Configuration;
+using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls.StageEditor
 {
     public class AssemblyInspector : MarshalByRefObject
     {

@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders.Configuration
+namespace Informagator.ProdProviders.Configuration
 {
     using System;
     using System.Collections.Generic;

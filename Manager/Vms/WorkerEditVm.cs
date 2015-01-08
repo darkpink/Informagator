@@ -1,14 +1,14 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Editor = Acadian.Informagator.Manager.Controls.StageEditor;
+using Editor = Informagator.Manager.Controls.StageEditor;
 using System.Collections.ObjectModel;
 
-namespace Acadian.Informagator.Manager.Vms
+namespace Informagator.Manager.Vms
 {
     public class WorkerEditVm : EntityEditVmBase<Worker>
     {

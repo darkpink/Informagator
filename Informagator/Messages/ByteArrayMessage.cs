@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Contracts;
+﻿using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Messages
+namespace Informagator.Messages
 {
     public class ByteArrayMessage : MessageBase<byte[]>, IMessage
     {

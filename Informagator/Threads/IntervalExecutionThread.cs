@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Configuration;
+﻿using Informagator.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Threads
+namespace Informagator.Threads
 {
     [Serializable]
     public abstract class IntervalExecutionThread : Worker

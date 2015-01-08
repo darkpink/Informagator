@@ -1,6 +1,6 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Exceptions;
-using Acadian.Informagator.Contracts;
+﻿using Informagator.Configuration;
+using Informagator.Exceptions;
+using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +9,10 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Acadian.Informagator.Services;
+using Informagator.Services;
 using System.ServiceModel;
 
-namespace Acadian.Informagator.Threads
+namespace Informagator.Threads
 {
     internal class ThreadHost : MarshalByRefObject
     {

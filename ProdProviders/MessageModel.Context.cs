@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Acadian.Informagator.ProdProviders
+namespace Informagator.ProdProviders
 {
     using System;
     using System.Data.Entity;

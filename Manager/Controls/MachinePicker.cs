@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Data.Entity;
 
-namespace Acadian.Informagator.Manager.Controls
+namespace Informagator.Manager.Controls
 {
     public class MachinePicker : ComboBox
     {
@@ -27,7 +27,7 @@ namespace Acadian.Informagator.Manager.Controls
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 RefreshMachines();
-                (App.Current as Acadian.Informagator.Manager.App).ActiveSystemConfigurationChanged += RefreshMachines;
+                (App.Current as Manager.App).ActiveSystemConfigurationChanged += RefreshMachines;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Manager.Vms;
+﻿using Informagator.Manager.Vms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Acadian.Informagator.Manager.Commands
+namespace Informagator.Manager.Commands
 {
     public class SaveEntityCommand<T> : ICommand
     {

@@ -32,10 +32,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Acadian.Informagator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Informagator\bin\Debug\Acadian.Informagator.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.dll</HintPath>
@@ -84,6 +80,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Informagator\Informagator.csproj">
+      <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
+      <Name>Informagator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProdProviders\ProdProviders.csproj">
       <Project>{2ae76072-2a5a-4560-b31a-8ebf26c99bbd}</Project>
       <Name>ProdProviders</Name>

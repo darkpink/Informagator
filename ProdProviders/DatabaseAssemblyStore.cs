@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Contracts;
+﻿using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Reflection = System.Reflection;
 using System.IO;
-using Acadian.Informagator.ProdProviders.Configuration;
+using Informagator.ProdProviders.Configuration;
 
-namespace Acadian.Informagator.ProdProviders
+namespace Informagator.ProdProviders
 {
     public class DatabaseAssemblyStore : IAssemblySource
     {

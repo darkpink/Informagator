@@ -1,4 +1,4 @@
-﻿namespace Acadian.Informagator.Service
+﻿namespace Informagator.Service
 {
     partial class ProjectInstaller
     {

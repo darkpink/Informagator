@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Manager.Vms
+namespace Informagator.Manager.Vms
 {
     class ConfigurationEditVm : VmBase
     {

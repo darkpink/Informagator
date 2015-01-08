@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Acadian.Informagator.Manager.Panels
+namespace Informagator.Manager.Panels
 {
     /// <summary>
     /// Interaction logic for ProcessList.xaml

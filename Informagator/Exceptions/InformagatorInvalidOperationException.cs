@@ -5,8 +5,13 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Exceptions
+namespace Informagator.Exceptions
 {
+    /// <summary>
+    /// These exceptions are to be thrown when a code path that isn't suppsed to be reached is hit.  They
+    /// indicate a problem in code.  TODO: decide if I want a property in this exception called IsFatal
+    /// which would cause the thread to gracefully terminate, or should I create another exception type
+    /// </summary>
     [Serializable]
     public class InformagatorInvalidOperationException : InformagatorException
     {

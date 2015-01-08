@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,13 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Manager.Vms
+namespace Informagator.Manager.Vms
 {
-    public class MachineListVm : ListPanelVmBase<Machine>
+    public class MachineListVm : ListPanelVmBase<Informagator.ProdProviders.Configuration.Machine>
     {
-        protected override Machine[] GetEntities()
+        protected override Informagator.ProdProviders.Configuration.Machine[] GetEntities()
         {
-            Machine[] result;
+            Informagator.ProdProviders.Configuration.Machine[] result;
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {

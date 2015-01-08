@@ -1,8 +1,8 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Exceptions;
-using Acadian.Informagator.Contracts;
-using Acadian.Informagator.Messages;
-using Acadian.Informagator.Stages;
+﻿using Informagator.Configuration;
+using Informagator.Exceptions;
+using Informagator.Contracts;
+using Informagator.Messages;
+using Informagator.Stages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.CommonComponents.ConsumerStages
+namespace Informagator.CommonComponents.ConsumerStages
 {
     public class DynamicMessageStoreConsumer : IConsumerStage
     {

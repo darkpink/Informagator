@@ -5,8 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Exceptions
+namespace Informagator.Exceptions
 {
+    ///message exceptions indicate problems with the message - replaying the same message would always
+    ///trigger the same message exception.  So the error should be logged and move on to the next message
     public class MessageException : InformagatorException
     {
         public MessageException()

@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Contracts;
+﻿using Informagator.Configuration;
+using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Manager
+namespace Informagator.Manager
 {
     [Serializable]
     public class ExportedHostConfiguration : IInformagatorConfiguration

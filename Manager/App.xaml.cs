@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Manager.Vms;
-using Acadian.Informagator.ProdProviders;
+﻿using Informagator.Manager.Vms;
+using Informagator.ProdProviders;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Acadian.Informagator.Manager
+namespace Informagator.Manager
 {
     /// <summary>
     /// Interaction logic for App.xaml

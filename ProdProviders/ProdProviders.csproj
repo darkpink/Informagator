@@ -122,6 +122,27 @@
     <Compile Include="TrackedMessageAttribute.cs">
       <DependentUpon>MessageModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Tracking\TrackedMessage.cs">
+      <DependentUpon>TrackingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tracking\TrackedMessageAttribute.cs">
+      <DependentUpon>TrackingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tracking\TrackingModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackingModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tracking\TrackingModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Tracking\TrackingModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TrackingModel.edmx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -160,6 +181,23 @@
       <LastGenOutput>MessageModel.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <EntityDeploy Include="Tracking\TrackingModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>TrackingModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Tracking\TrackingModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrackingModel.edmx</DependentUpon>
+      <LastGenOutput>TrackingModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="Tracking\TrackingModel.edmx.diagram">
+      <DependentUpon>TrackingModel.edmx</DependentUpon>
+    </None>
+    <None Include="Tracking\TrackingModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>TrackingModel.edmx</DependentUpon>
+      <LastGenOutput>TrackingModel.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Informagator\Informagator.csproj">

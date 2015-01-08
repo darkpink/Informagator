@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders;
+﻿using Informagator.ProdProviders;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,11 +11,11 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Service
+namespace Informagator.Service
 {
     public partial class InformagatorService : ServiceBase
     {
-        protected Informagator Informagator { get; set; }
+        protected Machine Informagator { get; set; }
         public InformagatorService()
         {
             InitializeComponent();
@@ -30,7 +30,7 @@ namespace Acadian.Informagator.Service
             }
             Directory.SetCurrentDirectory(newWorkingDirectory);
 
-            Informagator = new Informagator(
+            Informagator = new Machine(
                 new DatabaseConfigurationProvider(),
                 new DatabaseAssemblyStore(),
                 new DatabaseMessageStore(),

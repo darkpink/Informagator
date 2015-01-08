@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Configuration
+namespace Informagator.Configuration
 {
     public class ConfigurationParameterAttribute : Attribute
     {

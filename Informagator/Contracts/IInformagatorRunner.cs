@@ -1,12 +1,12 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Threads;
+﻿using Informagator.Configuration;
+using Informagator.Threads;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Contracts
+namespace Informagator.Contracts
 {
     public interface IInformagatorRunner
     {

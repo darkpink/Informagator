@@ -1,15 +1,16 @@
-﻿using Acadian.Informagator.Contracts;
+﻿using Informagator.Contracts;
+using Informagator.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.ProdProviders
+namespace Informagator.ProdProviders
 {
     public class DatabaseMessageTracker : IMessageTracker
     {
-        public void TrackMessage(Tracking.TrackingInfo info, IMessage message)
+        public void TrackMessage(TrackingInfo info, IMessage message)
         {
             
         }

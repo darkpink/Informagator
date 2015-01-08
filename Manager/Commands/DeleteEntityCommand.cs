@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Acadian.Informagator.Manager.Commands
+namespace Informagator.Manager.Commands
 {
     public class DeleteEntityCommand<TEntity> : ICommand
         where TEntity : class

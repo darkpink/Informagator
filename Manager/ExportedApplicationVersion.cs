@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Manager
+namespace Informagator.Manager
 {
     [Serializable]
     public class ExportedApplicationVersion

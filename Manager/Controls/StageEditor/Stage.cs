@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Acadian.Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls.StageEditor
 {
     public class Stage : DependencyObject, INotifyPropertyChanged
     {

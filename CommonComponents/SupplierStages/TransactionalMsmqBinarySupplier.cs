@@ -1,6 +1,6 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Contracts;
-using Acadian.Informagator.Messages;
+﻿using Informagator.Configuration;
+using Informagator.Contracts;
+using Informagator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.CommonComponents.SupplierStages
+namespace Informagator.CommonComponents.SupplierStages
 {
     public class TransactionalMsmqBinarySupplier : ISupplierStage
     {

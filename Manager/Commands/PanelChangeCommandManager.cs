@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Acadian.Informagator.Manager.Commands
+namespace Informagator.Manager.Commands
 {
     public static class PanelChangeCommandManager
     {

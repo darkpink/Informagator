@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Acadian.Informagator.Manager.Controls
+namespace Informagator.Manager.Controls
 {
     public class TypePicker<T> : Control, INotifyPropertyChanged
     {

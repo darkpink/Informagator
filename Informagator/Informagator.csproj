@@ -7,8 +7,8 @@
     <ProjectGuid>{FAADC037-755C-4FA2-A32B-292AA8F80505}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Acadian.Informagator</RootNamespace>
-    <AssemblyName>Acadian.Informagator</AssemblyName>
+    <RootNamespace>Informagator</RootNamespace>
+    <AssemblyName>Informagator</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -81,7 +81,7 @@
     <Compile Include="Exceptions\ConfigurationException.cs" />
     <Compile Include="Exceptions\InformagatorException.cs" />
     <Compile Include="Exceptions\InformagatorInvalidOperationException.cs" />
-    <Compile Include="Informagator.cs" />
+    <Compile Include="Machine.cs" />
     <Compile Include="Services\InternalService.cs" />
     <Compile Include="Services\InternalServiceClient.cs" />
     <Compile Include="Services\InternalServiceHost.cs" />

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Acadian.Informagator.Manager.Panels
+namespace Informagator.Manager.Panels
 {
     class OldestFileFromFolderSupplier
     {

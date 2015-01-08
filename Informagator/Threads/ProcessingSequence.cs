@@ -1,14 +1,14 @@
-﻿using Acadian.Informagator.Contracts;
-using Acadian.Informagator.Exceptions;
-using Acadian.Informagator.Messages;
-using Acadian.Informagator.Tracking;
+﻿using Informagator.Contracts;
+using Informagator.Exceptions;
+using Informagator.Messages;
+using Informagator.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Stages
+namespace Informagator.Stages
 {
     public class ProcessingSequence
     {

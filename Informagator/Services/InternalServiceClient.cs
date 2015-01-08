@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Contracts;
+﻿using Informagator.Configuration;
+using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Services
+namespace Informagator.Services
 {
     internal class InternalServiceClient : IInternalService, IAssemblySource, IMessageStore, IMessageTracker
     {

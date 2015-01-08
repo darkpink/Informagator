@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Contracts;
-using Acadian.Informagator.Messages;
+﻿using Informagator.Contracts;
+using Informagator.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.CommonComponents.ErrorHandlers
+namespace Informagator.CommonComponents.ErrorHandlers
 {
     [Export(typeof(IMessageErrorHandler))]
     public class IgnoreErrorHandler : IMessageErrorHandler

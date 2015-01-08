@@ -5,8 +5,12 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Exceptions
+namespace Informagator.Exceptions
 {
+    /// <summary>
+    /// Self explanatory: ConfigurationExceptions cause the thread to terminate due to a non-code, non-message
+    /// issue.  A good example would be a parameter for a directory that doesn't exist
+    /// </summary>
     [Serializable]
     public class ConfigurationException : InformagatorException
     {

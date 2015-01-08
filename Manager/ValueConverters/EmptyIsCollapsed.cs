@@ -7,7 +7,7 @@ using System.Windows;
 using System.Collections;
 using System.Windows.Markup;
 
-namespace Acadian.Informagator.Manager.ValueConverters
+namespace Informagator.Manager.ValueConverters
 {
 
     public class EmptyIsCollapsed : MarkupExtension, IValueConverter 

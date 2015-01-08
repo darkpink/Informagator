@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Markup;
 
-namespace Acadian.Informagator.Manager.ValueConverters
+namespace Informagator.Manager.ValueConverters
 {
     public class PassthroughConverter : MarkupExtension, IValueConverter
     {

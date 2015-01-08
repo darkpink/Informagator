@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Manager.Controls.StageEditor;
+﻿using Informagator.Manager.Controls.StageEditor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Acadian.Informagator.Manager.Panels
+namespace Informagator.Manager.Panels
 {
     /// <summary>
     /// Interaction logic for ConfigurationList.xaml

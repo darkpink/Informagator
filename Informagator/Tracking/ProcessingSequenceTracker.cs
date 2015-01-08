@@ -1,11 +1,11 @@
-﻿using Acadian.Informagator.Contracts;
+﻿using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Tracking
+namespace Informagator.Tracking
 {
     public class ProcessingSequenceTracker
     {

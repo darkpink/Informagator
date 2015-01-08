@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.Contracts;
+﻿using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.DevProviders
+namespace Informagator.DevProviders
 {
     [Serializable]
     public class FileSystemAssemblySource : IAssemblySource

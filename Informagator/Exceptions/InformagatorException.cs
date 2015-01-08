@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.Exceptions
+namespace Informagator.Exceptions
 {
     [Serializable]
     public class InformagatorException : Exception

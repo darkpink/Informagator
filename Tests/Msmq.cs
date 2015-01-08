@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Acadian.Informagator.CommonComponents.ConsumerStages;
-using Acadian.Informagator.Messages;
-using Acadian.Informagator.CommonComponents.SupplierStages;
-using Acadian.Informagator.Contracts;
+using Informagator.CommonComponents.ConsumerStages;
+using Informagator.Messages;
+using Informagator.CommonComponents.SupplierStages;
+using Informagator.Contracts;
 
 namespace Tests
 {

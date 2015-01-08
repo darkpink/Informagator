@@ -1,4 +1,4 @@
-﻿using Acadian.Informagator.ProdProviders.Configuration;
+﻿using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Acadian.Informagator.Manager.Controls
+namespace Informagator.Manager.Controls
 {
     public class SystemConfigurationPicker : ComboBox
     {
@@ -26,7 +26,7 @@ namespace Acadian.Informagator.Manager.Controls
             RefreshSystemConfigurations();
             
             if (!DesignerProperties.GetIsInDesignMode(this))
-            (App.Current as Acadian.Informagator.Manager.App).ActiveSystemConfigurationChanged += RefreshSystemConfigurations;
+            (App.Current as Manager.App).ActiveSystemConfigurationChanged += RefreshSystemConfigurations;
 
         }
 

@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.ServiceModel;
 
-namespace Acadian.Informagator.Services
+namespace Informagator.Services
 {
     [ServiceBehavior(ConcurrencyMode=ConcurrencyMode.Single, InstanceContextMode=InstanceContextMode.Single, UseSynchronizationContext=true)]
     internal class AdminService : IAdminService
     {
-        private Informagator Informagator { get; set; }
-        public AdminService(Informagator informagator)
+        private Machine Informagator { get; set; }
+        public AdminService(Machine informagator)
         {
             Informagator = informagator;
         }

@@ -1,5 +1,5 @@
-﻿using Acadian.Informagator.Configuration;
-using Acadian.Informagator.Contracts;
+﻿using Informagator.Configuration;
+using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.DevProviders
+namespace Informagator.DevProviders
 {
     public class HardCodedConfigurationProvider : IConfigurationProvider
     {
@@ -46,18 +46,18 @@ namespace Acadian.Informagator.DevProviders
                         "Demo", 
                         new ThreadConfiguration() {
                             Name = "Demo",
-                            ThreadHostTypeAssembly = "Acadian.Informagator.dll",
-                            ThreadHostTypeName = "Acadian.Informagator.Threads.ThreadHost",
-                            WorkerClassTypeAssembly = "Acadian.Informagator.dll",
-                            WorkerClassTypeName = "Acadian.Informagator.Threads.PollingStageWorker",
-                            RequiredAssemblies = new[] {"Acadian.Informagator.CommonComponents.dll", "Acadian.Informagator.dll" }.ToList(),
+                            ThreadHostTypeAssembly = "Informagator.dll",
+                            ThreadHostTypeName = "Informagator.Threads.ThreadHost",
+                            WorkerClassTypeAssembly = "Informagator.dll",
+                            WorkerClassTypeName = "Informagator.Threads.PollingStageWorker",
+                            RequiredAssemblies = new[] {"Informagator.CommonComponents.dll", "Informagator.dll" }.ToList(),
                             StageConfigurations = new[] { new StageConfiguration()
                                                           { 
-                                                              StageType = "Acadian.Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
-                                                              //StageType = "Acadian.Informagator.CommonComponents.SupplierStages.MessageStoreSupplier",
-                                                              StageAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
+                                                              StageType = "Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
+                                                              //StageType = "Informagator.CommonComponents.SupplierStages.MessageStoreSupplier",
+                                                              StageAssemblyName = "Informagator.CommonComponents.dll",
+                                                              ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
+                                                              ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
                                                               Parameters = new[] { new StageConfigurationParameter() {
                                                                  Name = "FolderPath",
                                                                  Value = @"C:\Demo\Source"}}
@@ -66,19 +66,19 @@ namespace Acadian.Informagator.DevProviders
                                                           },
                                                           new StageConfiguration()
                                                           { 
-                                                              //StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
+                                                              //StageType = "Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
                                                               StageType = "SandboxCustom.AlternatingFolderTransform",
                                                               StageAssemblyName = "SandboxCustom.dll",
-                                                              ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler"
+                                                              ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
+                                                              ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler"
                                                           },
                                                           new StageConfiguration()
                                                           { 
-                                                              //StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
-                                                              StageType = "Acadian.Informagator.CommonComponents.ConsumerStages.DynamicOutputFolderConsumer",
-                                                              StageAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerAssemblyName = "Acadian.Informagator.CommonComponents.dll",
-                                                              ErrorHandlerType = "Acadian.Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
+                                                              //StageType = "Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
+                                                              StageType = "Informagator.CommonComponents.ConsumerStages.DynamicOutputFolderConsumer",
+                                                              StageAssemblyName = "Informagator.CommonComponents.dll",
+                                                              ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
+                                                              ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
                                                               Parameters = new[] { new StageConfigurationParameter() {
                                                                  Name = "FolderPathAttribute",
                                                                  Value = @"FolderName"}}

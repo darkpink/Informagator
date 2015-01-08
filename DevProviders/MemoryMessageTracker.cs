@@ -1,12 +1,12 @@
-﻿using Acadian.Informagator.Contracts;
-using Acadian.Informagator.Tracking;
+﻿using Informagator.Contracts;
+using Informagator.Tracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Acadian.Informagator.DevProviders
+namespace Informagator.DevProviders
 {
     public class MemoryMessageTracker : IMessageTracker
     {
