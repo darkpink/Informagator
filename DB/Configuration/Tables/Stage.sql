@@ -10,8 +10,10 @@
     CONSTRAINT [PK_Stage] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Stage_AssemblyVersion_ErrorHandler] FOREIGN KEY ([ErrorHandlerAssemblyVersionId]) REFERENCES [Configuration].[AssemblyVersion] ([Id]),
     CONSTRAINT [FK_Stage_AssemblyVersion_Stage] FOREIGN KEY ([StageAssemblyVersionId]) REFERENCES [Configuration].[AssemblyVersion] ([Id]),
-    CONSTRAINT [FK_Stage_Thread] FOREIGN KEY ([WorkerId]) REFERENCES [Configuration].[Worker] ([Id])
+    CONSTRAINT [FK_Stage_Thread] FOREIGN KEY ([WorkerId]) REFERENCES [Configuration].[Worker] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 

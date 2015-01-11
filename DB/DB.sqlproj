@@ -63,10 +63,11 @@
     <Folder Include="Configuration\Tables\" />
     <Folder Include="Message\Stored Procedures\" />
     <Folder Include="Security\" />
+    <Folder Include="Tracking\" />
+    <Folder Include="Tracking\Tables\" />
+    <Folder Include="Scripts" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Message\Tables\TrackedMessageAttribute.sql" />
-    <Build Include="Message\Tables\TrackedMessage.sql" />
     <Build Include="Message\Tables\MessageAttribute.sql" />
     <Build Include="Message\Tables\Message.sql" />
     <Build Include="Configuration\Tables\GlobalSettings.sql" />
@@ -81,5 +82,8 @@
     <Build Include="Configuration\Tables\Machine.sql" />
     <Build Include="Configuration\Tables\AssemblySystemConfiguration.sql" />
     <Build Include="Configuration\Tables\ErrorHandlerParameter.sql" />
+    <Build Include="Tracking\Tables\MessageAttribute.sql" />
+    <Build Include="Tracking\Tables\Message.sql" />
+    <Build Include="Security\Tracking.sql" />
   </ItemGroup>
 </Project>

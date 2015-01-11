@@ -7,8 +7,8 @@
     <ProjectGuid>{2AE76072-2A5A-4560-B31A-8EBF26C99BBD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Acadian.Informagator.ProdProviders</RootNamespace>
-    <AssemblyName>Acadian.Informagator.ProdProviders</AssemblyName>
+    <RootNamespace>Informagator.ProdProviders</RootNamespace>
+    <AssemblyName>Informagator.ProdProviders</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

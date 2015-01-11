@@ -17,7 +17,7 @@ namespace SandboxCustom
 
         public IEnumerable<IMessage> TransformMessage(IMessage message)
         {
-            string folderName = sendToOneOrTwo ? @"C:\Demo\Destination\" : @"C:\Demo\Destination2";
+            string folderName = sendToOneOrTwo ? @"C:\Demo\Out\" : @"C:\Demo\Out2";
             sendToOneOrTwo = !sendToOneOrTwo;
             message.Attributes.Add("FolderName", folderName);
             return new[] { message };

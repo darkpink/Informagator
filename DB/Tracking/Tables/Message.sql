@@ -1,4 +1,4 @@
-﻿CREATE TABLE [Message].[TrackedMessage] (
+﻿CREATE TABLE [Tracking].[Message] (
     [Id]                   BIGINT           NOT NULL,
     [TrackDateTime]        DATETIME         NOT NULL,
     [MessageId]            BIGINT           NOT NULL,

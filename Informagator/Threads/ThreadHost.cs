@@ -11,6 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Informagator.Services;
 using System.ServiceModel;
+using Microsoft.Practices.Unity;
+using Microsoft.Practices.Unity.Configuration;
 
 namespace Informagator.Threads
 {
@@ -19,26 +21,33 @@ namespace Informagator.Threads
         protected const int StopTimeoutMilliseconds = 10000;
 
         public IMessageStore MessageStore { get; set; }
-        protected Thread WorkerThread { get; set; }
-        protected IInformagatorWorker WorkerObject { get; set; }
-        protected Type WorkerClass { get; set; }
-        protected ThreadConfiguration WorkerConfiguration { get; set; }
-        protected Exception WorkerThreadException { get; set; }
-        protected AssemblyManager AssemblyManager { get; set; }
         
-        [ProvideToClient(typeof(IMessageStore))]
-        [ProvideToClient(typeof(IMessageTracker))]
-        [ProvideToClient(typeof(IConfigurationSource))]
-        protected internal InternalServiceClient InternalService { get; set; }
+        protected Thread WorkerThread { get; set; }
+        
+        protected IInformagatorWorker WorkerObject { get; set; }
+        
+        protected Type WorkerClass { get; set; }
+        
+        protected ThreadConfiguration WorkerConfiguration { get; set; }
+        
+        protected Exception WorkerThreadException { get; set; }
+
+        protected AssemblyManager AssemblyManager { get; set; }
+
+        protected UnityContainer Container { get; set; }
 
         protected string Name { get; set; }
 
         public ThreadHost(string name)
         {
-            InternalService = new InternalServiceClient();
-            AssemblyManager = new AssemblyManager(InternalService);
+            Container = new UnityContainer();
+            Container.LoadConfiguration();
+
+            //TODO: throw a good exception if either of these resolutions fail
+            AssemblyManager = new AssemblyManager(Container.Resolve<IAssemblySource>());
+            IConfigurationProvider configurationProvider = Container.Resolve<IConfigurationProvider>();
             Name = name;
-            Configuration = InternalService.GetThreadHostConfiguration(Name);
+            Configuration = configurationProvider.Configuration.ThreadConfiguration[Name];
         }
 
         public void Start()
@@ -124,24 +133,12 @@ namespace Informagator.Threads
             }
 
             var dependencyProps = WorkerClass.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
-            var myPropsForClients = this.GetType().GetProperties(BindingFlags.Instance | BindingFlags.NonPublic).Where(pi => pi.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any());
-            Dictionary<Type, object> availableDependencies = new Dictionary<Type, object>();
-            foreach (PropertyInfo pi in myPropsForClients)
-            {
-                var attrs = pi.GetCustomAttributes<ProvideToClientAttribute>();
-                var value = pi.GetValue(this);
-                foreach(ProvideToClientAttribute attr in attrs)
-                {
-                    availableDependencies.Add(attr.InterfaceType, value);
-                }
-            }
-
             foreach (PropertyInfo pi in dependencyProps)
             {
-                if (availableDependencies.ContainsKey(pi.PropertyType))
-                {
-                    pi.SetValue(WorkerObject, availableDependencies[pi.PropertyType]);
-                }
+                //get it from the IoC container for now
+                //TODO: throw a good exception if not found
+                object value = Container.Resolve(pi.PropertyType);
+                pi.SetValue(WorkerObject, value);
             }
 
         }

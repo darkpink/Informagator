@@ -7,8 +7,8 @@
     <ProjectGuid>{56F7837E-E705-4A43-AFBB-3E7CE0F8DC5A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Acadian.Informagator.Service</RootNamespace>
-    <AssemblyName>Acadian.Informagator.Service</AssemblyName>
+    <RootNamespace>Informagator.Service</RootNamespace>
+    <AssemblyName>Informagator.Service</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

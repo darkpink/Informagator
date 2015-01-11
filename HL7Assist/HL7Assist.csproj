@@ -7,8 +7,8 @@
     <ProjectGuid>{ABA634DC-029C-4CE6-A32B-CE0EEA11D970}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Acadian.HL7Assist</RootNamespace>
-    <AssemblyName>Acadian.HL7Assist</AssemblyName>
+    <RootNamespace>Informagator.HL7Assist</RootNamespace>
+    <AssemblyName>Informagator.HL7Assist</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

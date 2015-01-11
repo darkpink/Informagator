@@ -4,8 +4,10 @@
     [Name]    VARCHAR (200) NOT NULL,
     [Value]   VARCHAR (MAX) NULL,
     CONSTRAINT [PK_StageParameter_1] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_StageParameter_Stage] FOREIGN KEY ([StageId]) REFERENCES [Configuration].[Stage] ([Id])
+    CONSTRAINT [FK_StageParameter_Stage] FOREIGN KEY ([StageId]) REFERENCES [Configuration].[Stage] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 GO

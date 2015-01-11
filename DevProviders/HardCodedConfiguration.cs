@@ -25,7 +25,7 @@ namespace Informagator.DevProviders
                 {
                     HardCodedConfiguration config = new HardCodedConfiguration();
                     IDictionary<string, ThreadConfiguration> uncastedStageConfig = config.ThreadConfiguration;
-                    ThreadConfiguration un = uncastedStageConfig["Demo"];
+                    ThreadConfiguration un = uncastedStageConfig["FileMover"];
                     ThreadConfiguration casted = (ThreadConfiguration)un;
                     StageConfiguration stageConfig = casted.StageConfigurations[1] as StageConfiguration;
                     //StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
@@ -43,9 +43,9 @@ namespace Informagator.DevProviders
         {
             config = new Dictionary<string, ThreadConfiguration>() { 
                     {
-                        "Demo", 
+                        "FileMover", 
                         new ThreadConfiguration() {
-                            Name = "Demo",
+                            Name = "FileMover",
                             ThreadHostTypeAssembly = "Informagator.dll",
                             ThreadHostTypeName = "Informagator.Threads.ThreadHost",
                             WorkerClassTypeAssembly = "Informagator.dll",
@@ -60,7 +60,7 @@ namespace Informagator.DevProviders
                                                               ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
                                                               Parameters = new[] { new StageConfigurationParameter() {
                                                                  Name = "FolderPath",
-                                                                 Value = @"C:\Demo\Source"}}
+                                                                 Value = @"C:\Demo\In"}}
                                                                  //Name = "QueueName",
                                                                  //Value = @"Demo"}}
                                                           },

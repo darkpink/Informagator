@@ -44,7 +44,6 @@ namespace Informagator
             Configuration = ConfigurationProvider.Configuration;
             LaunchControlService();
             LaunchInfoService();
-            LaunchInternalService();
             BuildThreads();
             StartThreads();
         }
@@ -90,12 +89,6 @@ namespace Informagator
         {
             RemoteAdminService = new AdminService(this);
             AdminServiceHost.StartService(RemoteAdminService, Configuration.AdminServiceAddress, Configuration.AdminServicePort);
-        }
-
-        private void LaunchInternalService()
-        {
-            InternalService internalService = new InternalService(MessageStore, MessageTracker, AssemblySource, ConfigurationProvider);
-            InternalServiceHost.StartService(internalService);
         }
 
         private void StartThreads()
