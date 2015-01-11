@@ -46,6 +46,7 @@ namespace Informagator.Threads
             InnerThreadDomain = AppDomain.CreateDomain(Configuration.Name);
             ThreadHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName,false, BindingFlags.CreateInstance, null, new object[] {Name}, null, null) as ThreadHost;
             CrossDomainProxy = host;
+            host.MessageStore = MessageStore;
             host.Start();
         }
 

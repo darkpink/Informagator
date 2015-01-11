@@ -50,6 +50,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="CommonComponents\ErrorHandlers\EventLogErrorHandlerTests.cs" />
     <Compile Include="Msmq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

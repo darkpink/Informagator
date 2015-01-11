@@ -22,5 +22,10 @@ namespace SandboxCustom
             message.Attributes.Add("FolderName", folderName);
             return new[] { message };
         }
+
+
+        public void ValidateSettings()
+        {
+        }
     }
 }

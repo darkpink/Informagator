@@ -77,5 +77,11 @@ namespace Informagator.CommonComponents.SupplierStages
         {
             get { return "TransactionalMsmqBinarySupplier"; }
         }
+
+
+        public void ValidateSettings()
+        {
+            //TODO
+        }
     }
 }

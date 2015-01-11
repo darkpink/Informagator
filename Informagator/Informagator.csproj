@@ -56,6 +56,7 @@
     <Compile Include="Contracts\IMessageTracker.cs" />
     <Compile Include="Contracts\IObserverStage.cs" />
     <Compile Include="Contracts\IProcessingStage.cs" />
+    <Compile Include="Contracts\IServerSocketWorker.cs" />
     <Compile Include="Contracts\ISupplierStage.cs" />
     <Compile Include="Contracts\ITransformStage.cs" />
     <Compile Include="Messages\AsciiStringMessage.cs" />

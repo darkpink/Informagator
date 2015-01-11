@@ -12,9 +12,12 @@ namespace Informagator.CommonComponents.ErrorHandlers
     [Export(typeof(IMessageErrorHandler))]
     public class IgnoreErrorHandler : IMessageErrorHandler
     {
-        public void Handle(IMessage message, Exception ex)
+        public void Handle(string info, IMessage message, Exception ex)
         {
-            
+        }
+
+        public void ValidateSettings()
+        {
         }
     }
 }

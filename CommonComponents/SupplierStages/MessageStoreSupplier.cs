@@ -30,7 +30,7 @@ namespace Informagator.CommonComponents.SupplierStages
             return result;
         }
 
-        protected void ValidateSettings()
+        public void ValidateSettings()
         {
             if (MessageStore == null)
             {

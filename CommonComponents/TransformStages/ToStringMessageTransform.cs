@@ -24,5 +24,10 @@ namespace Informagator.CommonComponents.TransformStages
         {
             get { return "ToStringMessageTransform"; }
         }
+
+
+        public void ValidateSettings()
+        {
+        }
     }
 }

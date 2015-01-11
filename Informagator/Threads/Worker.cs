@@ -138,5 +138,10 @@ namespace Informagator.Threads
                          .ToList();
             }
         }
+
+
+        public virtual void ValidateSettings()
+        {
+        }
     }
 }

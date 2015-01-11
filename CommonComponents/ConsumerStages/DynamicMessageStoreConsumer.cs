@@ -28,7 +28,7 @@ namespace Informagator.CommonComponents.ConsumerStages
             return "MessageStore queue " + queueName;
         }
 
-        protected void ValidateSettings()
+        public void ValidateSettings()
         {
             if (MessageStore == null)
             {

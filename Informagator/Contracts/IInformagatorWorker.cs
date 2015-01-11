@@ -12,5 +12,7 @@ namespace Informagator.Contracts
         ThreadConfiguration Configuration { set; }
 
         IList<string> RequiredAssemblies { get; }
+
+        void ValidateSettings();
     }
 }

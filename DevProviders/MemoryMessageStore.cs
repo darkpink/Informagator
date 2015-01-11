@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.DevProviders
 {
+    [Serializable]
     public class MemoryMessageStore : IMessageStore
     {
         protected Dictionary<string, ConcurrentQueue<IMessage>> Queues = new Dictionary<string, ConcurrentQueue<IMessage>>();

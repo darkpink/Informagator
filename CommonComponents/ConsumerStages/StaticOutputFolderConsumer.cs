@@ -34,7 +34,7 @@ namespace Informagator.CommonComponents.ConsumerStages
             return FolderPath;
         }
 
-        protected void ValidateSettings()
+        public void ValidateSettings()
         {
             if (String.IsNullOrWhiteSpace(FolderPath))
             {

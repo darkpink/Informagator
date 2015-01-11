@@ -66,5 +66,11 @@ namespace Informagator.CommonComponents.ConsumerStages
         {
             get { return "StaticTransactionalMsmqBinaryConsumer"; }
         }
+
+
+        public void ValidateSettings()
+        {
+            //TODO
+        }
     }
 }

@@ -9,6 +9,8 @@ namespace Informagator.Contracts
 {
     public interface IMessageErrorHandler
     {
-        void Handle(IMessage message, Exception ex);
+        void Handle(String info, IMessage message, Exception ex);
+
+        void ValidateSettings();
     }
 }

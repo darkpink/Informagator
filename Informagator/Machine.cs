@@ -115,6 +115,7 @@ namespace Informagator
             foreach (string threadName in Configuration.ThreadConfiguration.Keys)
             {
                 var thread = new Isolator();
+                thread.MessageStore = MessageStore;
                 thread.Configuration = Configuration.ThreadConfiguration[threadName];
                 Threads.Add(threadName, thread);
             }

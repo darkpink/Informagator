@@ -18,6 +18,7 @@ namespace Informagator.Threads
     {
         protected const int StopTimeoutMilliseconds = 10000;
 
+        public IMessageStore MessageStore { get; set; }
         protected Thread WorkerThread { get; set; }
         protected IInformagatorWorker WorkerObject { get; set; }
         protected Type WorkerClass { get; set; }
