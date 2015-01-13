@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.Threads
 {
-    internal class AssemblyManager
+    public class AssemblyManager
     {
         private Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
 
@@ -17,6 +17,13 @@ namespace Informagator.Threads
         public AssemblyManager(IAssemblySource assemblySource)
         {
             AssemblySource = assemblySource;
+            AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
+        }
+
+        protected virtual Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            //TODO: make sure this is going to work
+            return GetAssembly(args.Name);
         }
 
         public Assembly GetAssembly(string name)

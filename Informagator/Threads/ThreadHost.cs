@@ -38,6 +38,8 @@ namespace Informagator.Threads
 
         protected string Name { get; set; }
 
+        public Type[] PersistentServices { get; }
+
         public ThreadHost(string name)
         {
             Container = new UnityContainer();
@@ -46,8 +48,10 @@ namespace Informagator.Threads
             //TODO: throw a good exception if either of these resolutions fail
             AssemblyManager = new AssemblyManager(Container.Resolve<IAssemblySource>());
             IConfigurationProvider configurationProvider = Container.Resolve<IConfigurationProvider>();
+            Container.RegisterInstance<AssemblyManager>(AssemblyManager);
             Name = name;
             Configuration = configurationProvider.Configuration.ThreadConfiguration[Name];
+            CreateWorker();
         }
 
         public void Start()
@@ -57,7 +61,6 @@ namespace Informagator.Threads
                 throw new InformagatorInvalidOperationException("Thread can only be started once.  Rebuild it.");
             }
 
-            CreateWorker();
             WorkerThread = new Thread(new ThreadStart(RunWorker));
             WorkerThread.Start();
         }
@@ -127,11 +130,6 @@ namespace Informagator.Threads
             WorkerObject.Name = Name;
             WorkerObject.Configuration = Configuration;
 
-            foreach (string requiredAssembly in WorkerObject.RequiredAssemblies)
-            {
-                AssemblyManager.GetAssembly(requiredAssembly);
-            }
-
             var dependencyProps = WorkerClass.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
             foreach (PropertyInfo pi in dependencyProps)
             {
@@ -140,7 +138,6 @@ namespace Informagator.Threads
                 object value = Container.Resolve(pi.PropertyType);
                 pi.SetValue(WorkerObject, value);
             }
-
         }
     }
 }

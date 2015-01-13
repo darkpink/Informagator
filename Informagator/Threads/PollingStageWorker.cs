@@ -14,6 +14,8 @@ namespace Informagator.Threads
 {
     public class PollingStageWorker : IntervalExecutionThread
     {
+        [HostProvided]
+        public AssemblyManager AssemblyManager { get; set; }
         protected ProcessingSequence Stages { get; set; }
 
         protected override void OnInitialize()
@@ -27,11 +29,11 @@ namespace Informagator.Threads
             
             foreach (StageConfiguration stageConfig in Configuration.StageConfigurations)
             {
-                Assembly[] loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
-                Assembly stageTypeAssembly = loadedAssemblies.Single(a => a.ManifestModule.ScopeName == stageConfig.StageAssemblyName);
+                //TODO create something in AssemblyManager like GetType();
+                Assembly stageTypeAssembly = AssemblyManager.GetAssembly(stageConfig.StageAssemblyName);
                 Type stageType = stageTypeAssembly.GetType(stageConfig.StageType);
                 
-                Assembly errorHandlerAssembly = loadedAssemblies.Single(a => a.ManifestModule.ScopeName == stageConfig.ErrorHandlerAssemblyName);
+                Assembly errorHandlerAssembly = AssemblyManager.GetAssembly(stageConfig.ErrorHandlerAssemblyName);
                 Type errorHandlerType = errorHandlerAssembly.GetType(stageConfig.ErrorHandlerType);
                 IMessageErrorHandler errorHandler = Activator.CreateInstance(errorHandlerType) as IMessageErrorHandler;
 
