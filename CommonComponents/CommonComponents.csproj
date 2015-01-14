@@ -48,6 +48,10 @@
     <Compile Include="ConsumerStages\StaticOutputFolderConsumer.cs" />
     <Compile Include="ErrorHandlers\EventLogErrorHandler.cs" />
     <Compile Include="ErrorHandlers\LogFileErrorHandler.cs" />
+    <Compile Include="PersistentServices\PersistentServiceBase.cs" />
+    <Compile Include="PersistentServices\PersistentServiceConfiguration.cs" />
+    <Compile Include="PersistentServices\SocketClientPersistentService.cs" />
+    <Compile Include="PersistentServices\SocketClientPersistentServiceConfiguration.cs" />
     <Compile Include="SupplierStages\MessageStoreSupplier.cs" />
     <Compile Include="SupplierStages\TransactionalMsmqBinarySupplier.cs" />
     <Compile Include="SupplierStages\OldestFileFromFolderSupplier.cs" />

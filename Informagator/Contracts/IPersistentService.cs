@@ -20,4 +20,10 @@ namespace Informagator.Contracts
 
         void Resume();
     }
+
+    public interface IPersistentService<TConfig> : IPersistentService
+        where TConfig : IPersistentServiceConfiguration
+    {
+        TConfig Configuration { set; }
+    }
 }

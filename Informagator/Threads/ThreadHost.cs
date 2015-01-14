@@ -42,14 +42,18 @@ namespace Informagator.Threads
         { 
             get
             {
-                IPersistentServiceSignature[] result = null;
+                IPersistentServiceSignature[] result;
 
                 if (WorkerObject is IPersistentServiceClient)
                 {
                     result = ((IPersistentServiceClient)WorkerObject).RequiredPersistentServices;
                 }
+                else
+                {
+                    result = new IPersistentServiceSignature[0];
+                }
 
-                    return result;
+                return result;
             }
         }
 
