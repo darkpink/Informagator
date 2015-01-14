@@ -55,7 +55,7 @@ namespace Informagator.Threads
         protected virtual void StartPersistentServices()
         {
             var currentSignatures = PersistentServices.Select(s => s.Signature);
-            var desiredSignatures = CrossDomainProxy.PersistentServices.Select(s => s.Signature);
+            var desiredSignatures = CrossDomainProxy.RequiredPersistentServices;
 
             //need to shut off any that we don't need first - they may be holding a resource that a new will will
             //need (like a server port or something)
@@ -65,7 +65,7 @@ namespace Informagator.Threads
                 PersistentServices.Remove(svc);
             }
 
-            foreach(IPersistentService svc in CrossDomainProxy.PersistentServices.Where(s => !currentSignatures.Contains(s.Signature)).ToList())
+            foreach(IPersistentService svc in CrossDomainProxy.RequiredPersistentServices.Where(s => !currentSignatures.Contains(s)).ToList())
             {
                 
             }

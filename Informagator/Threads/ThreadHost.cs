@@ -38,7 +38,20 @@ namespace Informagator.Threads
 
         protected string Name { get; set; }
 
-        public Type[] PersistentServices { get; }
+        public IPersistentServiceSignature[] RequiredPersistentServices 
+        { 
+            get
+            {
+                IPersistentServiceSignature[] result = null;
+
+                if (WorkerObject is IPersistentServiceClient)
+                {
+                    result = ((IPersistentServiceClient)WorkerObject).RequiredPersistentServices;
+                }
+
+                    return result;
+            }
+        }
 
         public ThreadHost(string name)
         {

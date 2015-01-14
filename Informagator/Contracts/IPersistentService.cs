@@ -8,6 +8,7 @@ namespace Informagator.Contracts
 {
     public interface IPersistentService
     {
+        IPersistentServiceSignature Signature { get; }
 
         void Start();
 

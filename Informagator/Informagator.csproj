@@ -67,6 +67,7 @@
     <Compile Include="Contracts\IMessageTracker.cs" />
     <Compile Include="Contracts\IObserverStage.cs" />
     <Compile Include="Contracts\IPersistentService.cs" />
+    <Compile Include="Contracts\IPersistentServiceClient.cs" />
     <Compile Include="Contracts\IPersistentServiceSignature.cs" />
     <Compile Include="Contracts\IProcessingStage.cs" />
     <Compile Include="Contracts\IServerSocketWorker.cs" />
