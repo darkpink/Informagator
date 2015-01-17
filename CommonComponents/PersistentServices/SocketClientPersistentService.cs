@@ -9,29 +9,5 @@ namespace Informagator.CommonComponents.PersistentServices
 {
     public class SocketClientPersistentService : PersistentServiceBase<SocketClientPersistentServiceConfiguration>
     {
-        protected SocketClientPersistentServiceConfiguration Configuration { get; set; }
-        public IPersistentServiceSignature Signature
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public void Start()
-        {
-        }
-
-        public void Stop()
-        {
-        }
-
-        public void Suspend()
-        {
-        }
-
-        public void Resume()
-        {
-        }
     }
 }

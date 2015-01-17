@@ -1,5 +1,5 @@
-﻿using Informagator.Configuration;
-using Informagator.Contracts;
+﻿using Informagator.Contracts;
+using Informagator.Contracts.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Informagator.Manager
 {
     [Serializable]
-    public class ExportedHostConfiguration : IInformagatorConfiguration
+    public class ExportedHostConfiguration : IMachineConfiguration
     {
         public string HostName { get; set; }
 
@@ -26,7 +26,7 @@ namespace Informagator.Manager
 
         public string InfoServiceGroup { get; set; }
 
-        public Dictionary<string, ThreadConfiguration> ThreadConfiguration { get; set; }
+        public IDictionary<string, IThreadConfiguration> ThreadConfiguration { get; set; }
 
     }
 }

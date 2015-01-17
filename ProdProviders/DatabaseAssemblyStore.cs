@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Reflection = System.Reflection;
 using System.IO;
 using Informagator.ProdProviders.Configuration;
+using Informagator.Contracts.Providers;
 
 namespace Informagator.ProdProviders
 {
-    public class DatabaseAssemblyStore : IAssemblySource
+    public class DatabaseAssemblyStore : IAssemblyProvider
     {
         public byte[] GetAssemblyBinary(string assemblyName)
         {

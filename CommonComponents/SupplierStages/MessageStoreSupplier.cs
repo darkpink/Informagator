@@ -1,14 +1,14 @@
-﻿using Informagator.Configuration;
-using Informagator.Exceptions;
-using Informagator.Contracts;
-using Informagator.Messages;
-using Informagator.Stages;
+﻿using Informagator.Contracts;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Informagator.Contracts.Exceptions;
+using Informagator.Contracts.Attributes;
+using Informagator.Contracts.Stages;
+using Informagator.Contracts.WorkerServices;
 
 namespace Informagator.CommonComponents.SupplierStages
 {

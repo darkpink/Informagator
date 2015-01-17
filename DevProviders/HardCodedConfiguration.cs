@@ -1,5 +1,7 @@
-﻿using Informagator.Configuration;
-using Informagator.Contracts;
+﻿using Informagator.Contracts;
+using Informagator.Contracts.Configuration;
+using Informagator.Contracts.Providers;
+using Informagator.DevProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,10 @@ namespace Informagator.DevProviders
     public class HardCodedConfigurationProvider : IConfigurationProvider
     {
         bool first = true;
-        public IInformagatorConfiguration Configuration
+
+        public string MachineName { protected get; set; }
+
+        public IMachineConfiguration Configuration
         {
             get
             {
@@ -24,10 +29,10 @@ namespace Informagator.DevProviders
                 else
                 {
                     HardCodedConfiguration config = new HardCodedConfiguration();
-                    IDictionary<string, ThreadConfiguration> uncastedStageConfig = config.ThreadConfiguration;
-                    ThreadConfiguration un = uncastedStageConfig["FileMover"];
-                    ThreadConfiguration casted = (ThreadConfiguration)un;
-                    StageConfiguration stageConfig = casted.StageConfigurations[1] as StageConfiguration;
+                    IDictionary<string, IThreadConfiguration> uncastedStageConfig = config.ThreadConfiguration;
+                    IThreadConfiguration un = uncastedStageConfig["FileMover"];
+                    HardCodedThreadConfiguration casted = (HardCodedThreadConfiguration)un;
+                    HardCodedStageConfiguration stageConfig = casted.StageConfigurations[1] as HardCodedStageConfiguration;
                     //StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
                     //configParam.Value = @"E:\tst\Dest2";
                     return config;
@@ -36,35 +41,35 @@ namespace Informagator.DevProviders
         }
     }
     
-    public class HardCodedConfiguration : IInformagatorConfiguration
+    public class HardCodedConfiguration : IMachineConfiguration
     {
-        private Dictionary<string, ThreadConfiguration> config {get; set;}
+        private IDictionary<string, IThreadConfiguration> config {get; set;}
         public HardCodedConfiguration()
         {
-            config = new Dictionary<string, ThreadConfiguration>() { 
+            config = new Dictionary<string, IThreadConfiguration>() { 
                     {
                         "FileMover", 
-                        new ThreadConfiguration() {
+                        new HardCodedThreadConfiguration() {
                             Name = "FileMover",
                             ThreadHostTypeAssembly = "Informagator.dll",
                             ThreadHostTypeName = "Informagator.Threads.ThreadHost",
                             WorkerClassTypeAssembly = "Informagator.dll",
                             WorkerClassTypeName = "Informagator.Threads.PollingStageWorker",
                             RequiredAssemblies = new[] {"Informagator.CommonComponents.dll", "Informagator.dll" }.ToList(),
-                            StageConfigurations = new[] { new StageConfiguration()
+                            StageConfigurations = new[] { new HardCodedStageConfiguration()
                                                           { 
                                                               StageType = "Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
                                                               //StageType = "Informagator.CommonComponents.SupplierStages.MessageStoreSupplier",
                                                               StageAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
-                                                              Parameters = new[] { new StageConfigurationParameter() {
+                                                              Parameters = new[] { new HardCodedStageConfigurationParameter() {
                                                                  Name = "FolderPath",
                                                                  Value = @"C:\Demo\In"}}
                                                                  //Name = "QueueName",
                                                                  //Value = @"Demo"}}
                                                           },
-                                                          new StageConfiguration()
+                                                          new HardCodedStageConfiguration()
                                                           { 
                                                               //StageType = "Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
                                                               StageType = "SandboxCustom.AlternatingFolderTransform",
@@ -72,18 +77,18 @@ namespace Informagator.DevProviders
                                                               ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler"
                                                           },
-                                                          new StageConfiguration()
+                                                          new HardCodedStageConfiguration()
                                                           { 
                                                               //StageType = "Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
                                                               StageType = "Informagator.CommonComponents.ConsumerStages.DynamicOutputFolderConsumer",
                                                               StageAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
-                                                              Parameters = new[] { new StageConfigurationParameter() {
+                                                              Parameters = new[] { new HardCodedStageConfigurationParameter() {
                                                                  Name = "FolderPathAttribute",
                                                                  Value = @"FolderName"}}
                                                           }
-                                                        }.ToList()
+                                                        }.OfType<IStageConfiguration>().ToList()
                         }
                     } };
 
@@ -94,7 +99,7 @@ namespace Informagator.DevProviders
             get { return "LocalInformagator"; }
         }
 
-        public Dictionary<string, ThreadConfiguration> ThreadConfiguration
+        public IDictionary<string, IThreadConfiguration> ThreadConfiguration
         {
             get 
             {

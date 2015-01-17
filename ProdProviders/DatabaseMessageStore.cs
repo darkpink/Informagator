@@ -1,10 +1,11 @@
 ﻿using Informagator.Contracts;
-using Informagator.Messages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
+using Informagator.Contracts.WorkerServices;
 
 namespace Informagator.ProdProviders
 {
@@ -23,16 +24,15 @@ namespace Informagator.ProdProviders
 
         public IMessage Dequeue(string queueName)
         {
-            ByteArrayMessage result = null;
+            DatabaseMessage result = null;
 
             using (MessageEntities entities = new MessageEntities())
             {
                 long? messageId = entities.Dequeue(queueName).SingleOrDefault();
                 if (messageId != null)
                 {
-                    Message message = entities.Messages.Single(m => m.Id == messageId);
-                    result = new ByteArrayMessage();
-                    result.Body = Encoding.ASCII.GetBytes(message.Body);
+                    Message message = entities.Messages.Include(m => m.MessageAttributes).Single(m => m.Id == messageId);
+                    result = new DatabaseMessage(message);
                 }
             }
 

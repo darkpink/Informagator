@@ -1,5 +1,4 @@
-﻿using Informagator.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,17 +7,21 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using Informagator.Contracts;
 using Informagator.ProdProviders.Configuration;
+using Informagator.Contracts.Configuration;
+using Informagator.Contracts.Providers;
 
 namespace Informagator.ProdProviders
 {
     public class DatabaseConfigurationProvider : IConfigurationProvider
     {
-        public IInformagatorConfiguration Configuration
+        public string MachineName { protected get; set; }
+        public IMachineConfiguration Configuration
         {
             get
             {
-                string hostName = Dns.GetHostName();
-                InformagatorConfiguration config = new InformagatorConfiguration(hostName);
+                string hostName = MachineName ?? Dns.GetHostName();
+
+                DatabaseInformagatorConfiguration config = new DatabaseInformagatorConfiguration(hostName);
 
                 using (ConfigurationEntities entities = new ConfigurationEntities())
                 {
@@ -28,7 +31,7 @@ namespace Informagator.ProdProviders
                     {
                         foreach (Worker t in dbHostEntity.Workers)
                         {
-                            ThreadConfiguration threadConfig = new ThreadConfiguration();
+                            DatabaseThreadConfiguration threadConfig = new DatabaseThreadConfiguration();
                             threadConfig.Name = t.Name;
                             threadConfig.ThreadHostTypeAssembly = "Informagator.dll";
                             threadConfig.ThreadHostTypeName = "Informagator.Threads.ThreadHost";
@@ -37,7 +40,7 @@ namespace Informagator.ProdProviders
 
                             foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
                             {
-                                StageConfiguration stageConfig = new StageConfiguration();
+                                DatabaseStageConfiguration stageConfig = new DatabaseStageConfiguration();
                                 stageConfig.StageAssemblyName = s.StageAssemblyVersion.AssemblyName;
                                 stageConfig.StageType = s.StageType;
                                 stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyVersion.AssemblyName;
@@ -45,7 +48,7 @@ namespace Informagator.ProdProviders
 
                                 foreach (StageParameter p in s.StageParameters)
                                 {
-                                    StageConfigurationParameter stageParam = new StageConfigurationParameter();
+                                    DatabaseStageConfigurationParameter stageParam = new DatabaseStageConfigurationParameter();
                                     stageParam.Name = p.Name;
                                     stageParam.Value = p.Value;
                                     stageConfig.Parameters.Add(stageParam);

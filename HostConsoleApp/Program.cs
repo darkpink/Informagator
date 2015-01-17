@@ -1,5 +1,6 @@
-﻿using Informagator.DevProviders;
-using Informagator.Messages;
+﻿using Informagator.Contracts;
+using Informagator.DevProviders;
+using Informagator.Machine;
 using Informagator.ProdProviders;
 using System;
 using System.Collections.Generic;
@@ -15,12 +16,10 @@ namespace HostConsoleApp
         static void Main(string[] args)
         {
             MemoryMessageStore store = new MemoryMessageStore();
-            store.Enqueue("Demo", new AsciiStringMessage() { Body = "asdfasdf" });
 
-            Informagator.Machine i = new Informagator.Machine(new DatabaseConfigurationProvider(),
-                                                            new FileSystemAssemblySource(),
-                                                            store,
-                                                            new MemoryMessageTracker());
+            string machineNameOverride = args.Length > 0 ? args[0] : null;
+
+            IMachine i = new DefaultMachine(machineNameOverride);
             i.Start();
             Console.ReadLine();
             //i.ReloadConfiguration();

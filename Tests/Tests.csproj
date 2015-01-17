@@ -59,6 +59,10 @@
       <Project>{f3a4a04c-11ea-490e-8a81-81181d9b3305}</Project>
       <Name>CommonComponents</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DevProviders\DevProviders.csproj">
       <Project>{469958f3-cf0b-4251-a5b5-4e1c19295872}</Project>
       <Name>DevProviders</Name>
@@ -66,10 +70,6 @@
     <ProjectReference Include="..\HostConsoleApp\HostConsoleApp.csproj">
       <Project>{372ec698-da54-420c-a36e-39ee22975c07}</Project>
       <Name>HostConsoleApp</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Informagator\Informagator.csproj">
-      <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
-      <Name>Informagator</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProdProviders\ProdProviders.csproj">
       <Project>{2ae76072-2a5a-4560-b31a-8ebf26c99bbd}</Project>

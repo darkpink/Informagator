@@ -1,5 +1,5 @@
 ﻿using Informagator.Contracts;
-using Informagator.Tracking;
+using Informagator.Contracts.WorkerServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ namespace Informagator.ProdProviders
 {
     public class DatabaseMessageTracker : IMessageTracker
     {
-        public void TrackMessage(TrackingInfo info, IMessage message)
+        public void TrackMessage(ITrackingInfo info, IMessage message)
         {
             
         }

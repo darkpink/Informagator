@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Informagator.CommonComponents.ConsumerStages;
-using Informagator.Messages;
 using Informagator.CommonComponents.SupplierStages;
 using Informagator.Contracts;
+using Informagator.CommonComponents.Messages;
 
 namespace Tests
 {

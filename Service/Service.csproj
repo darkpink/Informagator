@@ -80,9 +80,13 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Informagator\Informagator.csproj">
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Machine\Machine.csproj">
       <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
-      <Name>Informagator</Name>
+      <Name>Machine</Name>
     </ProjectReference>
     <ProjectReference Include="..\ProdProviders\ProdProviders.csproj">
       <Project>{2ae76072-2a5a-4560-b31a-8ebf26c99bbd}</Project>

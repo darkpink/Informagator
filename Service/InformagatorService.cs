@@ -1,4 +1,5 @@
 ﻿using Informagator.ProdProviders;
+using Informagator.Machine;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,12 +11,13 @@ using System.Reflection;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
+using Informagator.Contracts;
 
 namespace Informagator.Service
 {
     public partial class InformagatorService : ServiceBase
     {
-        protected Machine Informagator { get; set; }
+        protected Informagator.Machine.DefaultMachine Informagator { get; set; }
         public InformagatorService()
         {
             InitializeComponent();
@@ -30,12 +32,9 @@ namespace Informagator.Service
             }
             Directory.SetCurrentDirectory(newWorkingDirectory);
 
-            Informagator = new Machine(
-                new DatabaseConfigurationProvider(),
-                new DatabaseAssemblyStore(),
-                new DatabaseMessageStore(),
-                new DatabaseMessageTracker()
-                );
+            string machineNameOverride = args.Length > 0 ? args[0] : null;
+
+            IMachine i = new DefaultMachine(machineNameOverride);
             Informagator.Start();
         }
 

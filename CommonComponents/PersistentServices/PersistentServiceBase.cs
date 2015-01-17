@@ -1,4 +1,6 @@
 ﻿using Informagator.Contracts;
+using Informagator.Contracts.Configuration;
+using Informagator.Contracts.PersistentServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;

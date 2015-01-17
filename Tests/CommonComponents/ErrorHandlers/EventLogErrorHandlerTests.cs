@@ -1,5 +1,5 @@
 ﻿using Informagator.CommonComponents.ErrorHandlers;
-using Informagator.Messages;
+using Informagator.CommonComponents.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

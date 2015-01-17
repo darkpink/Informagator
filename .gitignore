@@ -34,6 +34,8 @@ Icon
 .Spotlight-V100
 .Trashes
 
+Contracts/bin/
+Contracts/obj/
 CommonComponents/bin/
 CommonComponents/obj/
 DevProviders/bin/
@@ -41,8 +43,8 @@ DevProviders/obj/
 HostConsoleApp/bin/
 HostConsoleApp/obj/
 Informagator.v12.suo
-Informagator/bin/
-Informagator/obj/
+Machine/bin/
+Machine/obj/
 packages/
 ProdProviders/bin/
 ProdProviders/obj/

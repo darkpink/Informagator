@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Informagator.Manager.Controls
 {
-    public class WorkerTypePicker : TypePicker<IInformagatorWorker>
+    public class WorkerTypePicker : TypePicker<IWorker>
     {
         static WorkerTypePicker()
         {

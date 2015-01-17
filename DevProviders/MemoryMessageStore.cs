@@ -1,5 +1,5 @@
 ﻿using Informagator.Contracts;
-using Informagator.Messages;
+using Informagator.Contracts.WorkerServices;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

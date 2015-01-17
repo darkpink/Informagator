@@ -1,6 +1,4 @@
-﻿using Informagator.Configuration;
-using Informagator.ProdProviders.Configuration;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;

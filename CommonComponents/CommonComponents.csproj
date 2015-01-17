@@ -48,6 +48,10 @@
     <Compile Include="ConsumerStages\StaticOutputFolderConsumer.cs" />
     <Compile Include="ErrorHandlers\EventLogErrorHandler.cs" />
     <Compile Include="ErrorHandlers\LogFileErrorHandler.cs" />
+    <Compile Include="Messages\AsciiStringMessage.cs" />
+    <Compile Include="Messages\ByteArrayMessage.cs" />
+    <Compile Include="Messages\MessageBase.cs" />
+    <Compile Include="Messages\XmlMessage.cs" />
     <Compile Include="PersistentServices\PersistentServiceBase.cs" />
     <Compile Include="PersistentServices\PersistentServiceConfiguration.cs" />
     <Compile Include="PersistentServices\SocketClientPersistentService.cs" />
@@ -57,12 +61,19 @@
     <Compile Include="SupplierStages\OldestFileFromFolderSupplier.cs" />
     <Compile Include="ErrorHandlers\IgnoreErrorHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tracking\ProcessingSequenceTracker.cs" />
+    <Compile Include="Tracking\TrackingInfo.cs" />
     <Compile Include="TransformStages\ToStringMessageTransform.cs" />
+    <Compile Include="Workers\InformagatorThreadStatus.cs" />
+    <Compile Include="Workers\IntervalExecutionThread.cs" />
+    <Compile Include="Workers\PollingStageWorker.cs" />
+    <Compile Include="Workers\ProcessingSequence.cs" />
+    <Compile Include="Workers\Worker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Informagator\Informagator.csproj">
-      <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
-      <Name>Informagator</Name>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

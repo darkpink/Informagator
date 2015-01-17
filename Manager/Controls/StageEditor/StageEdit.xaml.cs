@@ -1,4 +1,5 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.Contracts.Stages;
+using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -370,7 +371,7 @@ namespace Informagator.Manager.Controls.StageEditor
             PART_StageTypePicker.SelectedTypeChanged += PART_StageTypePicker_SelectedTypeChanged;
         }
 
-        void PART_StageTypePicker_SelectedTypeChanged(TypePicker<Contracts.IProcessingStage> obj)
+        void PART_StageTypePicker_SelectedTypeChanged(TypePicker<IProcessingStage> obj)
         {
             if (PART_StageTypePicker.SelectedType != null)
             {

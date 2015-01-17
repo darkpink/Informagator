@@ -1,5 +1,6 @@
-﻿using Informagator.Contracts;
-using Informagator.Messages;
+﻿using Informagator.CommonComponents.Messages;
+using Informagator.Contracts;
+using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

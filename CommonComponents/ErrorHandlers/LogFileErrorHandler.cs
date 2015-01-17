@@ -1,6 +1,6 @@
-﻿using Informagator.Configuration;
-using Informagator.Contracts;
-using Informagator.Exceptions;
+﻿using Informagator.Contracts;
+using Informagator.Contracts.Attributes;
+using Informagator.Contracts.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IO;

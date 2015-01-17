@@ -1,8 +1,8 @@
-﻿using Informagator.Configuration;
-using Informagator.Exceptions;
-using Informagator.Contracts;
-using Informagator.Messages;
-using Informagator.Stages;
+﻿using Informagator.Contracts;
+using Informagator.Contracts.Attributes;
+using Informagator.Contracts.Exceptions;
+using Informagator.Contracts.Stages;
+using Informagator.Contracts.WorkerServices;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;

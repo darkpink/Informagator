@@ -1,4 +1,5 @@
 ﻿using Informagator.Contracts;
+using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,5 @@ namespace Informagator.Manager.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StageTypePicker), new FrameworkPropertyMetadata(typeof(StageTypePicker)));
             FocusableProperty.OverrideMetadata(typeof(StageTypePicker), new FrameworkPropertyMetadata(false));
         }
-
-
     }
 }

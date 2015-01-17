@@ -1,5 +1,4 @@
 ﻿using Informagator.Contracts;
-using Informagator.Messages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;

@@ -43,9 +43,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Informagator\Informagator.csproj">
-      <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
-      <Name>Informagator</Name>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

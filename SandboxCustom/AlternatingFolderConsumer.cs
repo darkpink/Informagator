@@ -1,4 +1,5 @@
 ﻿using Informagator.Contracts;
+using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
 using System.Linq;

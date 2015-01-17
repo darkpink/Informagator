@@ -1,5 +1,6 @@
-﻿using Informagator.Configuration;
-using Informagator.Contracts;
+﻿using Informagator.Contracts;
+using Informagator.Contracts.Attributes;
+using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
 using System.IO;

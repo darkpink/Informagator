@@ -1,4 +1,4 @@
-﻿using Informagator.Configuration;
+﻿using Informagator.Contracts.Attributes;
 using Informagator.ProdProviders.Configuration;
 using System;
 using System.Collections.Generic;

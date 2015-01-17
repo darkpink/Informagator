@@ -75,23 +75,28 @@
     <Compile Include="Configuration\GlobalSetting.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\DatabaseInformagatorConfiguration.cs" />
     <Compile Include="Configuration\Machine.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Configuration\Stage.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\StageConfiguration.cs" />
+    <Compile Include="Configuration\StageConfigurationParameter.cs" />
     <Compile Include="Configuration\StageParameter.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Configuration\SystemConfiguration.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\DatabaseThreadConfiguration.cs" />
     <Compile Include="Configuration\Worker.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DatabaseAssemblyStore.cs" />
     <Compile Include="DatabaseConfigurationProvider.cs" />
+    <Compile Include="DatabaseMessage.cs" />
     <Compile Include="DatabaseMessageStore.cs" />
     <Compile Include="DatabaseMessageTracker.cs" />
     <Compile Include="Message.cs">
@@ -200,9 +205,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Informagator\Informagator.csproj">
-      <Project>{faadc037-755c-4fa2-a32b-292aa8f80505}</Project>
-      <Name>Informagator</Name>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

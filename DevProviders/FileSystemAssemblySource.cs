@@ -1,4 +1,5 @@
 ﻿using Informagator.Contracts;
+using Informagator.Contracts.Providers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.DevProviders
 {
-    [Serializable]
-    public class FileSystemAssemblySource : IAssemblySource
+    public class FileSystemAssemblySource : IAssemblyProvider
     {
         public byte[] GetAssemblyBinary(string assemblyName)
         {
