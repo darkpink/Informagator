@@ -14,6 +14,8 @@ namespace Informagator.Manager
     {
         public string HostName { get; set; }
 
+        public string IPAddress { get; set; }
+
         public IPAddress AdminServiceAddress { get; set; }
 
         public int AdminServicePort { get; set; }

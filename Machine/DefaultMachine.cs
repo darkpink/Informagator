@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Informagator.Machine
 {
     public class DefaultMachine : IMachine
     {
+        public string MachineName { get; protected set; }
+        
         internal Dictionary<string, HostIsolator> Threads { get; set; }
 
         protected IMachineConfiguration Configuration { get; set; }
@@ -36,11 +39,22 @@ namespace Informagator.Machine
 
             AssemblySource = Container.Resolve<IAssemblyProvider>();
             ConfigurationProvider = Container.Resolve<IConfigurationProvider>();
+
+            MachineName = machineName ?? DetectMachineName();
+        }
+
+        protected virtual string DetectMachineName()
+        {
+            string result = null;
+
+            result = Environment.MachineName;
+
+            return result;
         }
 
         public void Start()
         {
-            Configuration = ConfigurationProvider.Configuration;
+            Configuration = ConfigurationProvider.GetMachineConfiguration(MachineName);
             LaunchControlService();
             LaunchInfoService();
             BuildThreads();
@@ -49,7 +63,7 @@ namespace Informagator.Machine
 
         public void ReloadConfiguration()
         {
-            IMachineConfiguration newConfiguration = ConfigurationProvider.Configuration;
+            IMachineConfiguration newConfiguration = ConfigurationProvider.GetMachineConfiguration(MachineName);
 
             foreach (string newThreadName in newConfiguration.ThreadConfiguration.Keys.Except(Configuration.ThreadConfiguration.Keys))
             {
@@ -68,8 +82,7 @@ namespace Informagator.Machine
                     HostIsolator thread = Threads[existingThreadName];
                     thread.Stop();
                     Threads.Remove(existingThreadName);
-                    thread = new HostIsolator();
-                    thread.Configuration = newThreadConfig;
+                    thread = new HostIsolator(MachineName, newThreadConfig);
                     thread.Start();
                     Threads.Add(existingThreadName, thread);
                 }
@@ -81,13 +94,13 @@ namespace Informagator.Machine
         private void LaunchInfoService()
         {
             RemoteInfoService = new InfoService(this);
-            InfoServiceHost.StartService(RemoteInfoService, Configuration.InfoServiceAddress, Configuration.InfoServicePort);
+            InfoServiceHost.StartService(RemoteInfoService, Configuration.InfoServicePort);
         }
 
         private void LaunchControlService()
         {
             RemoteAdminService = new AdminService(this);
-            AdminServiceHost.StartService(RemoteAdminService, Configuration.AdminServiceAddress, Configuration.AdminServicePort);
+            AdminServiceHost.StartService(RemoteAdminService, Configuration.AdminServicePort);
         }
 
         private void StartThreads()
@@ -102,12 +115,11 @@ namespace Informagator.Machine
         {
             Threads = new Dictionary<string, HostIsolator>();
 
-            Configuration = ConfigurationProvider.Configuration;
+            Configuration = ConfigurationProvider.GetMachineConfiguration(MachineName);
 
             foreach (string threadName in Configuration.ThreadConfiguration.Keys)
             {
-                var thread = new HostIsolator();
-                thread.Configuration = Configuration.ThreadConfiguration[threadName];
+                var thread = new HostIsolator(MachineName, Configuration.ThreadConfiguration[threadName]);
                 Threads.Add(threadName, thread);
             }
         }

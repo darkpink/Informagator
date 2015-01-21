@@ -11,20 +11,9 @@ when not matched by target then
 INSERT (Description, IsActive, EffectiveDttm) VALUES ('Development', 1, current_timestamp);
 
 merge configuration.AssemblyVersion as t
-using (select 'Informagator.dll' AssemblyName, '1.0.0.0' AssemblyDotNetVersion, current_timestamp LoadDttm, Exe.BulkColumn Executable, Pdb.BulkColumn DebuggingSymbols
-from OPENROWSET(BULK N'C:\Users\william.king\Desktop\Inf\Informagator-master\Informagator\bin\Debug\Informagator.dll', SINGLE_BLOB) as Exe
-full outer join OPENROWSET(BULK N'C:\Users\william.king\Desktop\Inf\Informagator-master\Informagator\bin\Debug\Informagator.pdb', SINGLE_BLOB) as Pdb on 1 = 1 
-) as s
-ON t.AssemblyName = s.AssemblyName and t.AssemblyDotNetVersion = s.AssemblyDotNetVersion
-when matched then
-UPDATE SET t.Executable = s.Executable
-when not matched by target then
-INSERT (AssemblyName, AssemblyDotNetVersion, LoadDttm, Executable, DebuggingSymbols) VALUES ('Informagator.dll', '1.0.0.0', current_timestamp, s.Executable, s.DebuggingSymbols);
-
-merge configuration.AssemblyVersion as t
 using (select 'Informagator.CommonComponents.dll' AssemblyName, '1.0.0.0' AssemblyDotNetVersion, current_timestamp LoadDttm, Exe.BulkColumn Executable, Pdb.BulkColumn DebuggingSymbols
-from OPENROWSET(BULK N'C:\Users\william.king\Desktop\Inf\Informagator-master\CommonComponents\bin\Debug\Informagator.CommonComponents.dll', SINGLE_BLOB) as Exe
-full outer join OPENROWSET(BULK N'C:\Users\william.king\Desktop\Inf\Informagator-master\CommonComponents\bin\Debug\Informagator.CommonComponents.pdb', SINGLE_BLOB) as Pdb on 1 = 1 
+from OPENROWSET(BULK N'C:\Users\william.king\Documents\GitHub\Informagator\CommonComponents\bin\Debug\Informagator.CommonComponents.dll', SINGLE_BLOB) as Exe
+full outer join OPENROWSET(BULK N'C:\Users\william.king\Documents\GitHub\Informagator\CommonComponents\bin\Debug\Informagator.CommonComponents.pdb', SINGLE_BLOB) as Pdb on 1 = 1 
 ) as s
 ON t.AssemblyName = s.AssemblyName and t.AssemblyDotNetVersion = s.AssemblyDotNetVersion
 when matched then
@@ -34,16 +23,7 @@ INSERT (AssemblyName, AssemblyDotNetVersion, LoadDttm, Executable, DebuggingSymb
 
 DECLARE @configId BIGINT, @informagatorId BIGINT, @commonId BIGINT;
 SELECT @configId = Id FROM Configuration.SystemConfiguration where Description = 'Development';
-SELECT @informagatorId = Id from Configuration.AssemblyVersion where AssemblyName = 'Informagator.dll' and AssemblyDotNetVersion = '1.0.0.0';
 SELECT @commonId = Id from Configuration.AssemblyVersion where AssemblyName = 'Informagator.CommonComponents.dll' and AssemblyDotNetVersion = '1.0.0.0';
-
-merge configuration.AssemblySystemConfiguration as t
-using (select 1 jnk) as s
-ON t.AssemblyName = 'Informagator.dll' and t.AssemblyDotNetVersion = '1.0.0.0' and t.SystemConfigurationId = @configId
-when matched then
-UPDATE SET t.AssemblyVersionId = @informagatorId
-when not matched by target then
-INSERT (AssemblyName, AssemblyDotNetVersion, SystemConfigurationId, AssemblyVersionId) VALUES ('Informagator.dll', '1.0.0.0', @configId, @informagatorId);
 
 merge configuration.AssemblySystemConfiguration as t
 using (select 1 jnk) as s
@@ -65,7 +45,7 @@ DECLARE @machineId BIGINT;
 select @machineId = Id from configuration.machine where name = 'Development' and SystemConfigurationId = @configId;
 
 merge configuration.Worker as t
-using (select @machineId MachineId, 'FileMover' Name, @informagatorId WorkerAssemblyVersionId, 'Informagator.Threads.PollingStageWorker' WorkerType, Cast(1 as bit) AutoStart) as s
+using (select @machineId MachineId, 'FileMover' Name, @commonId WorkerAssemblyVersionId, 'Informagator.CommonComponents.Workers.PollingStageWorker' WorkerType, Cast(1 as bit) AutoStart) as s
 on t.MachineId = s.machineId and t.Name = s.Name
 WHEN Matched then
 update set t.WorkerAssemblyVersionId = s.WorkerAssemblyVersionId, t.WorkerType = s.WorkerType, t.AutoStart = s.AutoStart
@@ -113,11 +93,7 @@ WHEN NOT MATCHED THEN
 insert (stageId, name, value) VALUES (s.stageId, s.name, s.value);
 
 merge configuration.GlobalSettings t
-using (select 'AdminServiceAddress' Name, '127.0.0.1' Value
-       UNION
-       select 'AdminServicePort' Name, '9001' Value
-       UNION
-       select 'InfoServiceAddress' Name, '127.0.0.1' Value
+using (select 'AdminServicePort' Name, '9001' Value
        UNION
        select 'InfoServicePort' Name, '9002' Value
        ) as s

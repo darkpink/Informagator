@@ -17,7 +17,7 @@ namespace Informagator.Service
 {
     public partial class InformagatorService : ServiceBase
     {
-        protected Informagator.Machine.DefaultMachine Informagator { get; set; }
+        protected IMachine Informagator { get; set; }
         public InformagatorService()
         {
             InitializeComponent();
@@ -34,7 +34,7 @@ namespace Informagator.Service
 
             string machineNameOverride = args.Length > 0 ? args[0] : null;
 
-            IMachine i = new DefaultMachine(machineNameOverride);
+            Informagator = new DefaultMachine(machineNameOverride);
             Informagator.Start();
         }
 

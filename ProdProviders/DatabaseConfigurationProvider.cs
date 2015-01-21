@@ -14,64 +14,55 @@ namespace Informagator.ProdProviders
 {
     public class DatabaseConfigurationProvider : IConfigurationProvider
     {
-        public string MachineName { protected get; set; }
-        public IMachineConfiguration Configuration
+        public IMachineConfiguration GetMachineConfiguration(string hostName)
         {
-            get
+            DatabaseInformagatorConfiguration config = null;
+
+            using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                string hostName = MachineName ?? Dns.GetHostName();
-
-                DatabaseInformagatorConfiguration config = new DatabaseInformagatorConfiguration(hostName);
-
-                using (ConfigurationEntities entities = new ConfigurationEntities())
+                var dbHostEntity = GetMachineEntity(hostName, entities);
+                config = new DatabaseInformagatorConfiguration(hostName, dbHostEntity.IPAddress);
+                
+                if (dbHostEntity != null)
                 {
-                    var dbHostEntity = GetMachineEntity(hostName, entities);
-
-                    if (dbHostEntity != null)
+                    foreach (Worker t in dbHostEntity.Workers)
                     {
-                        foreach (Worker t in dbHostEntity.Workers)
+                        DatabaseThreadConfiguration threadConfig = new DatabaseThreadConfiguration();
+                        threadConfig.Name = t.Name;
+                        threadConfig.WorkerClassTypeAssembly = t.WorkerAssemblyVersion.AssemblyName;
+                        threadConfig.WorkerClassTypeName = t.WorkerType;
+
+                        foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
                         {
-                            DatabaseThreadConfiguration threadConfig = new DatabaseThreadConfiguration();
-                            threadConfig.Name = t.Name;
-                            threadConfig.ThreadHostTypeAssembly = "Informagator.dll";
-                            threadConfig.ThreadHostTypeName = "Informagator.Threads.ThreadHost";
-                            threadConfig.WorkerClassTypeAssembly = t.WorkerAssemblyVersion.AssemblyName;
-                            threadConfig.WorkerClassTypeName = t.WorkerType;
+                            DatabaseStageConfiguration stageConfig = new DatabaseStageConfiguration();
+                            stageConfig.StageAssemblyName = s.StageAssemblyVersion.AssemblyName;
+                            stageConfig.StageType = s.StageType;
+                            stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyVersion.AssemblyName;
+                            stageConfig.ErrorHandlerType = s.ErrorHandlerType;
 
-                            foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
+                            foreach (StageParameter p in s.StageParameters)
                             {
-                                DatabaseStageConfiguration stageConfig = new DatabaseStageConfiguration();
-                                stageConfig.StageAssemblyName = s.StageAssemblyVersion.AssemblyName;
-                                stageConfig.StageType = s.StageType;
-                                stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyVersion.AssemblyName;
-                                stageConfig.ErrorHandlerType = s.ErrorHandlerType;
-
-                                foreach (StageParameter p in s.StageParameters)
-                                {
-                                    DatabaseStageConfigurationParameter stageParam = new DatabaseStageConfigurationParameter();
-                                    stageParam.Name = p.Name;
-                                    stageParam.Value = p.Value;
-                                    stageConfig.Parameters.Add(stageParam);
-                                }
-
-                                threadConfig.StageConfigurations.Add(stageConfig);
+                                DatabaseStageConfigurationParameter stageParam = new DatabaseStageConfigurationParameter();
+                                stageParam.Name = p.Name;
+                                stageParam.Value = p.Value;
+                                stageConfig.Parameters.Add(stageParam);
                             }
 
-                            config.ThreadConfiguration.Add(threadConfig.Name, threadConfig);
+                            threadConfig.StageConfigurations.Add(stageConfig);
                         }
-                    }
 
-                    var activeconfig = entities.SystemConfigurations
-                                                 .Include(sc => sc.GlobalSettings)
-                                                 .Single(av => av.IsActive);
-                    config.AdminServiceAddress = IPAddress.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "AdminServiceAddress").Select(s => s.Value).SingleOrDefault());
-                    config.AdminServicePort = Int32.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "AdminServicePort").Select(s => s.Value).SingleOrDefault());
-                    config.InfoServiceAddress = IPAddress.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "InfoServiceAddress").Select(s => s.Value).SingleOrDefault());
-                    config.InfoServicePort = Int32.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "InfoServicePort").Select(s => s.Value).SingleOrDefault());
+                        config.ThreadConfiguration.Add(threadConfig.Name, threadConfig);
+                    }
                 }
 
-                return config;
+                var activeconfig = entities.SystemConfigurations
+                                             .Include(sc => sc.GlobalSettings)
+                                             .Single(av => av.IsActive);
+                config.AdminServicePort = Int32.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "AdminServicePort").Select(s => s.Value).SingleOrDefault());
+                config.InfoServicePort = Int32.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "InfoServicePort").Select(s => s.Value).SingleOrDefault());
             }
+
+            return config;
         }
 
         private static Informagator.ProdProviders.Configuration.Machine GetMachineEntity(string hostName, ConfigurationEntities entities)
@@ -120,6 +111,23 @@ namespace Informagator.ProdProviders
             }
 
             return dbHostEntity;
+        }
+
+        public IEnumerable<string> GetActiveMachineNames()
+        {
+            using (ConfigurationEntities entities = new ConfigurationEntities())
+            {
+                return entities.SystemConfigurations
+                               .Include(sc => sc.Machines)
+                               .Where(sc => sc.IsActive)
+                               .SelectMany(sc => sc.Machines.Select(m => m.Name))
+                               .ToArray();
+            }
+        }
+
+        public IThreadConfiguration GetThreadConfiguration(string machineName, string threadName)
+        {
+            return GetMachineConfiguration(machineName).ThreadConfiguration[threadName];
         }
     }
 }

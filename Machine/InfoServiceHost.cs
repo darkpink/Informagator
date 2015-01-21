@@ -13,10 +13,10 @@ namespace Informagator.Machine
     {
         private static ServiceHost infoServiceHost = null;
 
-        internal static void StartService(InfoService instance, IPAddress address, int port)
+        internal static void StartService(InfoService instance, int port)
         {
             infoServiceHost = new ServiceHost(instance);
-            infoServiceHost.AddServiceEndpoint(typeof(IInfoService), new WSHttpBinding(), "http://localhost:" + port + "/InfoService");
+            infoServiceHost.AddServiceEndpoint(typeof(IInfoService), new WSHttpBinding(), InfoServiceAddress.Format("localhost", port));
             infoServiceHost.Open();
         }
 

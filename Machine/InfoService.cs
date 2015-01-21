@@ -22,9 +22,9 @@ namespace Informagator.Machine
             return;
         }
 
-        public IThreadStatus GetStatus(string threadName)
+        public ThreadStatus GetStatus(string threadName)
         {
-            return Informagator.Threads[threadName].Status;
+            return new ThreadStatus(Informagator.Threads[threadName].Status);
         }
     }
 }

@@ -85,5 +85,6 @@
     <Build Include="Tracking\Tables\MessageAttribute.sql" />
     <Build Include="Tracking\Tables\Message.sql" />
     <Build Include="Security\Tracking.sql" />
+    <None Include="Scripts\SetupDevelopmentConfiguration.sql" />
   </ItemGroup>
 </Project>

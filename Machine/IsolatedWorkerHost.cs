@@ -16,6 +16,7 @@ using Informagator.Contracts.Configuration;
 using Informagator.Contracts.PersistentServices;
 using Informagator.Contracts.WorkerServices;
 using Informagator.Contracts.Providers;
+using Informagator.Contracts.Services;
 
 namespace Informagator.Machine
 {
@@ -63,7 +64,7 @@ namespace Informagator.Machine
             }
         }
 
-        public IsolatedWorkerHost(string name)
+        public IsolatedWorkerHost(string machineName, string threadName)
         {
             try
             {
@@ -72,13 +73,13 @@ namespace Informagator.Machine
 
                 AssemblyManager = Container.Resolve<IAssemblyManager>();
                 IConfigurationProvider configurationProvider = Container.Resolve<IConfigurationProvider>();
-                Configuration = configurationProvider.Configuration.ThreadConfiguration[name];
+                Configuration = configurationProvider.GetMachineConfiguration(machineName).ThreadConfiguration[threadName];
                 CreateWorker();
             }
             catch(Exception ex)
             {
                 WorkerThreadException = ex;
-                ConfigurationException newException = new ConfigurationException("Worker " + (name ?? "[Empty Name]") + " cannot be initialized.", ex);
+                ConfigurationException newException = new ConfigurationException("Worker " + (threadName ?? "[Empty Name]") + " cannot be initialized.", ex);
                 throw newException;
             }
         }
@@ -125,7 +126,7 @@ namespace Informagator.Machine
             {
                 IThreadStatus result;
 
-                result = WorkerObject.Status;
+                result = new ThreadStatus(WorkerObject.Status);
                 
                 if (WorkerThreadException != null)
                 {
@@ -143,6 +144,7 @@ namespace Informagator.Machine
 
         protected void CreateWorker()
         {
+            //TODO: need good, descriptive configuration exceptions if any of these steps fail
             Assembly loadedAssembly = AssemblyManager.GetAssembly(Configuration.WorkerClassTypeAssembly);
             WorkerClass = loadedAssembly.GetType(Configuration.WorkerClassTypeName);
             WorkerObject = Activator.CreateInstance(WorkerClass) as IWorker;
@@ -155,6 +157,8 @@ namespace Informagator.Machine
                 object value = GetWorkerDependencyValue(pi.PropertyType);
                 pi.SetValue(WorkerObject, value);
             }
+
+            //TODO: add validate settings on the worker.  this is the last point where I want configurationexceptions permitted
         }
 
         protected object GetWorkerDependencyValue(Type type)

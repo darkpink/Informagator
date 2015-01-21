@@ -50,11 +50,10 @@ namespace Informagator.CommonComponents.Workers
         {
             if (!IsRunning)
             {
+                IsRunning = true;
                 Started = DateTime.Now;
                 Info = "Started";
-                InnerThread = new Thread(new ThreadStart(ThreadEntry));
-                InnerThread.Start();
-                IsRunning = true;
+                Run();
             }
         }
 

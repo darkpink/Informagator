@@ -247,6 +247,10 @@
       <Project>{2ae76072-2a5a-4560-b31a-8ebf26c99bbd}</Project>
       <Name>ProdProviders</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SystemStatus\SystemStatus.csproj">
+      <Project>{78f5ed2d-7861-4e82-a4f5-c1d84437bff7}</Project>
+      <Name>SystemStatus</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -12,11 +12,14 @@ namespace Informagator.ProdProviders.Configuration
     public class DatabaseInformagatorConfiguration : IMachineConfiguration
     {
         private IDictionary<string, IThreadConfiguration> config { get; set; }
+
+        public string IPAddress { get; protected set; }
         private string Host { get; set; }
-        public DatabaseInformagatorConfiguration(string host)
+        public DatabaseInformagatorConfiguration(string host, string ipAddress)
         {
             config = new Dictionary<string, IThreadConfiguration>();
             Host = host;
+            IPAddress = ipAddress;
         }
 
         public string HostName
@@ -35,13 +38,9 @@ namespace Informagator.ProdProviders.Configuration
             }
         }
 
-        public System.Net.IPAddress AdminServiceAddress { get; set;}
-
         public int AdminServicePort { get; set;}
 
         public string AdminServiceGroup { get; set;}
-
-        public System.Net.IPAddress InfoServiceAddress { get; set;}
 
         public int InfoServicePort { get; set; }
 

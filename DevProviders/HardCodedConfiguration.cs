@@ -17,27 +17,34 @@ namespace Informagator.DevProviders
 
         public string MachineName { protected get; set; }
 
-        public IMachineConfiguration Configuration
+        public IMachineConfiguration GetMachineConfiguration(string machineName)
         {
-            get
+            if (first)
             {
-                if (first)
-                {
-                    first = false;
-                    return new HardCodedConfiguration();
-                }
-                else
-                {
-                    HardCodedConfiguration config = new HardCodedConfiguration();
-                    IDictionary<string, IThreadConfiguration> uncastedStageConfig = config.ThreadConfiguration;
-                    IThreadConfiguration un = uncastedStageConfig["FileMover"];
-                    HardCodedThreadConfiguration casted = (HardCodedThreadConfiguration)un;
-                    HardCodedStageConfiguration stageConfig = casted.StageConfigurations[1] as HardCodedStageConfiguration;
-                    //StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
-                    //configParam.Value = @"E:\tst\Dest2";
-                    return config;
-                }
+                first = false;
+                return new HardCodedConfiguration();
             }
+            else
+            {
+                HardCodedConfiguration config = new HardCodedConfiguration();
+                IDictionary<string, IThreadConfiguration> uncastedStageConfig = config.ThreadConfiguration;
+                IThreadConfiguration un = uncastedStageConfig["FileMover"];
+                HardCodedThreadConfiguration casted = (HardCodedThreadConfiguration)un;
+                HardCodedStageConfiguration stageConfig = casted.StageConfigurations[1] as HardCodedStageConfiguration;
+                //StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
+                //configParam.Value = @"E:\tst\Dest2";
+                return config;
+            }
+        }
+
+        public IEnumerable<string> GetActiveMachineNames()
+        {
+            throw new NotImplementedException();
+        }
+
+        public IThreadConfiguration GetThreadConfiguration(string machineName, string threadName)
+        {
+            return new HardCodedConfiguration().ThreadConfiguration[threadName];
         }
     }
     
@@ -51,11 +58,8 @@ namespace Informagator.DevProviders
                         "FileMover", 
                         new HardCodedThreadConfiguration() {
                             Name = "FileMover",
-                            ThreadHostTypeAssembly = "Informagator.dll",
-                            ThreadHostTypeName = "Informagator.Threads.ThreadHost",
-                            WorkerClassTypeAssembly = "Informagator.dll",
-                            WorkerClassTypeName = "Informagator.Threads.PollingStageWorker",
-                            RequiredAssemblies = new[] {"Informagator.CommonComponents.dll", "Informagator.dll" }.ToList(),
+                            WorkerClassTypeAssembly = "Informagator.CommonComponents.dll",
+                            WorkerClassTypeName = "Informagator.CommonComponents.Workers.PollingStageWorker",
                             StageConfigurations = new[] { new HardCodedStageConfiguration()
                                                           { 
                                                               StageType = "Informagator.CommonComponents.SupplierStages.OldestFileFromFolderSupplier",
@@ -72,21 +76,13 @@ namespace Informagator.DevProviders
                                                           new HardCodedStageConfiguration()
                                                           { 
                                                               //StageType = "Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
-                                                              StageType = "SandboxCustom.AlternatingFolderTransform",
-                                                              StageAssemblyName = "SandboxCustom.dll",
-                                                              ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
-                                                              ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler"
-                                                          },
-                                                          new HardCodedStageConfiguration()
-                                                          { 
-                                                              //StageType = "Informagator.CommonComponents.ConsumerStages.OutputFolderConsumer",
-                                                              StageType = "Informagator.CommonComponents.ConsumerStages.DynamicOutputFolderConsumer",
+                                                              StageType = "Informagator.CommonComponents.ConsumerStages.StaticOutputFolderConsumer",
                                                               StageAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerAssemblyName = "Informagator.CommonComponents.dll",
                                                               ErrorHandlerType = "Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler",
                                                               Parameters = new[] { new HardCodedStageConfigurationParameter() {
-                                                                 Name = "FolderPathAttribute",
-                                                                 Value = @"FolderName"}}
+                                                                 Name = "FolderPath",
+                                                                 Value = @"C:\Demo\Out"}}
                                                           }
                                                         }.OfType<IStageConfiguration>().ToList()
                         }
@@ -99,6 +95,8 @@ namespace Informagator.DevProviders
             get { return "LocalInformagator"; }
         }
 
+        public string IPAddress { get { return "127.0.0.1"; } }
+
         public IDictionary<string, IThreadConfiguration> ThreadConfiguration
         {
             get 
@@ -108,34 +106,24 @@ namespace Informagator.DevProviders
         }
 
 
-        public System.Net.IPAddress AdminServiceAddress
-        {
-            get { return new IPAddress(new[]{(byte)127, (byte)0, (byte)0, (byte)1}); }
-        }
-
         public int AdminServicePort
         {
-            get { return 9449; }
+            get { return 9001; }
         }
 
         public string AdminServiceGroup
         {
-            get { return @"AMEDISYS-DOM\Users"; }
-        }
-
-        public System.Net.IPAddress InfoServiceAddress
-        {
-            get { return new IPAddress(new[] { (byte)127, (byte)0, (byte)0, (byte)1 }); }
+            get { return @"DOM\AdminServiceUsers"; }
         }
 
         public int InfoServicePort
         {
-            get { return 9450; }
+            get { return 9002; }
         }
 
         public string InfoServiceGroup
         {
-            get { return @"AMEDISYS-DOM\Everyone"; }
+            get { return @"DOM\Everyone"; }
         }
     }
 }

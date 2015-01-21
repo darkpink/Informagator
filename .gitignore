@@ -55,6 +55,8 @@ HL7Assist/bin/
 HL7Assist/HL7Utilities.csproj.vspscc
 Service/obj/
 Service/bin/
+SystemStatus/obj/
+SystemStatus/bin/
 Manager/obj/
 Manager/bin/
 SandboxCustom/obj/

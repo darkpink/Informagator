@@ -9,7 +9,10 @@ namespace Informagator.Contracts.Providers
 {
     public interface IConfigurationProvider
     {
-        string MachineName { set; }
-        IMachineConfiguration Configuration { get; }
+        IEnumerable<string> GetActiveMachineNames();
+        
+        IMachineConfiguration GetMachineConfiguration(string machineName);
+
+        IThreadConfiguration GetThreadConfiguration(string machineName, string threadName);
     }
 }

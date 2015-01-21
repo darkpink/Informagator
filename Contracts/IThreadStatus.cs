@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.Contracts
 {
-    public enum ThreadRunStatus {  NotStarted, Running, Stopped, Error };
+    public enum ThreadRunStatus {  Unknown, NotStarted, Running, Stopped, Error };
     public interface IThreadStatus
     {
         string ThreadName { get; set; }

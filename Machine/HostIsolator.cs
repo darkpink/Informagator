@@ -13,10 +13,12 @@ using System.Diagnostics;
 
 namespace Informagator.Machine
 {
-    public class HostIsolator
+    public class HostIsolator : MarshalByRefObject
     {
-        public  IThreadConfiguration Configuration { get; set; }
- 
+        public  IThreadConfiguration Configuration { get; protected set; }
+
+        public string MachineName { get; protected set; }
+
         protected IsolatedWorkerHost CrossDomainProxy { get; set; }
 
         protected List<IPersistentService> PersistentServices { get; set; }
@@ -29,10 +31,12 @@ namespace Informagator.Machine
 
         protected Exception StatusException { get; set; }
 
-        public HostIsolator()
+        public HostIsolator(string machineName, IThreadConfiguration configuration)
         {
             InitializedDateTime = DateTime.Now;
             PersistentServices = new List<IPersistentService>();
+            MachineName = machineName;
+            Configuration = configuration;
         }
 
         public void Start()
@@ -42,7 +46,7 @@ namespace Informagator.Machine
             try
             {
                 InnerThreadDomain = AppDomain.CreateDomain(Configuration.Name);
-                IsolatedWorkerHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Configuration.ThreadHostTypeAssembly, Configuration.ThreadHostTypeName, false, BindingFlags.CreateInstance, null, new object[] { Configuration.Name }, null, null) as IsolatedWorkerHost;
+                IsolatedWorkerHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().GetName().Name + ".dll", typeof(IsolatedWorkerHost).FullName, false, BindingFlags.CreateInstance, null, new object[] { MachineName, Configuration.Name }, null, null) as IsolatedWorkerHost;
                 CrossDomainProxy = host;
                 host.UnhandledException += InnerThreadDomain_UnhandledException;
                 StartPersistentServices();
