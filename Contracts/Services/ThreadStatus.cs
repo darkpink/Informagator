@@ -47,7 +47,6 @@ namespace Informagator.Contracts.Services
 
         public ThreadStatus(IThreadStatus status)
         {
-            IsRunning = status.IsRunning;
             Info = status.Info;
             LastMessage = status.LastMessage;
             MessageCount = status.MessageCount;

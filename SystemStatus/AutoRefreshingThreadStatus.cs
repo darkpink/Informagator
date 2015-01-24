@@ -64,23 +64,19 @@ namespace Informagator.SystemStatus
             }
         }
 
-        public async void UpdateFromService(string serviceUrl)
+        public void UpdateFromService(string serviceUrl)
         {
-            using (var infoServiceClient = new InfoServiceClient(serviceUrl))
+            var infoServiceClient = new InfoServiceClient(serviceUrl);
+            IThreadStatus status = infoServiceClient.GetStatus(ThreadName);
+            if (status == null)
             {
-                var statusTask = new Task<IThreadStatus>(() => infoServiceClient.GetStatus(ThreadName));
-                statusTask.Start();
-                IThreadStatus status = await statusTask;
-                if (status == null)
-                {
-                    StatusCode = ThreadRunStatus.Unknown;
-                    Info = "Unable to communicate";
-                }
-                else
-                {
-                    StatusCode = status.RunStatus;
-                    Info = status.Info;
-                }
+                StatusCode = ThreadRunStatus.Unknown;
+                Info = "Unable to communicate";
+            }
+            else
+            {
+                StatusCode = status.RunStatus;
+                Info = status.Info;
             }
         }
 

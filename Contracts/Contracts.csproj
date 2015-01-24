@@ -67,10 +67,7 @@
     <Compile Include="WorkerServices\IMessageStore.cs" />
     <Compile Include="WorkerServices\IMessageTracker.cs" />
     <Compile Include="Stages\IObserverStage.cs" />
-    <Compile Include="PersistentServices\IPersistentService.cs" />
-    <Compile Include="PersistentServices\IPersistentServiceClient.cs" />
     <Compile Include="Configuration\IPersistentServiceConfiguration.cs" />
-    <Compile Include="PersistentServices\IPersistentServiceSignature.cs" />
     <Compile Include="Stages\IProcessingStage.cs" />
     <Compile Include="Configuration\IStageConfiguration.cs" />
     <Compile Include="Configuration\IStageConfigurationParameter.cs" />

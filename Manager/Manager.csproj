@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -62,6 +63,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AdminServiceClient.cs" />
     <Compile Include="Commands\CancelEditCommand.cs" />
     <Compile Include="Commands\ChangeActiveSystemConfigurationCommand.cs" />
     <Compile Include="Commands\DeleteEntityCommand.cs" />
@@ -69,6 +71,9 @@
     <Compile Include="Commands\PanelChangeCommand.cs" />
     <Compile Include="Commands\PanelChangeCommandManager.cs" />
     <Compile Include="Commands\SaveEntityCommand.cs" />
+    <Compile Include="Commands\StartThreadCommand.cs" />
+    <Compile Include="Commands\StopThreadCommand.cs" />
+    <Compile Include="Commands\ThreadControlCommandManager.cs" />
     <Compile Include="Controls\AssemblyNamePicker.cs" />
     <Compile Include="Controls\ErrorHandlerPicker.cs" />
     <Compile Include="Controls\MachinePicker.cs" />

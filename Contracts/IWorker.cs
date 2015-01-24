@@ -10,13 +10,14 @@ namespace Informagator.Contracts
     public interface IWorker
     {
         void Start();
+        
         void Stop();
+        
         string Name { set; }
+
         IThreadStatus Status { get; }
 
         IThreadConfiguration Configuration { set; }
-
-        IList<string> RequiredAssemblies { get; }
 
         void ValidateSettings();
     }

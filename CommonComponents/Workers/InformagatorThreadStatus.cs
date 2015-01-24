@@ -27,8 +27,6 @@ namespace Informagator.CommonComponents.Workers
         public virtual DateTime? LastMessage { get; set; }
         
         public virtual string Info { get; set; }
-        
-        public virtual bool IsRunning { get; set; }
 
         public ThreadRunStatus RunStatus { get; set; }
     }

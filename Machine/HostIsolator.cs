@@ -7,7 +7,6 @@ using System.Reflection;
 using Informagator.Contracts;
 using System.Net;
 using Informagator.Contracts.Configuration;
-using Informagator.Contracts.PersistentServices;
 using Informagator.Contracts.Exceptions;
 using System.Diagnostics;
 
@@ -21,8 +20,6 @@ namespace Informagator.Machine
 
         protected IsolatedWorkerHost CrossDomainProxy { get; set; }
 
-        protected List<IPersistentService> PersistentServices { get; set; }
-
         protected AppDomain InnerThreadDomain { get; set; }
 
         protected DateTime InitializedDateTime { get; set; }
@@ -34,7 +31,6 @@ namespace Informagator.Machine
         public HostIsolator(string machineName, IThreadConfiguration configuration)
         {
             InitializedDateTime = DateTime.Now;
-            PersistentServices = new List<IPersistentService>();
             MachineName = machineName;
             Configuration = configuration;
         }
@@ -49,7 +45,6 @@ namespace Informagator.Machine
                 IsolatedWorkerHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().GetName().Name + ".dll", typeof(IsolatedWorkerHost).FullName, false, BindingFlags.CreateInstance, null, new object[] { MachineName, Configuration.Name }, null, null) as IsolatedWorkerHost;
                 CrossDomainProxy = host;
                 host.UnhandledException += InnerThreadDomain_UnhandledException;
-                StartPersistentServices();
                 host.Start();
             }
             catch(Exception ex)
@@ -110,32 +105,29 @@ namespace Informagator.Machine
             Process.GetCurrentProcess().Close();
         }
 
-        protected virtual void StartPersistentServices()
-        {
-            var currentSignatures = PersistentServices.Select(s => s.Signature);
-            var desiredSignatures = CrossDomainProxy.RequiredPersistentServices;
-
-            //need to shut off any that we don't need first - they may be holding a resource that a new will will
-            //need (like a server port or something)
-            foreach(var svc in PersistentServices.Where(s => !desiredSignatures.Contains(s.Signature)).ToList())
-            {
-                svc.Stop();
-                PersistentServices.Remove(svc);
-            }
-
-            foreach(IPersistentService svc in CrossDomainProxy.RequiredPersistentServices.Where(s => !currentSignatures.Contains(s)).ToList())
-            {
-                
-            }
-        }
-
         public void Stop()
         {
+            StopDateTime = DateTime.Now;
             if (CrossDomainProxy != null)
             {
-                CrossDomainProxy.Stop();
-                CrossDomainProxy = null;
+                try
+                {
+                    CrossDomainProxy.Stop();
+                }
+                catch { }
             }
+
+            if (InnerThreadDomain != null)
+            {
+                try
+                {
+                    AppDomain.Unload(InnerThreadDomain);
+                }
+                catch { }
+            }
+
+            InnerThreadDomain = null;
+            CrossDomainProxy = null;
         }
         public IThreadStatus Status
         { 
@@ -148,10 +140,10 @@ namespace Informagator.Machine
                     result = new HostStatus();
                     result.HostName = Environment.MachineName;
                     result.ThreadName = Configuration.Name;
-                    result.IsRunning = false;
                     result.Stopped = StopDateTime;
                     result.Initialized = InitializedDateTime;
-                    result.Info = result.Stopped == null ? "Stopped" : "Not started";
+                    result.Info = result.Stopped == null ? "Not started" : "Stopped";
+                    result.RunStatus = result.Stopped == null ? ThreadRunStatus.NotStarted : ThreadRunStatus.Stopped;
 
                     if (StatusException != null)
                     {

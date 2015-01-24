@@ -16,12 +16,9 @@ namespace Informagator.CommonComponents.Workers
 {
     public class Worker : IWorker
     {
-        protected virtual int StopRequestTimeout { get { return 20000;}}
-        protected Thread InnerThread { get; private set; }
         public virtual IThreadConfiguration Configuration { get; set; }
-        protected virtual bool StopRequested { get; set; }
-        protected virtual bool PauseRequested { get; set; }
-        protected virtual bool IsRunning { get; set; }
+
+        protected ThreadRunStatus RunStatus { get; set; }
         protected virtual DateTime? HeartBeat { get; set; }
         protected virtual DateTime? LastMessage { get; set; }
         protected virtual DateTime? Stopped { get; set; }
@@ -44,17 +41,15 @@ namespace Informagator.CommonComponents.Workers
             HeartBeat = DateTime.Now;
             Initialized = DateTime.Now;
             Info = "Initialized";
+            RunStatus = ThreadRunStatus.NotStarted;
         }
 
         public virtual void Start()
         {
-            if (!IsRunning)
-            {
-                IsRunning = true;
-                Started = DateTime.Now;
-                Info = "Started";
-                Run();
-            }
+            RunStatus = ThreadRunStatus.Running;
+            Started = DateTime.Now;
+            Info = "Started";
+            Run();
         }
 
         private void ThreadEntry()
@@ -81,24 +76,12 @@ namespace Informagator.CommonComponents.Workers
 
         public virtual void Stop()
         {
-            if (IsRunning)
-            {
-                StopRequested = true;
-                Info = "Stop Requested";
-                bool successfullJoin = InnerThread.Join(StopRequestTimeout);
-                if (successfullJoin)
-                {
-                    Info = "Stopped";
-                }
-                else
-                {
-                    Info = String.Format("Stop requested but unresponsive after {0} seconds - Aborting.", (StopRequestTimeout / 1000));
-                    InnerThread.Abort();
-                }
+            StopRequested();
+            Info = "Stop Requested";
+        }
 
-                IsRunning = false;
-                Stopped = DateTime.Now;
-            }
+        protected virtual void StopRequested()
+        {
         }
 
         public virtual IThreadStatus Status
@@ -106,7 +89,7 @@ namespace Informagator.CommonComponents.Workers
             get 
             {
                 WorkerThreadStatus result = new WorkerThreadStatus();
-                result.IsRunning = IsRunning;
+                result.RunStatus = RunStatus;
                 result.HostName = Dns.GetHostName();
                 result.HeartBeat = HeartBeat;
                 result.Initialized = Initialized;
@@ -128,19 +111,6 @@ namespace Informagator.CommonComponents.Workers
                 return result;
             }
         }
-
-
-
-        public IList<string> RequiredAssemblies
-        {
-            get
-            { 
-                return Configuration.StageConfigurations.Select(sc => sc.StageAssemblyName)
-                         .Union(Configuration.StageConfigurations.Select(sc => sc.ErrorHandlerAssemblyName))
-                         .ToList();
-            }
-        }
-
 
         public virtual void ValidateSettings()
         {

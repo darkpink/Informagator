@@ -7,43 +7,42 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Informagator.SystemStatus
 {
-    public class AutoRefreshingSystemStatus : ObservableCollection<AutoRefreshingThreadStatus>
+    public class AutoRefreshingSystemStatus : ObservableCollection<AutoRefreshingThreadStatus>, IDisposable
     {
         protected IConfigurationProvider ConfigurationProvider { get; set; }
 
+        protected int RefreshIntervalMilliseconds { get; set; }
+
+        protected bool IsDisposed { get; set; }
+
         protected Dictionary<string, IMachineConfiguration> ConfigurationCache { get; set; }
-        public AutoRefreshingSystemStatus(IConfigurationProvider configurationProvider)
+        public AutoRefreshingSystemStatus(IConfigurationProvider configurationProvider, int refreshIntervalMilliseconds = 10000)
             : base()
         {
             ConfigurationCache = new Dictionary<string, IMachineConfiguration>();
             ConfigurationProvider = configurationProvider;
+            RefreshIntervalMilliseconds = refreshIntervalMilliseconds;
             ReloadConfiguration();
+            
+            IsDisposed = false;
+            Task.Run(() => UpdateStatusUntilDisposed());
         }
 
-        public async void ReloadConfiguration()
+        private void UpdateStatusUntilDisposed()
         {
-            Task syncTack = new Task(() => SyncronizeThreadsWithCurrentConfiguration());
-            syncTack.Start();
-            await syncTack;
-            foreach(AutoRefreshingThreadStatus status in this)
+            while (!IsDisposed)
             {
-                UpdateThreadStatus(status);
+                Task.WaitAll(this.Select(threadStatus => UpdateThreadStatus(threadStatus)).ToArray());
+                Thread.Sleep(RefreshIntervalMilliseconds);
             }
         }
 
-        private void UpdateThreadStatus(AutoRefreshingThreadStatus status)
-        {
-            IMachineConfiguration machineConfig = ConfigurationCache[status.MachineName];
-            int infoServicePort = machineConfig.InfoServicePort;
-            string url = InfoServiceAddress.Format(machineConfig.IPAddress, infoServicePort);
-            status.UpdateFromService(url);
-        }
-
-        private void SyncronizeThreadsWithCurrentConfiguration()
+        public void ReloadConfiguration()
         {
             var machineThreads = new Dictionary<string, List<string>>();
 
@@ -70,6 +69,19 @@ namespace Informagator.SystemStatus
             {
                 this.Remove(status);
             }
+        }
+
+        private async Task UpdateThreadStatus(AutoRefreshingThreadStatus status)
+        {
+            IMachineConfiguration machineConfig = ConfigurationCache[status.MachineName];
+            int infoServicePort = machineConfig.InfoServicePort;
+            string url = InfoServiceAddress.Format(machineConfig.IPAddress, infoServicePort);
+            await Task.Run(() => status.UpdateFromService(url));
+        }
+
+        public void Dispose()
+        {
+            IsDisposed = true;
         }
     }
 }

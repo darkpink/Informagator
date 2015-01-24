@@ -30,7 +30,11 @@ namespace Informagator.Manager.Commands
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
+        public event EventHandler CanExecuteChanged
+        {
+            add { }
+            remove { }
+        }
 
         public void Execute(object parameter)
         {

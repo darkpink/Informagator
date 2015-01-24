@@ -82,6 +82,7 @@ namespace Informagator.CommonComponents.Workers
             if (result)
             {
                 LastMessage = DateTime.Now;
+                Info = "Last message received at " + LastMessage.Value.ToString("MM/dd/yyyy HH:mm:ss");
                 MessageCount++;
             }
 

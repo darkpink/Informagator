@@ -6,16 +6,16 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Informagator.SystemStatus
+namespace Informagator.Manager
 {
-    public class InfoServiceClient : IInfoService
+    class AdminServiceClient
     {
-        protected ChannelFactory<IInfoService> ChannelFactory { get; set; }
+        protected ChannelFactory<IAdminService> ChannelFactory { get; set; }
 
-        public InfoServiceClient(string url)
+        public AdminServiceClient(string url)
         {
             WSHttpBinding binding = new WSHttpBinding();
-            ChannelFactory = new ChannelFactory<IInfoService>(binding, new EndpointAddress(url));
+            ChannelFactory = new ChannelFactory<IAdminService>(binding, new EndpointAddress(url));
         }
 
         public void Ping()
@@ -33,23 +33,33 @@ namespace Informagator.SystemStatus
             }
         }
 
-        public ThreadStatus GetStatus(string threadName)
+        public void StartThread(string threadName)
         {
-            ThreadStatus result;
 
             var client = ChannelFactory.CreateChannel();
             try
             {
-                result = client.GetStatus(threadName);
+                client.StartThread(threadName);
                 ((IClientChannel)client).Close();
             }
             catch (Exception)
             {
                 ((IClientChannel)client).Abort();
-                result = null;
             }
+        }
+        public void StopThread(string threadName)
+        {
 
-            return result;
+            var client = ChannelFactory.CreateChannel();
+            try
+            {
+                client.StopThread(threadName);
+                ((IClientChannel)client).Close();
+            }
+            catch (Exception)
+            {
+                ((IClientChannel)client).Abort();
+            }
         }
     }
 }

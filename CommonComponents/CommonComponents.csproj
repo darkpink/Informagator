@@ -52,10 +52,6 @@
     <Compile Include="Messages\ByteArrayMessage.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\XmlMessage.cs" />
-    <Compile Include="PersistentServices\PersistentServiceBase.cs" />
-    <Compile Include="PersistentServices\PersistentServiceConfiguration.cs" />
-    <Compile Include="PersistentServices\SocketClientPersistentService.cs" />
-    <Compile Include="PersistentServices\SocketClientPersistentServiceConfiguration.cs" />
     <Compile Include="SupplierStages\MessageStoreSupplier.cs" />
     <Compile Include="SupplierStages\TransactionalMsmqBinarySupplier.cs" />
     <Compile Include="SupplierStages\OldestFileFromFolderSupplier.cs" />

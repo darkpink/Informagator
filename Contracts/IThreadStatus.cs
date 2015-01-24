@@ -28,7 +28,5 @@ namespace Informagator.Contracts
         DateTime? LastMessage { get; set; }
         
         string Info { get; set; }
-        
-        bool IsRunning { get; set; }
     }
 }

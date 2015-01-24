@@ -13,7 +13,6 @@ using Microsoft.Practices.Unity.Configuration;
 using Informagator.Contracts.Exceptions;
 using Informagator.Contracts.Attributes;
 using Informagator.Contracts.Configuration;
-using Informagator.Contracts.PersistentServices;
 using Informagator.Contracts.WorkerServices;
 using Informagator.Contracts.Providers;
 using Informagator.Contracts.Services;
@@ -45,29 +44,13 @@ namespace Informagator.Machine
 
         public event Action<Exception> UnhandledException;
 
-        public IPersistentServiceSignature[] RequiredPersistentServices 
-        { 
-            get
-            {
-                IPersistentServiceSignature[] result;
-
-                if (WorkerObject is IPersistentServiceClient)
-                {
-                    result = ((IPersistentServiceClient)WorkerObject).RequiredPersistentServices;
-                }
-                else
-                {
-                    result = new IPersistentServiceSignature[0];
-                }
-
-                return result;
-            }
-        }
+        protected ThreadRunStatus RunStatus { get; set; }
 
         public IsolatedWorkerHost(string machineName, string threadName)
         {
             try
             {
+                RunStatus = ThreadRunStatus.NotStarted;
                 Container = new UnityContainer();
                 Container.LoadConfiguration();
 
@@ -80,20 +63,18 @@ namespace Informagator.Machine
             {
                 WorkerThreadException = ex;
                 ConfigurationException newException = new ConfigurationException("Worker " + (threadName ?? "[Empty Name]") + " cannot be initialized.", ex);
-                throw newException;
+                RunStatus = ThreadRunStatus.Error;
             }
         }
 
         public void Start()
         {
-            if (WorkerThread != null)
+            if (RunStatus == ThreadRunStatus.NotStarted)
             {
-                throw new InformagatorInvalidOperationException("Thread can only be started once.  Rebuild it.");
+                RunStatus = ThreadRunStatus.Running;
+                WorkerThread = new Thread(new ThreadStart(RunWorker));
+                WorkerThread.Start();
             }
-
-            WorkerThread = new Thread(new ThreadStart(RunWorker));
-            
-            WorkerThread.Start();
         }
 
         protected void RunWorker()
@@ -105,18 +86,25 @@ namespace Informagator.Machine
             catch (Exception ex)
             {
                 //configuration problems, who knows. No matter what the exception type is, the thread is done.
+                RunStatus = ThreadRunStatus.Error;
                 WorkerThreadException = ex;
-                UnhandledException(ex);
+                if (UnhandledException != null)
+                {
+                    UnhandledException(ex);
+                }
             }
         }
 
         public void Stop()
         {
-            WorkerObject.Stop();
-            
-            if (!WorkerThread.Join(StopTimeoutMilliseconds))
+            if (RunStatus == ThreadRunStatus.Running)
             {
-                WorkerThread.Abort();
+                WorkerObject.Stop();
+
+                if (!WorkerThread.Join(StopTimeoutMilliseconds))
+                {
+                    WorkerThread.Abort();
+                }
             }
         }
 
@@ -130,13 +118,13 @@ namespace Informagator.Machine
                 
                 if (WorkerThreadException != null)
                 {
-                    result.RunStatus = ThreadRunStatus.Error;
                     result.Info = WorkerThreadException.ToString();
                 }
 
                 result.ThreadName = Configuration.Name;
                 result.HostName = Environment.MachineName;
-                    
+                result.RunStatus = RunStatus;
+    
                 return result;
             }
         }
