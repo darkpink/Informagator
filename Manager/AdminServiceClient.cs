@@ -61,5 +61,19 @@ namespace Informagator.Manager
                 ((IClientChannel)client).Abort();
             }
         }
+        public void UpdateConfiguration()
+        {
+
+            var client = ChannelFactory.CreateChannel();
+            try
+            {
+                client.UpdateConfiguration();
+                ((IClientChannel)client).Close();
+            }
+            catch (Exception)
+            {
+                ((IClientChannel)client).Abort();
+            }
+        }
     }
 }

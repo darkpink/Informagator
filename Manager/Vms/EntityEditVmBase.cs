@@ -57,6 +57,7 @@ namespace Informagator.Manager.Vms
             {
                 Entities.SaveChanges();
                 Entities.Dispose();
+                ThreadControlCommandManager.UpdateConfiguration.Execute(null);
                 PanelChangeCommandManager.GoToPreviousView.Execute(null);
             }
         }

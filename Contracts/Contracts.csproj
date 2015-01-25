@@ -45,6 +45,7 @@
     <Compile Include="Attributes\HostProvidedAttribute.cs" />
     <Compile Include="Attributes\ProvideToClientAttribute.cs" />
     <Compile Include="Attributes\StageWorkerAttribute.cs" />
+    <Compile Include="Configuration\IWorkerConfigurationParameter.cs" />
     <Compile Include="Exceptions\ConfigurationException.cs" />
     <Compile Include="Exceptions\ErrorHandlerException.cs" />
     <Compile Include="Exceptions\InformagatorException.cs" />

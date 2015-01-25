@@ -74,6 +74,7 @@
     <Compile Include="Commands\StartThreadCommand.cs" />
     <Compile Include="Commands\StopThreadCommand.cs" />
     <Compile Include="Commands\ThreadControlCommandManager.cs" />
+    <Compile Include="Commands\UpdateConfigurationCommand.cs" />
     <Compile Include="Controls\AssemblyNamePicker.cs" />
     <Compile Include="Controls\ErrorHandlerPicker.cs" />
     <Compile Include="Controls\MachinePicker.cs" />

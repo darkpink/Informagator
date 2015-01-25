@@ -160,5 +160,40 @@ namespace Informagator.Machine
                 return result;
             }
         }
+
+        public bool AnyAssemblyChanged
+        {
+            get
+            {
+                bool result;
+
+                if (CrossDomainProxy != null)
+                {
+                    result = CrossDomainProxy.AnyAssemblyChanged;
+                }
+                else
+                {
+                    result = true;
+                }
+
+                return result;
+            }
+        }
+
+        public virtual bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration)
+        {
+            bool result;
+
+            if (CrossDomainProxy != null)
+            {
+                result = CrossDomainProxy.IsRestartRequiredForNewConfiguration(newConfiguration);
+            }
+            else
+            {
+                result = true;
+            }
+
+            return result;
+        }
     }
 }

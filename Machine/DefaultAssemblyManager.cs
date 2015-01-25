@@ -13,6 +13,7 @@ namespace Informagator.Machine
     public class DefaultAssemblyManager : IAssemblyManager
     {
         private Dictionary<string, Assembly> LoadedAssemblies = new Dictionary<string, Assembly>();
+        private Dictionary<string, byte[]> LoadedAssemblyBytes = new Dictionary<string, byte[]>();
 
         private IAssemblyProvider AssemblyProvider { get; set; }
         
@@ -49,9 +50,32 @@ namespace Informagator.Machine
 
                 result = Assembly.Load(assemblyBytes, debuggingSymbolBytes);
                 LoadedAssemblies.Add(name, result);
+                LoadedAssemblyBytes.Add(name, assemblyBytes);
             }
 
             return result;
+        }
+
+
+        public bool AnyAssemblyChanged
+        {
+            get 
+            {
+                bool result = false;
+
+                foreach(string assemblyName in LoadedAssemblies.Keys)
+                {
+                    byte[] existingAssemblyBytes = LoadedAssemblyBytes[assemblyName];
+                    byte[] newAssemblyBytes = AssemblyProvider.GetAssemblyBinary(assemblyName);
+                    if (!existingAssemblyBytes.SequenceEqual(newAssemblyBytes))
+                    {
+                        result = true;
+                        break;
+                    }
+                }
+
+                return result;
+            }
         }
     }
 }

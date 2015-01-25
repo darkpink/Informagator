@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConfigurationChangeEvaluator.cs" />
     <Compile Include="InfoService.cs" />
     <Compile Include="AdminService.cs" />
     <Compile Include="InfoServiceHost.cs" />
@@ -73,7 +74,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Contracts.csproj">
       <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>

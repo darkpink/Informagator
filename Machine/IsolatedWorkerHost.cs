@@ -174,5 +174,30 @@ namespace Informagator.Machine
  	        
             return result;
         }
+
+        public bool AnyAssemblyChanged
+        {
+            get
+            {
+                return AssemblyManager.AnyAssemblyChanged;
+            }
+        }
+
+        public virtual bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration)
+        {
+            bool result;
+
+            if (RunStatus == ThreadRunStatus.Running)
+            {
+                return WorkerObject.IsRestartRequiredForNewConfiguration(newConfiguration);
+            }
+            else
+            {
+                result = true;
+            }
+            
+            return result;
+        }
+
     }
 }

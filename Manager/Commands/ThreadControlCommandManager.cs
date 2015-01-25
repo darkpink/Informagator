@@ -12,5 +12,7 @@ namespace Informagator.Manager.Commands
         public static ICommand StartThread { get { return new StartThreadCommand(); } }
 
         public static ICommand StopThread { get { return new StopThreadCommand(); } }
+
+        public static ICommand UpdateConfiguration { get { return new UpdateConfigurationCommand(); } }
     }
 }

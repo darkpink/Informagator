@@ -21,8 +21,6 @@ namespace Informagator.CommonComponents.SupplierStages
         {
             ByteArrayMessage result = null;
 
-            ValidateSettings();
-
             string[] files = Directory.GetFiles(FolderPath);
             var fileCreation = new Dictionary<string, DateTime>();
             foreach (string file in files)

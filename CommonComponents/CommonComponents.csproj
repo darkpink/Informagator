@@ -60,7 +60,7 @@
     <Compile Include="Tracking\ProcessingSequenceTracker.cs" />
     <Compile Include="Tracking\TrackingInfo.cs" />
     <Compile Include="TransformStages\ToStringMessageTransform.cs" />
-    <Compile Include="Workers\InformagatorThreadStatus.cs" />
+    <Compile Include="Workers\WorkerThreadStatus.cs" />
     <Compile Include="Workers\IntervalExecutionThread.cs" />
     <Compile Include="Workers\PollingStageWorker.cs" />
     <Compile Include="Workers\ProcessingSequence.cs" />

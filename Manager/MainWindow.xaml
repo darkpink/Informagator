@@ -73,12 +73,12 @@
                     <TextBlock Text="{Binding ActiveConfiguration}" HorizontalAlignment="Center" />
                 </StackPanel>
             </Border>
-            <Button Grid.Row="1" Command="{x:Static cmd:PanelChangeCommandManager.GoToConfigurationList}" >Configurations</Button>
+            <Button Grid.Row="1" Command="{x:Static cmd:PanelChangeCommandManager.GoToStartStop}">Current Status</Button>
             <Button Grid.Row="2" Command="{x:Static cmd:PanelChangeCommandManager.GoToMachineList}" >Machines</Button>
             <Button Grid.Row="3" Command="{x:Static cmd:PanelChangeCommandManager.GoToWorkerList}" >Workers</Button>
             <Button Grid.Row="4" Command="{x:Static cmd:PanelChangeCommandManager.GoToAssemblyList}" >Assemblies</Button>
-            <Button Grid.Row="5" Command="{x:Static cmd:PanelChangeCommandManager.GoToStartStop}">Start/Stop</Button>
             <Button Grid.Row="6" Command="{x:Static cmd:PanelChangeCommandManager.GoToGlobalSettings}">Global Settings</Button>
+            <Button Grid.Row="7" Command="{x:Static cmd:PanelChangeCommandManager.GoToConfigurationList}" >Configurations</Button>
         </Grid>
         <ContentControl Grid.Column="1" Content="{Binding PanelVm}" />
     </Grid>

@@ -58,37 +58,46 @@ namespace Informagator.Machine
             LaunchControlService();
             LaunchInfoService();
             BuildThreads();
-            StartThreads();
         }
 
-        public void ReloadConfiguration()
+        public void UpdateConfiguration()
         {
             IMachineConfiguration newConfiguration = ConfigurationProvider.GetMachineConfiguration(MachineName);
-
-            foreach (string newThreadName in newConfiguration.ThreadConfiguration.Keys.Except(Configuration.ThreadConfiguration.Keys))
-            {
-            }
+            ConfigurationChangeEvaluator evaulator = new ConfigurationChangeEvaluator();
 
             foreach (string removedThreadName in Configuration.ThreadConfiguration.Keys.Except(newConfiguration.ThreadConfiguration.Keys))
             {
+                DestroyThread(removedThreadName);
             }
 
             foreach (string existingThreadName in newConfiguration.ThreadConfiguration.Keys.Intersect(Configuration.ThreadConfiguration.Keys))
             {
-                IThreadConfiguration newThreadConfig = newConfiguration.ThreadConfiguration[existingThreadName];
-                IThreadConfiguration oldThreadConfig = Configuration.ThreadConfiguration[existingThreadName];
-                if (!newThreadConfig.IsSameAs(oldThreadConfig))
+                if (evaulator.IsRestartRequired(Threads[existingThreadName], Configuration.ThreadConfiguration[existingThreadName], newConfiguration.ThreadConfiguration[existingThreadName]))
                 {
-                    HostIsolator thread = Threads[existingThreadName];
-                    thread.Stop();
-                    Threads.Remove(existingThreadName);
-                    thread = new HostIsolator(MachineName, newThreadConfig);
-                    thread.Start();
-                    Threads.Add(existingThreadName, thread);
+                    DestroyThread(existingThreadName);
+                    AddThread(newConfiguration.ThreadConfiguration[existingThreadName]);
                 }
             }
 
+            foreach (string newThreadName in newConfiguration.ThreadConfiguration.Keys.Except(Configuration.ThreadConfiguration.Keys))
+            {
+                AddThread(newConfiguration.ThreadConfiguration[newThreadName]);
+            }
+
             Configuration = newConfiguration;
+        }
+
+        private void AddThread(IThreadConfiguration threadConfiguration)
+        {
+            var thread = new HostIsolator(MachineName, threadConfiguration);
+            Threads.Add(threadConfiguration.Name, thread);
+            thread.Start();
+        }
+
+        private void DestroyThread(string removedThreadName)
+        {
+            Threads[removedThreadName].Stop();
+            Threads.Remove(removedThreadName);
         }
 
         private void LaunchInfoService()
@@ -103,14 +112,6 @@ namespace Informagator.Machine
             AdminServiceHost.StartService(RemoteAdminService, Configuration.AdminServicePort);
         }
 
-        private void StartThreads()
-        {
-            foreach (HostIsolator thread in Threads.Values)
-            {
-                thread.Start();
-            }
-        }
-
         private void BuildThreads()
         {
             Threads = new Dictionary<string, HostIsolator>();
@@ -119,8 +120,7 @@ namespace Informagator.Machine
 
             foreach (string threadName in Configuration.ThreadConfiguration.Keys)
             {
-                var thread = new HostIsolator(MachineName, Configuration.ThreadConfiguration[threadName]);
-                Threads.Add(threadName, thread);
+                AddThread(Configuration.ThreadConfiguration[threadName]);
             }
         }
 
@@ -158,5 +158,6 @@ namespace Informagator.Machine
         {
             Threads[threadName].Start();
         }
+
     }
 }

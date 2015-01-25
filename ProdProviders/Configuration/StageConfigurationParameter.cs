@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.ProdProviders.Configuration
 {
+    [Serializable]
     public class DatabaseStageConfigurationParameter : IStageConfigurationParameter
     {
         public string Name { get; set; }

@@ -4,7 +4,7 @@ namespace Informagator.Contracts
 {
     public interface IMachine
     {
-        void ReloadConfiguration();
+        void UpdateConfiguration();
         void Start();
         void StartThread(string threadName);
         void Stop();

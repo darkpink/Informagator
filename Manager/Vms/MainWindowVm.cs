@@ -45,9 +45,11 @@ namespace Informagator.Manager.Vms
         protected Dictionary<PanelChangeCommandManager.PanelView, VmBase> ModePanelMap { get; set; }
         public MainWindowVm()
         {
+            GetCurrentConfiguration();
+
             ModePanelMap = new Dictionary<PanelChangeCommandManager.PanelView, VmBase>();
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.AssemblyList, new AssemblyListVm());
-            ModePanelMap.Add(PanelChangeCommandManager.PanelView.ConfigurationList, new ConfigurationListVm());
+            ModePanelMap.Add(PanelChangeCommandManager.PanelView.ConfigurationList, new ConfigurationListVm() { SelectedConfiguration = ActiveConfiguration });
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.GlobalSettings, new GlobalSettingsVm());
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.MachineList, new MachineListVm());
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.StartStop, new StartStopVm());
@@ -58,8 +60,7 @@ namespace Informagator.Manager.Vms
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.ConfigurationEdit, new ConfigurationEditVm());
 
             (App.Current as App).ActiveSystemConfigurationChanged += GetCurrentConfiguration;
-            GetCurrentConfiguration();
-            PanelVm = new ConfigurationListVm() { SelectedConfiguration = ActiveConfiguration };
+            PanelVm = ModePanelMap[PanelChangeCommandManager.PanelView.StartStop];
 
             PanelChangeCommandManager.PanelChangeNeeded += PanelChangeCommandManager_PanelChangeNeeded;
         }

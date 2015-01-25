@@ -14,7 +14,7 @@ namespace Informagator.Contracts.Services
         void Ping();
 
         [OperationContract]
-        void ApplyConfiguration();
+        void UpdateConfiguration();
 
         [OperationContract]
         void StartThread(string threadName);

@@ -19,8 +19,6 @@ namespace Informagator.CommonComponents.ConsumerStages
 
         public string Consume(IMessage message)
         {
-            ValidateSettings();
-
             var fileName = Guid.NewGuid().ToString();
             var fullPath = Path.Combine(FolderPath, fileName);
 

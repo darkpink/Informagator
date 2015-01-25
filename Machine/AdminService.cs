@@ -20,9 +20,9 @@ namespace Informagator.Machine
             return;
         }
 
-        public void ApplyConfiguration()
+        public void UpdateConfiguration()
         {
-            Informagator.ReloadConfiguration();
+            Informagator.UpdateConfiguration();
         }
 
         public void StartThread(string threadName)

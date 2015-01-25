@@ -115,5 +115,11 @@ namespace Informagator.CommonComponents.Workers
         public virtual void ValidateSettings()
         {
         }
+
+
+        public virtual bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration)
+        {
+            return true;
+        }
     }
 }

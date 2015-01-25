@@ -97,5 +97,11 @@ namespace Informagator.ProdProviders.Configuration
             
             return result;
         }
+
+
+        public IList<IWorkerConfigurationParameter> WorkerConfigurationParameters
+        {
+            get { return new List<IWorkerConfigurationParameter>(); }
+        }
     }
 }
