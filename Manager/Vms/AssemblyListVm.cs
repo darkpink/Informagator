@@ -1,4 +1,4 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,19 +8,16 @@ using System.Threading.Tasks;
 
 namespace Informagator.Manager.Vms
 {
-    public class AssemblyListVm : ListPanelVmBase<AssemblyVersion>
+    public class AssemblyListVm : ListPanelVmBase<Assembly>
     {
-        protected override AssemblyVersion[] GetEntities()
+        protected override Assembly[] GetEntities()
         {
-            AssemblyVersion[] result;
+            Assembly[] result;
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                result = entities.AssemblyVersions
-                                 .Where(av => av.AssemblySystemConfigurations
-                                                .Where(asc => asc.SystemConfiguration.Description == SelectedConfiguration)
-                                                .Any()
-                                       )
+                result = entities.Assemblies
+                                 .Where(av => av.SystemConfiguration.Description == SelectedConfiguration)
                                  .ToArray();
             }
 

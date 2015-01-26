@@ -1,4 +1,5 @@
 ﻿using Informagator.Contracts;
+using Informagator.DBEntities.Message;
 using System;
 using System.Collections.Generic;
 using System.IO;

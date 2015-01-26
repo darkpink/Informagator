@@ -1,4 +1,4 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,10 +36,10 @@ namespace Informagator.Manager.Controls
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
                 ItemsSource = entities.SystemConfigurations
-                                      .Include(conf => conf.AssemblySystemConfigurations)          
+                                      .Include(conf => conf.Assemblies)          
                                       .Single(conf => conf.IsActive)
-                                      .AssemblySystemConfigurations
-                                      .Select(asc => asc.AssemblyName)
+                                      .Assemblies
+                                      .Select(asc => asc.Name)
                                       .Distinct()
                                       .OrderBy(a => a);
             }

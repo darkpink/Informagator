@@ -1,5 +1,5 @@
 ﻿using Informagator.Manager.Commands;
-using Informagator.ProdProviders.Configuration;
+using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -50,7 +50,6 @@ namespace Informagator.Manager.Vms
             ModePanelMap = new Dictionary<PanelChangeCommandManager.PanelView, VmBase>();
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.AssemblyList, new AssemblyListVm());
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.ConfigurationList, new ConfigurationListVm() { SelectedConfiguration = ActiveConfiguration });
-            ModePanelMap.Add(PanelChangeCommandManager.PanelView.GlobalSettings, new GlobalSettingsVm());
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.MachineList, new MachineListVm());
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.StartStop, new StartStopVm());
             ModePanelMap.Add(PanelChangeCommandManager.PanelView.WorkerList, new WorkerListVm());

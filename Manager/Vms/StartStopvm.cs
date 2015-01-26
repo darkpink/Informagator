@@ -1,5 +1,5 @@
 ﻿using Informagator.Contracts;
-using Informagator.ProdProviders.Configuration;
+using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

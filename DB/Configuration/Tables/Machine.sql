@@ -1,15 +1,19 @@
-﻿CREATE TABLE [Configuration].[Machine] (
+CREATE TABLE [Configuration].[Machine] (
     [Id]                    BIGINT        IDENTITY (1, 1) NOT NULL,
     [SystemConfigurationId] BIGINT        NOT NULL,
     [Name]                  VARCHAR (100) NOT NULL,
     [IPAddress]             VARCHAR (15)  NULL,
     [Description]           VARCHAR (MAX) NULL,
-    CONSTRAINT [PK_Host] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_Host_ApplicationVersion] FOREIGN KEY ([SystemConfigurationId]) REFERENCES [Configuration].[SystemConfiguration] ([Id])
+    [AdminServicePort]      INT           NULL,
+    [InfoServicePort]       INT           NULL,
+    CONSTRAINT [PK_Machine] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Machine_SystemConfigurationId] FOREIGN KEY ([SystemConfigurationId]) REFERENCES [Configuration].[SystemConfiguration] ([Id]) ON DELETE CASCADE
 );
 
 
+
+
 GO
-CREATE UNIQUE NONCLUSTERED INDEX [UC_HostName_ApplicationVersion]
+CREATE UNIQUE NONCLUSTERED INDEX [UC_Name_SystemConfiguration]
     ON [Configuration].[Machine]([Name] ASC, [SystemConfigurationId] ASC);
 

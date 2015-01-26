@@ -64,3 +64,5 @@ sandboxCustom/bin/
 DB/obj/
 DB/bin/
 DB/*.dbmdl
+DBEntities/obj/
+DBEntities/bin/

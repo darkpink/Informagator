@@ -1,4 +1,4 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +35,8 @@ namespace Informagator.Manager.Vms
                                          .Include(w => w.Stages.Select(s => s.StageParameters))
                                          .Single(w => w.Id == EntityId);
             MachineName = worker.Machine.Name;
-            WorkerAssemblyName = worker.WorkerAssemblyVersion.AssemblyName;
-            WorkerAssemblyDotNetVersion = worker.WorkerAssemblyVersion.AssemblyDotNetVersion;
+            WorkerAssemblyName = worker.Assembly.Name;
+            WorkerAssemblyDotNetVersion = worker.Assembly.Version;
             LoadStages(worker);
             return worker;
         }
@@ -49,12 +49,12 @@ namespace Informagator.Manager.Vms
             {
                 Editor.Stage editorStage = new Editor.Stage();
                 editorStage.Name = stg.Name;
-                editorStage.StageAssemblyName = stg.StageAssemblyVersion.AssemblyName;
-                editorStage.StageAssemblyDotNetVersion = stg.StageAssemblyVersion.AssemblyDotNetVersion;
-                editorStage.StageType = stg.StageType;
-                editorStage.ErrorHandlerAssemblyName = stg.ErrorHandlerAssemblyVersion.AssemblyName;
-                editorStage.ErrorHandlerAssemblyDotNetVersion = stg.ErrorHandlerAssemblyVersion.AssemblyDotNetVersion;
-                editorStage.ErrorHandlerType = stg.ErrorHandlerType;
+                editorStage.StageAssemblyName = stg.Assembly.Name;
+                editorStage.StageAssemblyDotNetVersion = stg.Assembly.Version;
+                editorStage.StageType = stg.Type;
+                editorStage.ErrorHandlerAssemblyName = stg.StageErrorHandlers.Select(eh => eh.ErrorHandler.Assembly.Name).FirstOrDefault();
+                editorStage.ErrorHandlerAssemblyDotNetVersion = stg.StageErrorHandlers.Select(eh => eh.ErrorHandler.Assembly.Version).FirstOrDefault();
+                editorStage.ErrorHandlerType = stg.StageErrorHandlers.Select(eh => eh.ErrorHandler.Type).FirstOrDefault();
                 foreach (StageParameter param in stg.StageParameters)
                 {
                     Editor.StageParameter editorParam = new Editor.StageParameter();
@@ -85,20 +85,12 @@ namespace Informagator.Manager.Vms
                 Editor.Stage uiStage = Stages[index];
                 dbStage.Sequence = index;
                 dbStage.Name = uiStage.Name;
-                AssemblyVersion stageAssemblyVersion = Entities.AssemblyVersions.SingleOrDefault(av => av.AssemblyName == uiStage.StageAssemblyName &&
-                                                                                      av.AssemblyDotNetVersion == uiStage.StageAssemblyDotNetVersion &&
-                                                                                      av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedConfiguration)
+                Assembly stageAssemblyVersion = Entities.Assemblies.SingleOrDefault(av => av.Name == uiStage.StageAssemblyName &&
+                                                                                      av.Version == uiStage.StageAssemblyDotNetVersion &&
+                                                                                      av.SystemConfiguration.Description == SelectedConfiguration
                                                                                 );
-                dbStage.StageAssemblyVersion = stageAssemblyVersion;
-                dbStage.StageType = uiStage.StageType;
-
-                AssemblyVersion errorHandlerAssemblyVersion = Entities.AssemblyVersions.SingleOrDefault(av => av.AssemblyName == uiStage.ErrorHandlerAssemblyName &&
-                                                                      av.AssemblyDotNetVersion == uiStage.ErrorHandlerAssemblyDotNetVersion &&
-                                                                      av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedConfiguration)
-                                                                );
-
-                dbStage.ErrorHandlerAssemblyVersion = errorHandlerAssemblyVersion;
-                dbStage.ErrorHandlerType = uiStage.ErrorHandlerType;
+                dbStage.Assembly = stageAssemblyVersion;
+                dbStage.Type = uiStage.StageType;
 
                 foreach (var uiParam in uiStage.StageParameters)
                 {
@@ -117,25 +109,6 @@ namespace Informagator.Manager.Vms
                 dbStage.StageParameters.Where(dbp => !uiStage.StageParameters.Any(uip => uip.Name == dbp.Name))
                        .ToList()
                        .ForEach(p => dbStage.StageParameters.Remove(p));
-
-                foreach (var uiParam in uiStage.ErrorHandlerParameters)
-                {
-                    var dbParam = dbStage.ErrorHandlerParameters.SingleOrDefault(p => p.Name == uiParam.Name);
-                    if (dbParam == null)
-                    {
-                        dbParam = Entities.ErrorHandlerParameters.Create();
-                        dbParam.Stage = dbStage;
-                        Entities.ErrorHandlerParameters.Add(dbParam);
-                        dbParam.Name = uiParam.Name;
-                    }
-
-                    dbParam.Value = uiParam.Value.ToString();
-                }
-
-                dbStage.ErrorHandlerParameters.Where(dbp => !uiStage.ErrorHandlerParameters.Any(uip => uip.Name == dbp.Name))
-                       .ToList()
-                       .ForEach(p => dbStage.ErrorHandlerParameters.Remove(p));
-
             }
         }
 
@@ -215,11 +188,11 @@ namespace Informagator.Manager.Vms
         {
             if (Entity != null && WorkerAssemblyName != null && WorkerAssemblyDotNetVersion != null)
             {
-                AssemblyVersion workerAssemblyVersion = Entities.AssemblyVersions.SingleOrDefault(av => av.AssemblyName == WorkerAssemblyName &&
-                                                                        av.AssemblyDotNetVersion == WorkerAssemblyDotNetVersion &&
-                                                                        av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedConfiguration)
+                Assembly workerAssembly = Entities.Assemblies.SingleOrDefault(av => av.Name == WorkerAssemblyName &&
+                                                                        av.Version == WorkerAssemblyDotNetVersion &&
+                                                                        av.SystemConfiguration.Description == SelectedConfiguration
                                                                 );
-                Entity.WorkerAssemblyVersion = workerAssemblyVersion;
+                Entity.Assembly = workerAssembly;
             }
         }
     }

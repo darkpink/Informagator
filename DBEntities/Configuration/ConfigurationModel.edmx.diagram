@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f7bee1cd2aba4cd99ba1b7fa4036a05b" Name="Diagram1">
+        <EntityTypeShape EntityType="Model.Assembly" Width="1.5" PointX="3" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ErrorHandler" Width="1.5" PointX="5.25" PointY="9.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.ErrorHandlerParameter" Width="1.5" PointX="7.5" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Machine" Width="1.5" PointX="3" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.MachineErrorHandler" Width="1.5" PointX="7.5" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Stage" Width="1.5" PointX="5.25" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.StageErrorHandler" Width="1.5" PointX="10.5" PointY="8.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.StageParameter" Width="1.5" PointX="7.5" PointY="6.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.SystemConfiguration" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Worker" Width="1.5" PointX="5.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.WorkerErrorHandler" Width="1.5" PointX="10.5" PointY="12.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.WorkerParameter" Width="1.5" PointX="7.5" PointY="16.375" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_Assembly_SystemConfiguration" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_ErrorHandler_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Stage_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Worker_Assembly" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_ErrorHandler_SystemConfiguration" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_ErrorHandlerParameter_ErrorHandler" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_MachineErrorHandler_ErrorHandler" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_StageErrorHandler_ErrorHandler" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_WorkerErrorHandler_ErrorHandler" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Machine_SystemConfigurationId" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Worker_Machine" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_Stage_Worker" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_StageErrorHandler_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_StageParameter_Stage" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_WorkerErrorHandler_Worker" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_WorkerParameter_Worker" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

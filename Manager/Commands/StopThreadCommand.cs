@@ -1,5 +1,5 @@
 ﻿using Informagator.Contracts.Services;
-using Informagator.ProdProviders.Configuration;
+using Informagator.DBEntities.Configuration;
 using Informagator.SystemStatus;
 using System;
 using System.Collections.Generic;
@@ -37,7 +37,7 @@ namespace Informagator.Manager.Commands
                     machineName = machine.IPAddress;
                 }
 
-                portNumber = Int32.Parse(entities.GlobalSettings.Where(gs => gs.SystemConfiguration.IsActive && gs.Name == "AdminServicePort").SingleOrDefault().Value);
+                portNumber = machine.AdminServicePort;
             }
 
 

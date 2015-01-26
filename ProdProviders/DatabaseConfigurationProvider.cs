@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Informagator.Contracts;
-using Informagator.ProdProviders.Configuration;
 using Informagator.Contracts.Configuration;
 using Informagator.Contracts.Providers;
+using Informagator.DBEntities.Configuration;
 
 namespace Informagator.ProdProviders
 {
@@ -29,16 +29,16 @@ namespace Informagator.ProdProviders
                     {
                         DatabaseThreadConfiguration threadConfig = new DatabaseThreadConfiguration();
                         threadConfig.Name = t.Name;
-                        threadConfig.WorkerClassTypeAssembly = t.WorkerAssemblyVersion.AssemblyName;
-                        threadConfig.WorkerClassTypeName = t.WorkerType;
+                        threadConfig.WorkerClassTypeAssembly = t.Assembly.Name;
+                        threadConfig.WorkerClassTypeName = t.Type;
 
                         foreach (Stage s in t.Stages.OrderBy(s => s.Sequence))
                         {
                             DatabaseStageConfiguration stageConfig = new DatabaseStageConfiguration();
-                            stageConfig.StageAssemblyName = s.StageAssemblyVersion.AssemblyName;
-                            stageConfig.StageType = s.StageType;
-                            stageConfig.ErrorHandlerAssemblyName = s.ErrorHandlerAssemblyVersion.AssemblyName;
-                            stageConfig.ErrorHandlerType = s.ErrorHandlerType;
+                            stageConfig.StageAssemblyName = s.Assembly.Name;
+                            stageConfig.StageType = s.Type;
+                            stageConfig.ErrorHandlerAssemblyName = s.StageErrorHandlers.Select(eh => eh.ErrorHandler.Assembly.Name).FirstOrDefault();
+                            stageConfig.ErrorHandlerType = s.StageErrorHandlers.Select(eh => eh.ErrorHandler.Type).FirstOrDefault();
 
                             foreach (StageParameter p in s.StageParameters)
                             {
@@ -55,17 +55,14 @@ namespace Informagator.ProdProviders
                     }
                 }
 
-                var activeconfig = entities.SystemConfigurations
-                                             .Include(sc => sc.GlobalSettings)
-                                             .Single(av => av.IsActive);
-                config.AdminServicePort = Int32.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "AdminServicePort").Select(s => s.Value).SingleOrDefault());
-                config.InfoServicePort = Int32.Parse(activeconfig.GlobalSettings.Where(s => s.Name == "InfoServicePort").Select(s => s.Value).SingleOrDefault());
+                config.AdminServicePort = dbHostEntity.AdminServicePort;
+                config.InfoServicePort = dbHostEntity.InfoServicePort;
             }
 
             return config;
         }
 
-        private static Informagator.ProdProviders.Configuration.Machine GetMachineEntity(string hostName, ConfigurationEntities entities)
+        private static Informagator.DBEntities.Configuration.Machine GetMachineEntity(string hostName, ConfigurationEntities entities)
         {
             var dbHostEntity = entities
                                 .SystemConfigurations

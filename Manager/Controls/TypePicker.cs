@@ -1,4 +1,4 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.DBEntities.Configuration;
 using System.Data.Entity;
 using System;
 using System.Collections.Generic;
@@ -207,10 +207,10 @@ namespace Informagator.Manager.Controls
             {
                 AssemblyNames.ToList().ForEach(n => AssemblyNames.Remove(n));
                 entities.SystemConfigurations
-                        .Include(c => c.AssemblySystemConfigurations)
+                        .Include(c => c.Assemblies)
                         .Where(c => c.Description == SelectedConfiguration)
-                        .SelectMany( c=> c.AssemblySystemConfigurations)
-                        .Select(asc => asc.AssemblyName)
+                        .SelectMany(c => c.Assemblies)
+                        .Select(asc => asc.Name)
                         .Distinct()
                         .OrderBy(n => n)
                         .ToList()
@@ -224,11 +224,11 @@ namespace Informagator.Manager.Controls
             {
                 AssemblyVersions.ToList().ForEach(v => AssemblyVersions.Remove(v));
                 entities.SystemConfigurations
-                        .Include(c => c.AssemblySystemConfigurations)
+                        .Include(c => c.Assemblies)
                         .Where(c => c.Description == SelectedConfiguration)
-                        .SelectMany(c => c.AssemblySystemConfigurations)
-                        .Where(asc => asc.AssemblyName == SelectedAssemblyName)
-                        .Select(asc => asc.AssemblyDotNetVersion)
+                        .SelectMany(c => c.Assemblies)
+                        .Where(asc => asc.Name == SelectedAssemblyName)
+                        .Select(asc => asc.Version)
                         .Distinct()
                         .OrderBy(n => n)
                         .ToList()
@@ -240,11 +240,11 @@ namespace Informagator.Manager.Controls
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
                 byte[] asmBin = entities.SystemConfigurations
-                                            .Include(c => c.AssemblySystemConfigurations.Select(asc => asc.AssemblyVersion))
+                                            .Include(c => c.Assemblies)
                                             .Where(c => c.Description == SelectedConfiguration)
-                                            .SelectMany(c => c.AssemblySystemConfigurations)
-                                            .Where(asc => asc.AssemblyName == SelectedAssemblyName && asc.AssemblyDotNetVersion == SelectedAssemblyDotNetVersion)
-                                            .Select(asc => asc.AssemblyVersion.Executable)
+                                            .SelectMany(c => c.Assemblies)
+                                            .Where(asc => asc.Name == SelectedAssemblyName && asc.Version == SelectedAssemblyDotNetVersion)
+                                            .Select(asc => asc.Executable)
                                             .SingleOrDefault();
 
                 AssemblyTypes.ToList().ForEach(t => AssemblyTypes.Remove(t));

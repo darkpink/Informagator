@@ -1,5 +1,5 @@
 ﻿using Informagator.Manager.Commands;
-using Informagator.ProdProviders.Configuration;
+using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Informagator.Manager.Vms
 {
-    public class AssemblyEditVm : EntityEditVmBase<AssemblyVersion>
+    public class AssemblyEditVm : EntityEditVmBase<Assembly>
     {
         public AssemblyEditVm()
             : base()
@@ -18,23 +18,19 @@ namespace Informagator.Manager.Vms
             LoadAssembly = new LoadAssemblyAndDebuggingSymbolsCommand(fileName => LoadBinaries(fileName));
         }
         public ICommand LoadAssembly { get; set; }
-        protected override AssemblyVersion LoadEntity()
+        protected override Assembly LoadEntity()
         {
-            return Entities.AssemblyVersions
+            return Entities.Assemblies
                            .Single(av => av.Id == EntityId);
             
         }
 
-        protected override AssemblyVersion CreateNewEntity()
+        protected override Assembly CreateNewEntity()
         {
-            AssemblyVersion result = Entities.AssemblyVersions.Create();
-            Entities.AssemblyVersions.Add(result);
+            Assembly result = Entities.Assemblies.Create();
+            Entities.Assemblies.Add(result);
             var configuration = Entities.SystemConfigurations.Single(c => c.Description == SelectedConfiguration);
-            var assemblySystemConfiguration = Entities.AssemblySystemConfigurations.Create();
-            Entities.AssemblySystemConfigurations.Add(assemblySystemConfiguration);
-            assemblySystemConfiguration.AssemblyVersion = result;
-            result.AssemblySystemConfigurations.Add(assemblySystemConfiguration);
-            assemblySystemConfiguration.SystemConfiguration = configuration;
+            result.SystemConfiguration = configuration;
             return result;
         }
 
@@ -45,8 +41,7 @@ namespace Informagator.Manager.Vms
 
         private void LoadBinaries(string fileName)
         {
-            Entity.AssemblyName = Path.GetFileName(fileName);
-            Entity.AssemblySystemConfigurations.ToList().ForEach(asc => asc.AssemblyName = Entity.AssemblyName);
+            Entity.Name = Path.GetFileName(fileName);
 
             using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read))
             {
@@ -54,8 +49,7 @@ namespace Informagator.Manager.Vms
                 stream.Read(assemblyBinary, 0, (int)stream.Length);
                 Entity.Executable = assemblyBinary;
                 System.Reflection.Assembly bin = System.Reflection.Assembly.ReflectionOnlyLoad(assemblyBinary);
-                Entity.AssemblyDotNetVersion = bin.GetName().Version.ToString();
-                Entity.AssemblySystemConfigurations.ToList().ForEach(asc => asc.AssemblyDotNetVersion = Entity.AssemblyDotNetVersion);
+                Entity.Version = bin.GetName().Version.ToString();
                 Entity.LoadDttm = DateTime.Now;
                 NotifyPropertyChanged("AssemblyByteCount");
                 NotifyPropertyChanged("AssemblyName");
@@ -89,7 +83,7 @@ namespace Informagator.Manager.Vms
         {
             get
             {
-                return Entity.AssemblyName;
+                return Entity.Name;
             }
         }
 
@@ -97,7 +91,7 @@ namespace Informagator.Manager.Vms
         {
             get
             {
-                return Entity.AssemblyDotNetVersion;
+                return Entity.Version;
             }
         }
         public int? AssemblyByteCount

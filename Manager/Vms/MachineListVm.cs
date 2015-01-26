@@ -1,4 +1,4 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace Informagator.Manager.Vms
 {
-    public class MachineListVm : ListPanelVmBase<Informagator.ProdProviders.Configuration.Machine>
+    public class MachineListVm : ListPanelVmBase<Informagator.DBEntities.Configuration.Machine>
     {
-        protected override Informagator.ProdProviders.Configuration.Machine[] GetEntities()
+        protected override Informagator.DBEntities.Configuration.Machine[] GetEntities()
         {
-            Informagator.ProdProviders.Configuration.Machine[] result;
+            Informagator.DBEntities.Configuration.Machine[] result;
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {

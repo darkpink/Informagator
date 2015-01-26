@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Reflection = System.Reflection;
 using System.IO;
-using Informagator.ProdProviders.Configuration;
 using Informagator.Contracts.Providers;
+using Informagator.DBEntities.Configuration;
 
 namespace Informagator.ProdProviders
 {
@@ -21,9 +21,9 @@ namespace Informagator.ProdProviders
             {
                 assemblyBytes = ent.SystemConfigurations
                                   .Single(a => a.IsActive)
-                                  .AssemblySystemConfigurations
-                                  .Single(aav => aav.AssemblyName == assemblyName && aav.AssemblyDotNetVersion == "1.0.0.0")
-                                  .AssemblyVersion.Executable;
+                                  .Assemblies
+                                  .Single(aav => aav.Name == assemblyName && aav.Version == "1.0.0.0")
+                                  .Executable;
             }
 
             return assemblyBytes;
@@ -37,9 +37,9 @@ namespace Informagator.ProdProviders
             {
                 debuggingSymbolBytes = ent.SystemConfigurations
                                   .Single(a => a.IsActive)
-                                  .AssemblySystemConfigurations
-                                  .Single(aav => aav.AssemblyName == assemblyName && aav.AssemblyDotNetVersion == "1.0.0.0")
-                                  .AssemblyVersion.DebuggingSymbols;
+                                  .Assemblies
+                                  .Single(aav => aav.Name == assemblyName && aav.Version == "1.0.0.0")
+                                  .DebuggingSymbols;
             }
 
             return debuggingSymbolBytes;

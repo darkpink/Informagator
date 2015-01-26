@@ -1,5 +1,5 @@
 ﻿using Informagator.Contracts.Attributes;
-using Informagator.ProdProviders.Configuration;
+using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,10 +43,10 @@ namespace Informagator.Manager.Controls.StageEditor
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                byte[] assemblyBinary = entities.AssemblyVersions
-                                        .Where(av => av.AssemblyName == n &&
-                                                               av.AssemblyDotNetVersion == v &&
-                                                               av.AssemblySystemConfigurations.Any(asc => asc.SystemConfiguration.Description == SelectedSystemConfiguration)
+                byte[] assemblyBinary = entities.Assemblies
+                                        .Where(av => av.Name == n &&
+                                                     av.Version == v &&
+                                                     av.SystemConfiguration.Description == SelectedSystemConfiguration
                                                )
                                          .Select(av => av.Executable)
                                          .SingleOrDefault();

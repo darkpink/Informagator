@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
 using Informagator.Contracts.WorkerServices;
+using Informagator.DBEntities.Message;
 
 namespace Informagator.ProdProviders
 {

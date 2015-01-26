@@ -1,5 +1,5 @@
 ﻿using Informagator.Contracts.Services;
-using Informagator.ProdProviders.Configuration;
+using Informagator.DBEntities.Configuration;
 using Informagator.SystemStatus;
 using System;
 using System.Collections.Generic;
@@ -27,10 +27,10 @@ namespace Informagator.Manager.Commands
         {
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                int portNumber = Int32.Parse(entities.GlobalSettings.Where(gs => gs.SystemConfiguration.IsActive && gs.Name == "AdminServicePort").SingleOrDefault().Value);
 
                 foreach (var machine in entities.Machines.Where(m => m.SystemConfiguration.IsActive))
                 {
+                    int portNumber = machine.AdminServicePort;
                     string machineName = machine.Name;
                     if (!String.IsNullOrWhiteSpace(machine.IPAddress))
                     {

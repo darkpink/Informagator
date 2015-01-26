@@ -1,4 +1,4 @@
-﻿using Informagator.ProdProviders.Configuration;
+﻿using Informagator.DBEntities.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace Informagator.Manager.Commands
         public void Execute(object parameter)
         {
             SystemConfiguration newActiveConfiguration;
-            Action<SystemConfiguration> deactivate = delegate(SystemConfiguration config) { config.IsActive = false; config.EffectiveDttm = null; };
+            Action<SystemConfiguration> deactivate = delegate(SystemConfiguration config) { config.IsActive = false; config.EffectiveDttm = DateTime.Now; };
             Func<SystemConfiguration, SystemConfiguration> activate = delegate(SystemConfiguration config) { config.IsActive = true; config.EffectiveDttm = DateTime.Now; return config;};
 
             using (ConfigurationEntities ent = new ConfigurationEntities())
