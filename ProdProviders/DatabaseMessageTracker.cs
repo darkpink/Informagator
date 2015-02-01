@@ -12,7 +12,7 @@ namespace Informagator.ProdProviders
     {
         public void TrackMessage(ITrackingInfo info, IMessage message)
         {
-            
+            //TODO
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Informagator.Manager
 
         public string InfoServiceGroup { get; set; }
 
-        public IDictionary<string, IThreadConfiguration> ThreadConfiguration { get; set; }
+        public IDictionary<string, IWorkerConfiguration> Workers { get; set; }
 
     }
 }

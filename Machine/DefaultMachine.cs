@@ -65,29 +65,29 @@ namespace Informagator.Machine
             IMachineConfiguration newConfiguration = ConfigurationProvider.GetMachineConfiguration(MachineName);
             ConfigurationChangeEvaluator evaulator = new ConfigurationChangeEvaluator();
 
-            foreach (string removedThreadName in Configuration.ThreadConfiguration.Keys.Except(newConfiguration.ThreadConfiguration.Keys))
+            foreach (string removedThreadName in Configuration.Workers.Keys.Except(newConfiguration.Workers.Keys))
             {
                 DestroyThread(removedThreadName);
             }
 
-            foreach (string existingThreadName in newConfiguration.ThreadConfiguration.Keys.Intersect(Configuration.ThreadConfiguration.Keys))
+            foreach (string existingThreadName in newConfiguration.Workers.Keys.Intersect(Configuration.Workers.Keys))
             {
-                if (evaulator.IsRestartRequired(Threads[existingThreadName], Configuration.ThreadConfiguration[existingThreadName], newConfiguration.ThreadConfiguration[existingThreadName]))
+                if (evaulator.IsRestartRequired(Threads[existingThreadName], Configuration.Workers[existingThreadName], newConfiguration.Workers[existingThreadName]))
                 {
                     DestroyThread(existingThreadName);
-                    AddThread(newConfiguration.ThreadConfiguration[existingThreadName]);
+                    AddThread(newConfiguration.Workers[existingThreadName]);
                 }
             }
 
-            foreach (string newThreadName in newConfiguration.ThreadConfiguration.Keys.Except(Configuration.ThreadConfiguration.Keys))
+            foreach (string newThreadName in newConfiguration.Workers.Keys.Except(Configuration.Workers.Keys))
             {
-                AddThread(newConfiguration.ThreadConfiguration[newThreadName]);
+                AddThread(newConfiguration.Workers[newThreadName]);
             }
 
             Configuration = newConfiguration;
         }
 
-        private void AddThread(IThreadConfiguration threadConfiguration)
+        private void AddThread(IWorkerConfiguration threadConfiguration)
         {
             var thread = new HostIsolator(MachineName, threadConfiguration);
             Threads.Add(threadConfiguration.Name, thread);
@@ -118,9 +118,9 @@ namespace Informagator.Machine
 
             Configuration = ConfigurationProvider.GetMachineConfiguration(MachineName);
 
-            foreach (string threadName in Configuration.ThreadConfiguration.Keys)
+            foreach (string threadName in Configuration.Workers.Keys)
             {
-                AddThread(Configuration.ThreadConfiguration[threadName]);
+                AddThread(Configuration.Workers[threadName]);
             }
         }
 

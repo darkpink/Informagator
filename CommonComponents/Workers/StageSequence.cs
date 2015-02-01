@@ -11,9 +11,11 @@ using System.Threading.Tasks;
 
 namespace Informagator.CommonComponents.Workers
 {
-    public class ProcessingSequence
+    public class StageSequence
     {
-        public IList<IProcessingStage> Stages { get; set; }
+        public IList<IProcessingStage> Stages { get; protected set; }
+        
+        public IList<IList<IMessageErrorHandler>> ErrorHandlers { get; protected set; }
 
         protected ISupplierStage SupplierStage
         {
@@ -41,9 +43,16 @@ namespace Informagator.CommonComponents.Workers
 
         protected Guid CurrentSequenceId { get; set; }
 
-        public ProcessingSequence()
+        public StageSequence()
         {
             Stages = new List<IProcessingStage>();
+            ErrorHandlers = new List<IList<IMessageErrorHandler>>();
+        }
+
+        public void AddStage(IProcessingStage stage, IList<IMessageErrorHandler> errorHandlers)
+        {
+            Stages.Add(stage);
+            ErrorHandlers.Add(errorHandlers);
         }
 
         public virtual bool Execute()

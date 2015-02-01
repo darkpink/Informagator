@@ -48,13 +48,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseInformagatorConfiguration.cs" />
-    <Compile Include="DatabaseStageConfiguration.cs" />
-    <Compile Include="DatabaseStageConfigurationParameter.cs" />
-    <Compile Include="DatabaseThreadConfiguration.cs" />
-    <Compile Include="DatabaseAssemblyStore.cs" />
+    <Compile Include="DatabaseAssemblyProvider.cs" />
     <Compile Include="DatabaseConfigurationProvider.cs" />
-    <Compile Include="DatabaseMessage.cs" />
     <Compile Include="DatabaseMessageStore.cs" />
     <Compile Include="DatabaseMessageTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

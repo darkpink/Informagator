@@ -14,7 +14,7 @@ namespace Informagator.Machine
 {
     public class HostIsolator : MarshalByRefObject
     {
-        public  IThreadConfiguration Configuration { get; protected set; }
+        public  IWorkerConfiguration Configuration { get; protected set; }
 
         public string MachineName { get; protected set; }
 
@@ -28,7 +28,7 @@ namespace Informagator.Machine
 
         protected Exception StatusException { get; set; }
 
-        public HostIsolator(string machineName, IThreadConfiguration configuration)
+        public HostIsolator(string machineName, IWorkerConfiguration configuration)
         {
             InitializedDateTime = DateTime.Now;
             MachineName = machineName;
@@ -180,7 +180,7 @@ namespace Informagator.Machine
             }
         }
 
-        public virtual bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration)
+        public virtual bool IsRestartRequiredForNewConfiguration(IWorkerConfiguration newConfiguration)
         {
             bool result;
 

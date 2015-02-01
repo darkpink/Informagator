@@ -13,6 +13,6 @@ namespace Informagator.Contracts.Providers
         
         IMachineConfiguration GetMachineConfiguration(string machineName);
 
-        IThreadConfiguration GetThreadConfiguration(string machineName, string threadName);
+        IWorkerConfiguration GetThreadConfiguration(string machineName, string threadName);
     }
 }

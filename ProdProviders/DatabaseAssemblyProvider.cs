@@ -11,9 +11,9 @@ using Informagator.DBEntities.Configuration;
 
 namespace Informagator.ProdProviders
 {
-    public class DatabaseAssemblyStore : IAssemblyProvider
+    public class DatabaseAssemblyProvider : IAssemblyProvider
     {
-        public byte[] GetAssemblyBinary(string assemblyName)
+        public byte[] GetAssemblyBinary(string assemblyName, string assemblyVersion)
         {
             byte[] assemblyBytes;
 
@@ -22,14 +22,14 @@ namespace Informagator.ProdProviders
                 assemblyBytes = ent.SystemConfigurations
                                   .Single(a => a.IsActive)
                                   .Assemblies
-                                  .Single(aav => aav.Name == assemblyName && aav.Version == "1.0.0.0")
+                                  .Single(aav => aav.Name == assemblyName && aav.Version == assemblyVersion)
                                   .Executable;
             }
 
             return assemblyBytes;
         }
 
-        public byte[] GetDebuggingSymbolBinary(string assemblyName)
+        public byte[] GetDebuggingSymbolBinary(string assemblyName, string assemblyVersion)
         {
             byte[] debuggingSymbolBytes;
 
@@ -38,7 +38,7 @@ namespace Informagator.ProdProviders
                 debuggingSymbolBytes = ent.SystemConfigurations
                                   .Single(a => a.IsActive)
                                   .Assemblies
-                                  .Single(aav => aav.Name == assemblyName && aav.Version == "1.0.0.0")
+                                  .Single(aav => aav.Name == assemblyName && aav.Version == assemblyVersion)
                                   .DebuggingSymbols;
             }
 

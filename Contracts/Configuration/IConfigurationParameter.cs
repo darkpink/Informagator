@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.Contracts.Configuration
 {
-    public interface IWorkerConfigurationParameter
+    public interface IConfigurationParameter
     {
         string Name { get; }
 

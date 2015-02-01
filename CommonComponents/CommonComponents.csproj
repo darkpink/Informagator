@@ -61,10 +61,9 @@
     <Compile Include="Tracking\TrackingInfo.cs" />
     <Compile Include="TransformStages\ToStringMessageTransform.cs" />
     <Compile Include="Workers\WorkerThreadStatus.cs" />
-    <Compile Include="Workers\IntervalExecutionThread.cs" />
     <Compile Include="Workers\PollingStageWorker.cs" />
-    <Compile Include="Workers\ProcessingSequence.cs" />
-    <Compile Include="Workers\Worker.cs" />
+    <Compile Include="Workers\StageSequence.cs" />
+    <Compile Include="Workers\MessageWorker.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Contracts.csproj">

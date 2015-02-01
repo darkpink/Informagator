@@ -10,46 +10,19 @@ namespace Informagator.DevProviders.Configuration
 {
     public class HardCodedStageConfiguration : IStageConfiguration
     {
-        public string StageAssemblyName { get; set; }
+        public string AssemblyName { get; set; }
 
-        public string StageType { get; set; }
+        public string AssemblyVersion { get; protected set; }
 
-        public string ErrorHandlerAssemblyName { get; set; }
+        public string Type { get; set; }
 
-        public string ErrorHandlerType { get; set; }
-        
-        public bool IsTrackingEnabled { get; set; }
+        public IList<IConfigurationParameter> Parameters { get; set; }
 
-        public IList<IStageConfigurationParameter> Parameters { get; set; }
+        public IList<IErrorHandlerConfiguration> ErrorHandlers { get; protected set; }
 
         public HardCodedStageConfiguration()
         {
-            Parameters = new List<IStageConfigurationParameter>();
-        }
-
-        public bool IsSameAs(IStageConfiguration config)
-        {
-            bool result = true;
-
-            result &= StageAssemblyName == config.StageAssemblyName;
-            result &= StageType == config.StageType;
-            result &= ErrorHandlerAssemblyName == config.ErrorHandlerAssemblyName;
-            result &= ErrorHandlerType == config.ErrorHandlerType;
-            result &= IsTrackingEnabled == config.IsTrackingEnabled;
-
-            foreach (HardCodedStageConfigurationParameter param in Parameters)
-            {
-                HardCodedStageConfigurationParameter matchingParam = config.Parameters.SingleOrDefault(p => p.Name == param.Name) as HardCodedStageConfigurationParameter;
-                result &= matchingParam != null && matchingParam.IsSameAs(param);
-            }
-
-            foreach (HardCodedStageConfigurationParameter param in config.Parameters)
-            {
-                HardCodedStageConfigurationParameter matchingParam = Parameters.SingleOrDefault(p => p.Name == param.Name) as HardCodedStageConfigurationParameter;
-                result &= matchingParam != null && matchingParam.IsSameAs(param);
-            }
-
-            return result;
+            Parameters = new List<IConfigurationParameter>();
         }
     }
 }

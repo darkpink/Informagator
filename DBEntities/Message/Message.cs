@@ -24,6 +24,7 @@ namespace Informagator.DBEntities.Message
         public System.DateTime AddDttm { get; set; }
         public Nullable<System.DateTime> DequeueDttm { get; set; }
         public string Body { get; set; }
+        public System.Guid MessageId { get; set; }
     
         public virtual ICollection<MessageAttribute> MessageAttributes { get; set; }
     }

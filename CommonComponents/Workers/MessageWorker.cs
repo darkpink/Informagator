@@ -14,29 +14,37 @@ using System.Threading.Tasks;
 
 namespace Informagator.CommonComponents.Workers
 {
-    public class Worker : IWorker
+    public abstract class MessageWorker : IWorker
     {
-        public virtual IThreadConfiguration Configuration { get; set; }
+        public virtual IWorkerConfiguration Configuration { get; set; }
 
         protected ThreadRunStatus RunStatus { get; set; }
+        
         protected virtual DateTime? HeartBeat { get; set; }
+        
         protected virtual DateTime? LastMessage { get; set; }
+        
         protected virtual DateTime? Stopped { get; set; }
+        
         protected virtual DateTime? Started { get; set; }
+        
         protected virtual DateTime? Initialized { get; set; }
+        
         protected virtual long MessageCount { get; set; }
+        
         protected virtual string Info { get; set; }
 
         [HostProvided]
         [ProvideToClient(typeof(IMessageStore))]
         public virtual IMessageStore MessageStore { protected get; set; }
+        
         public string Name { protected get; set; }
 
         [HostProvided]
         [ProvideToClient(typeof(IMessageTracker))]
         public virtual IMessageTracker MessageTracker { protected get; set; }
 
-        public Worker()
+        public MessageWorker()
         {
             HeartBeat = DateTime.Now;
             Initialized = DateTime.Now;
@@ -52,32 +60,14 @@ namespace Informagator.CommonComponents.Workers
             Run();
         }
 
-        private void ThreadEntry()
-        {
-            try
-            {
-                Run();
-            }
-            catch (ThreadAbortException)
-            {
-                Info = "Aborted";
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Info = ex.Message;
-                throw;
-            }
-        }
-
         public virtual void Run()
         {
         }
 
         public virtual void Stop()
         {
-            StopRequested();
             Info = "Stop Requested";
+            StopRequested();
         }
 
         protected virtual void StopRequested()
@@ -116,8 +106,7 @@ namespace Informagator.CommonComponents.Workers
         {
         }
 
-
-        public virtual bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration)
+        public virtual bool IsRestartRequiredForNewConfiguration(IWorkerConfiguration newConfiguration)
         {
             return true;
         }

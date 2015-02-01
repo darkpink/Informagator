@@ -21,6 +21,6 @@ namespace Informagator.Contracts.Configuration
         
         string InfoServiceGroup { get; }
         
-        IDictionary<string, IThreadConfiguration> ThreadConfiguration { get; }
+        IDictionary<string, IWorkerConfiguration> Workers { get; }
     }
 }

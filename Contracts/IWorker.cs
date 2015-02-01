@@ -17,9 +17,9 @@ namespace Informagator.Contracts
 
         IThreadStatus Status { get; }
 
-        IThreadConfiguration Configuration { set; }
+        IWorkerConfiguration Configuration { set; }
 
-        bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration);
+        bool IsRestartRequiredForNewConfiguration(IWorkerConfiguration newConfiguration);
 
         void ValidateSettings();
     }

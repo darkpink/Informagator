@@ -54,7 +54,7 @@ namespace Informagator.SystemStatus
             {
                 IMachineConfiguration machineConfiguration = ConfigurationProvider.GetMachineConfiguration(machine);
                 ConfigurationCache.Add(machine, machineConfiguration);
-                machineThreads.Add(machine, machineConfiguration.ThreadConfiguration.Keys.ToList());
+                machineThreads.Add(machine, machineConfiguration.Workers.Keys.ToList());
             }
 
             var machineThreadNamePairs = machineThreads.SelectMany(kvp => kvp.Value.Select(threadName => new { MachineName = kvp.Key, ThreadName = threadName }));

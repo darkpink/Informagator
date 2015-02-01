@@ -4,12 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Message">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MessageId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="QueueName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="AddDttm" Type="datetime" Nullable="false" />
           <Property Name="DequeueDttm" Type="datetime" />
@@ -49,8 +50,7 @@
             <End Role="MessageAttribute" EntitySet="MessageAttribute" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -64,6 +64,7 @@
           <Property Name="DequeueDttm" Type="DateTime" Precision="3" />
           <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
           <NavigationProperty Name="MessageAttributes" Relationship="Self.FK_MessageAttribute_Message" FromRole="Message" ToRole="MessageAttribute" />
+          <Property Name="MessageId" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="MessageAttribute">
           <Key>
@@ -97,7 +98,7 @@
             <End Role="MessageAttribute" EntitySet="MessageAttributes" />
           </AssociationSet>
           <FunctionImport Name="Dequeue" ReturnType="Collection(Int64)">
-            <Parameter Name="QueueName" Mode="In" Type="String" />
+          <Parameter Name="QueueName" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
       </Schema>
@@ -109,6 +110,7 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="Model.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="MessageId" ColumnName="MessageId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="QueueName" ColumnName="QueueName" />
                 <ScalarProperty Name="AddDttm" ColumnName="AddDttm" />

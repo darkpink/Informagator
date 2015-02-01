@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.Contracts.Configuration
 {
-    public interface IPersistentServiceConfiguration
+    public interface IErrorHandlerConfiguration : IConfigurableType
     {
-        string ConfigurationSignature { get;}
     }
 }

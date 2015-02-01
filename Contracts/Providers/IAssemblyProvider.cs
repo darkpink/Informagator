@@ -8,8 +8,8 @@ namespace Informagator.Contracts.Providers
 {
     public interface IAssemblyProvider
     {
-        byte[] GetAssemblyBinary(string assemblyName);
+        byte[] GetAssemblyBinary(string assemblyName, string assemblyVersion);
 
-        byte[] GetDebuggingSymbolBinary(string assemblyName);
+        byte[] GetDebuggingSymbolBinary(string assemblyName, string assemblyVersion);
     }
 }

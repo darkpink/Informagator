@@ -45,7 +45,9 @@
     <Compile Include="Attributes\HostProvidedAttribute.cs" />
     <Compile Include="Attributes\ProvideToClientAttribute.cs" />
     <Compile Include="Attributes\StageWorkerAttribute.cs" />
-    <Compile Include="Configuration\IWorkerConfigurationParameter.cs" />
+    <Compile Include="Configuration\IErrorHandlerConfiguration.cs" />
+    <Compile Include="Configuration\IConfigurationParameter.cs" />
+    <Compile Include="Configuration\IConfigurableType.cs" />
     <Compile Include="Exceptions\ConfigurationException.cs" />
     <Compile Include="Exceptions\ErrorHandlerException.cs" />
     <Compile Include="Exceptions\InformagatorException.cs" />
@@ -68,12 +70,10 @@
     <Compile Include="WorkerServices\IMessageStore.cs" />
     <Compile Include="WorkerServices\IMessageTracker.cs" />
     <Compile Include="Stages\IObserverStage.cs" />
-    <Compile Include="Configuration\IPersistentServiceConfiguration.cs" />
     <Compile Include="Stages\IProcessingStage.cs" />
     <Compile Include="Configuration\IStageConfiguration.cs" />
-    <Compile Include="Configuration\IStageConfigurationParameter.cs" />
     <Compile Include="Stages\ISupplierStage.cs" />
-    <Compile Include="Configuration\IThreadConfiguration.cs" />
+    <Compile Include="Configuration\IWorkerConfiguration.cs" />
     <Compile Include="ITrackingInfo.cs" />
     <Compile Include="Stages\ITransformStage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

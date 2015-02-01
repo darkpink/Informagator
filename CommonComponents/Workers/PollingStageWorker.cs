@@ -13,80 +13,71 @@ using Informagator.Contracts.WorkerServices;
 
 namespace Informagator.CommonComponents.Workers
 {
-    public class PollingStageWorker : IntervalExecutionThread
+    public class PollingStageWorker : MessageWorker
     {
         [HostProvided]
         public IAssemblyManager AssemblyManager { get; set; }
-        protected ProcessingSequence Stages { get; set; }
 
-        protected override void OnInitialize()
+        protected StageSequence Stages { get; set; }
+
+        protected virtual int MinSleepTime { get { return 500; } }
+
+        protected virtual int MaxSleepTime { get { return 3000; } }
+
+        protected virtual Func<int, int> GetSleepTime { get { return (t => Math.Min(t + MinSleepTime, MaxSleepTime)); } }
+
+        protected virtual bool Continue { get; set; }
+
+        public override void Run()
         {
+            Continue = true;
             BuildStages();
+
+            int currentSleepTime = 0;
+            while (Continue)
+            {
+                HeartBeat = DateTime.Now;
+                while (Continue)
+                {
+                    if (Stages.Execute())
+                    {
+                        currentSleepTime = 0;
+                        LastMessage = DateTime.Now;
+                        Info = "Last message received at " + LastMessage.Value.ToString("MM/dd/yyyy HH:mm:ss");
+                        MessageCount++;
+                    }
+                    else
+                    {
+                        currentSleepTime = GetSleepTime(currentSleepTime);
+                        Thread.Sleep(currentSleepTime);
+                    }
+                }
+            }
         }
-        public void BuildStages()
+
+        protected override void StopRequested()
         {
-            Stages = new ProcessingSequence();
+            base.StopRequested();
+            Continue = false;
+        }
+
+        protected virtual void BuildStages()
+        {
+            Stages = new StageSequence();
             Stages.MessageTracker = MessageTracker;
             
-            foreach (IStageConfiguration stageConfig in Configuration.StageConfigurations)
+            foreach (IStageConfiguration stageConfig in Configuration.Stages)
             {
-                //TODO create something in AssemblyManager like GetType();
-                Assembly stageTypeAssembly = AssemblyManager.GetAssembly(stageConfig.StageAssemblyName);
-                Type stageType = stageTypeAssembly.GetType(stageConfig.StageType);
-                
-                Assembly errorHandlerAssembly = AssemblyManager.GetAssembly(stageConfig.ErrorHandlerAssemblyName);
-                Type errorHandlerType = errorHandlerAssembly.GetType(stageConfig.ErrorHandlerType);
-                IMessageErrorHandler errorHandler = Activator.CreateInstance(errorHandlerType) as IMessageErrorHandler;
-
-                IProcessingStage stage = (IProcessingStage)(Activator.CreateInstance(stageType));
-
-                var configProps = stageType.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<ConfigurationParameterAttribute>().Any());
-                foreach (PropertyInfo pi in configProps)
+                IProcessingStage stage = AssemblyManager.CreateConfiguredObject(stageConfig, this) as IProcessingStage;
+                var errorHandlers = new List<IMessageErrorHandler>();
+                foreach(IErrorHandlerConfiguration errorHandlerConfiguration in stageConfig.ErrorHandlers)
                 {
-                    ConfigurationParameterAttribute[] configParams = pi.GetCustomAttributes().OfType<ConfigurationParameterAttribute>().ToArray();
-                    IStageConfigurationParameter param = stageConfig.Parameters.SingleOrDefault(p => p.Name == pi.Name);
-                    if (param != null)
-                    {
-                        pi.SetValue(stage, param.Value);
-                    }
+                    IMessageErrorHandler errorHandler = AssemblyManager.CreateConfiguredObject(errorHandlerConfiguration, stage) as IMessageErrorHandler;
+                    errorHandlers.Add(errorHandler);
                 }
 
-                var dependencyProps = stageType.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
-                var myPropsForClients = this.GetType().GetProperties().Where(pi => pi.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any());
-                Dictionary<Type, object> availableDependencies = new Dictionary<Type, object>();
-                foreach (PropertyInfo pi in myPropsForClients)
-                {
-                    var attrs = pi.GetCustomAttributes<ProvideToClientAttribute>();
-                    var value = pi.GetValue(this);
-                    foreach (ProvideToClientAttribute attr in attrs)
-                    {
-                        availableDependencies.Add(attr.InterfaceType, value);
-                    }
-                }
-
-                foreach (PropertyInfo pi in dependencyProps)
-                {
-                    if (availableDependencies.ContainsKey(pi.PropertyType))
-                    {
-                        pi.SetValue(stage, availableDependencies[pi.PropertyType]);
-                    }
-                }
-
-                Stages.Stages.Add(stage);
+                Stages.AddStage(stage, errorHandlers);
             }
-        }
-        protected override bool Execute()
-        {
-            bool result = Stages.Execute();
-            
-            if (result)
-            {
-                LastMessage = DateTime.Now;
-                Info = "Last message received at " + LastMessage.Value.ToString("MM/dd/yyyy HH:mm:ss");
-                MessageCount++;
-            }
-
-            return result;
         }
     }
 }

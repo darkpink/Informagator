@@ -17,6 +17,7 @@ namespace Informagator.ProdProviders
             using (MessageEntities entities = new MessageEntities())
             {
                 Message m = entities.Messages.Create();
+                m.MessageId = message.Id;
                 m.Body = Encoding.ASCII.GetString(message.BinaryData);
                 m.QueueName = queueName;
                 entities.SaveChanges();
@@ -25,15 +26,14 @@ namespace Informagator.ProdProviders
 
         public IMessage Dequeue(string queueName)
         {
-            DatabaseMessage result = null;
+            Message result = null;
 
             using (MessageEntities entities = new MessageEntities())
             {
                 long? messageId = entities.Dequeue(queueName).SingleOrDefault();
                 if (messageId != null)
                 {
-                    Message message = entities.Messages.Include(m => m.MessageAttributes).Single(m => m.Id == messageId);
-                    result = new DatabaseMessage(message);
+                    result = entities.Messages.Include(m => m.MessageAttributes).Single(m => m.Id == messageId);
                 }
             }
 

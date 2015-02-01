@@ -72,18 +72,23 @@
     <Compile Include="Configuration\ErrorHandlerParameter.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\ErrorHandlerParameter.Partial.cs" />
+    <Compile Include="Configuration\ErrorHandlerPartial.cs" />
     <Compile Include="Configuration\Machine.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\Machine.partial.cs" />
     <Compile Include="Configuration\MachineErrorHandler.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Configuration\Stage.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\Stage.Partial.cs" />
     <Compile Include="Configuration\StageErrorHandler.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\StageErrorHandler.partial.cs" />
     <Compile Include="Configuration\StageParameter.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
@@ -93,15 +98,19 @@
     <Compile Include="Configuration\Worker.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\Worker.Partial.cs" />
     <Compile Include="Configuration\WorkerErrorHandler.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\WorkerErrorHandler.partial.cs" />
     <Compile Include="Configuration\WorkerParameter.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\WorkerParameter.partial.cs" />
     <Compile Include="Message\Message.cs">
       <DependentUpon>MessageModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Message\Message.partial.cs" />
     <Compile Include="Message\MessageAttribute.cs">
       <DependentUpon>MessageModel.tt</DependentUpon>
     </Compile>
@@ -166,6 +175,7 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>MessageModel.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Compile Include="Configuration\StageParameter.Partial.cs" />
     <None Include="Message\MessageModel.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>MessageModel.edmx</DependentUpon>
@@ -201,7 +211,12 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

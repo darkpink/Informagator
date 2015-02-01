@@ -12,7 +12,7 @@ namespace Informagator.DevProviders
 {
     public class FileSystemAssemblySource : IAssemblyProvider
     {
-        public byte[] GetAssemblyBinary(string assemblyName)
+        public byte[] GetAssemblyBinary(string assemblyName, string assemblyVersion)
         {
             byte[] assemblyBytes;
 
@@ -26,7 +26,7 @@ namespace Informagator.DevProviders
             return assemblyBytes;
         }
 
-        public byte[] GetDebuggingSymbolBinary(string assemblyName)
+        public byte[] GetDebuggingSymbolBinary(string assemblyName, string assemblyVersion)
         {
             byte[] debuggingSymbolBytes;
 

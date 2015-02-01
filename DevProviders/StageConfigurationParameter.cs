@@ -8,15 +8,10 @@ using System.Threading.Tasks;
 
 namespace Informagator.DevProviders.Configuration
 {
-    public class HardCodedStageConfigurationParameter : IStageConfigurationParameter
+    public class HardCodedStageConfigurationParameter : IConfigurationParameter
     {
         public string Name { get; set; }
 
         public string Value { get; set; }
-
-        public bool IsSameAs(IStageConfigurationParameter param)
-        {
-            return Name == param.Name && Value == param.Value;
-        }
     }
 }

@@ -26,8 +26,8 @@ namespace Informagator.Machine
         [ProvideToClient(typeof(IMessageStore))]
         protected IMessageStore MessageStore { get; set; }
 
-        [ProvideToClient(typeof(IThreadConfiguration))]
-        protected IThreadConfiguration Configuration { get; set; }
+        [ProvideToClient(typeof(IWorkerConfiguration))]
+        protected IWorkerConfiguration Configuration { get; set; }
 
         protected Thread WorkerThread { get; set; }
         
@@ -56,7 +56,7 @@ namespace Informagator.Machine
 
                 AssemblyManager = Container.Resolve<IAssemblyManager>();
                 IConfigurationProvider configurationProvider = Container.Resolve<IConfigurationProvider>();
-                Configuration = configurationProvider.GetMachineConfiguration(machineName).ThreadConfiguration[threadName];
+                Configuration = configurationProvider.GetMachineConfiguration(machineName).Workers[threadName];
                 CreateWorker();
             }
             catch(Exception ex)
@@ -133,8 +133,8 @@ namespace Informagator.Machine
         protected void CreateWorker()
         {
             //TODO: need good, descriptive configuration exceptions if any of these steps fail
-            Assembly loadedAssembly = AssemblyManager.GetAssembly(Configuration.WorkerClassTypeAssembly);
-            WorkerClass = loadedAssembly.GetType(Configuration.WorkerClassTypeName);
+            Assembly loadedAssembly = AssemblyManager.GetAssembly(Configuration.AssemblyName, Configuration.AssemblyVersion);
+            WorkerClass = loadedAssembly.GetType(Configuration.Type);
             WorkerObject = Activator.CreateInstance(WorkerClass) as IWorker;
             WorkerObject.Name = Configuration.Name;
             WorkerObject.Configuration = Configuration;
@@ -183,7 +183,7 @@ namespace Informagator.Machine
             }
         }
 
-        public virtual bool IsRestartRequiredForNewConfiguration(IThreadConfiguration newConfiguration)
+        public virtual bool IsRestartRequiredForNewConfiguration(IWorkerConfiguration newConfiguration)
         {
             bool result;
 
