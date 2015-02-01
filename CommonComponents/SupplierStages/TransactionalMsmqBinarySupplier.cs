@@ -84,5 +84,11 @@ namespace Informagator.CommonComponents.SupplierStages
         {
             //TODO
         }
+
+
+        public bool IsBlocking
+        {
+            get { return false; }
+        }
     }
 }

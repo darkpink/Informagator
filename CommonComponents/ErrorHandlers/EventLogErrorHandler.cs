@@ -36,8 +36,8 @@ namespace Informagator.CommonComponents.ErrorHandlers
         {
             EventLog log = new EventLog(Log);
         }
-        
-        public void Handle(string info, IMessage message, Exception ex)
+
+        public void Handle(IList<string> info, Exception ex, IMessage message)
         {
             if (!String.IsNullOrWhiteSpace(Source))
             {
@@ -55,5 +55,7 @@ namespace Informagator.CommonComponents.ErrorHandlers
         {
             //TODO
         }
+
+        public IList<string> ContextInfo { get; set;}
     }
 }

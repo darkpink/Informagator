@@ -22,10 +22,10 @@ namespace Informagator.CommonComponents.Tracking
 
         protected Dictionary<IMessage, ITrackingInfo> PreviousStageTrackingInfo { get; set; }
         protected Dictionary<IMessage, ITrackingInfo> CurrentStageTrackingInfo { get; set; }
-        public ProcessingSequenceTracker(Guid processingSequenceId, IMessageTracker messageTracker)
+        public ProcessingSequenceTracker(IMessageTracker messageTracker)
         {
             MessageTracker = messageTracker;
-            ProcessingSequenceId = processingSequenceId;
+            ProcessingSequenceId = Guid.NewGuid();
             PreviousStageTrackingInfo = new Dictionary<IMessage, ITrackingInfo>();
             CurrentStageTrackingInfo = new Dictionary<IMessage, ITrackingInfo>();
             CurrentStageSequence = 0;

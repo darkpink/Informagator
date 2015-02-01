@@ -46,6 +46,8 @@ namespace Informagator.Machine
 
         protected ThreadRunStatus RunStatus { get; set; }
 
+        protected List<IMessageErrorHandler> ErrorHandlers { get; set; }
+
         public IsolatedWorkerHost(string machineName, string threadName)
         {
             try
@@ -57,6 +59,7 @@ namespace Informagator.Machine
                 AssemblyManager = Container.Resolve<IAssemblyManager>();
                 IConfigurationProvider configurationProvider = Container.Resolve<IConfigurationProvider>();
                 Configuration = configurationProvider.GetMachineConfiguration(machineName).Workers[threadName];
+                CreateErrorHandlers();
                 CreateWorker();
             }
             catch(Exception ex)
@@ -64,6 +67,15 @@ namespace Informagator.Machine
                 WorkerThreadException = ex;
                 ConfigurationException newException = new ConfigurationException("Worker " + (threadName ?? "[Empty Name]") + " cannot be initialized.", ex);
                 RunStatus = ThreadRunStatus.Error;
+            }
+        }
+
+        private void CreateErrorHandlers()
+        {
+            foreach (IErrorHandlerConfiguration errorHandlerConfiguration in Configuration.ErrorHandlers)
+            {
+                IMessageErrorHandler errorHandler = AssemblyManager.CreateConfiguredObject(errorHandlerConfiguration, this) as IMessageErrorHandler;
+                ErrorHandlers.Add(errorHandler);
             }
         }
 
@@ -88,10 +100,19 @@ namespace Informagator.Machine
                 //configuration problems, who knows. No matter what the exception type is, the thread is done.
                 RunStatus = ThreadRunStatus.Error;
                 WorkerThreadException = ex;
+                InvokeErrorHandlers(ex);
                 if (UnhandledException != null)
                 {
                     UnhandledException(ex);
                 }
+            }
+        }
+
+        private void InvokeErrorHandlers(Exception ex)
+        {
+            foreach(IMessageErrorHandler errorHandler in ErrorHandlers)
+            {
+                errorHandler.Handle(new[] { "Unhandled exception on thread " + Configuration.Name }, ex, null);
             }
         }
 
@@ -133,47 +154,11 @@ namespace Informagator.Machine
         protected void CreateWorker()
         {
             //TODO: need good, descriptive configuration exceptions if any of these steps fail
-            Assembly loadedAssembly = AssemblyManager.GetAssembly(Configuration.AssemblyName, Configuration.AssemblyVersion);
-            WorkerClass = loadedAssembly.GetType(Configuration.Type);
-            WorkerObject = Activator.CreateInstance(WorkerClass) as IWorker;
-            WorkerObject.Name = Configuration.Name;
+            WorkerObject = AssemblyManager.CreateConfiguredObject(Configuration, this) as IWorker;
             WorkerObject.Configuration = Configuration;
-
-            var dependencyProps = WorkerClass.GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
-            foreach (PropertyInfo pi in dependencyProps)
-            {
-                object value = GetWorkerDependencyValue(pi.PropertyType);
-                pi.SetValue(WorkerObject, value);
-            }
-
-            //TODO: add validate settings on the worker.  this is the last point where I want configurationexceptions permitted
+            //TODO: add validate settings on the worker.  this is the last point where I want configurationexceptions
         }
 
-        protected object GetWorkerDependencyValue(Type type)
-        {
-            object result;
-
-            var myProperties = this.GetType().GetProperties(BindingFlags.Instance);
-            var myPropertiesToProvideToClient = myProperties.Where(p => p.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any());
-            var myPropsWithCorrectType = myPropertiesToProvideToClient.FirstOrDefault(p => p.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any(attr => attr.InterfaceType == type));
-            
-            if (myPropsWithCorrectType != null)
-            {
-                result = myPropsWithCorrectType.GetValue(this);
-            }
-            else
-            {
-                result = Container.Resolve(type);
-
-                if (result == null)
-                {
-                    ConfigurationException ex = new ConfigurationException("ThreadHost to provide value for type " + type.ToString());
-                    throw ex;
-                }
-            }
- 	        
-            return result;
-        }
 
         public bool AnyAssemblyChanged
         {
@@ -198,6 +183,5 @@ namespace Informagator.Machine
             
             return result;
         }
-
     }
 }

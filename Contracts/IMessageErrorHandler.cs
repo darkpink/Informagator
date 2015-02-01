@@ -8,15 +8,10 @@ namespace Informagator.Contracts
 {
     public interface IMessageErrorHandler
     {
-        void Handle(String info, IMessage message, Exception ex);
+        void Handle(IList<string> info, Exception ex, IMessage message);
 
         void ValidateSettings();
-    }
 
-    public interface IMessageErrorHandler<TException>
-        where TException : Exception
-    {
-        void Handle(String info, IMessage message, TException validationResult);
+        IList<string> ContextInfo { set; }
     }
-
 }

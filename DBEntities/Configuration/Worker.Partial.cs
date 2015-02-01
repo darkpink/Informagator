@@ -41,5 +41,11 @@ namespace Informagator.DBEntities.Configuration
                 return Assembly.Version;
             }
         }
+
+
+        public IList<IErrorHandlerConfiguration> ErrorHandlers
+        {
+            get { return ErrorHandlers.Cast<IErrorHandlerConfiguration>().ToList(); }
+        }
     }
 }

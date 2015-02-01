@@ -9,5 +9,6 @@ namespace Informagator.Contracts.Configuration
         
         IList<IStageConfiguration> Stages { get; }
 
+        IList<IErrorHandlerConfiguration> ErrorHandlers { get; }
     }
 }

@@ -13,8 +13,6 @@ namespace Informagator.Contracts
         
         void Stop();
         
-        string Name { set; }
-
         IThreadStatus Status { get; }
 
         IWorkerConfiguration Configuration { set; }

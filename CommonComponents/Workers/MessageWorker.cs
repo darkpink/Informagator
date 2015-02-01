@@ -38,8 +38,6 @@ namespace Informagator.CommonComponents.Workers
         [ProvideToClient(typeof(IMessageStore))]
         public virtual IMessageStore MessageStore { protected get; set; }
         
-        public string Name { protected get; set; }
-
         [HostProvided]
         [ProvideToClient(typeof(IMessageTracker))]
         public virtual IMessageTracker MessageTracker { protected get; set; }
@@ -57,21 +55,11 @@ namespace Informagator.CommonComponents.Workers
             RunStatus = ThreadRunStatus.Running;
             Started = DateTime.Now;
             Info = "Started";
-            Run();
-        }
-
-        public virtual void Run()
-        {
         }
 
         public virtual void Stop()
         {
             Info = "Stop Requested";
-            StopRequested();
-        }
-
-        protected virtual void StopRequested()
-        {
         }
 
         public virtual IThreadStatus Status

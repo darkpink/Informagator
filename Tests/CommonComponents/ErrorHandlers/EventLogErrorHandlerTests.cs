@@ -17,7 +17,7 @@ namespace Tests.CommonComponents.ErrorHandlers
         {
             EventLogErrorHandler handler = new EventLogErrorHandler();
             handler.Source = "InformagatorTests";
-            handler.Handle("Test", new AsciiStringMessage() { Body = "test" }, new InvalidOperationException());
+            handler.Handle(new[] {"Test"}, new InvalidOperationException(), new AsciiStringMessage() { Body = "test" });
         }
     }
 }

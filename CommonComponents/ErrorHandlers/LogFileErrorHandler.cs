@@ -20,13 +20,16 @@ namespace Informagator.CommonComponents.ErrorHandlers
         [ConfigurationParameter(DisplayName = "File Name")]
         public string FileName { get; set; }
 
-        public void Handle(string info, IMessage message, Exception ex)
+        public IList<string> ContextInfo { get; set; }
+
+        public void Handle(IList<string> info, Exception ex, IMessage message)
         {
             var fullPath = Path.Combine(FolderPath, FileName);
 
             using (FileStream outFileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
             using (StreamWriter writer = new StreamWriter(outFileStream))
             {
+                //TODO add context info
                 writer.WriteLine(info);
                 writer.WriteLine(ex.ToString());
                 outFileStream.Write(message.BinaryData, 0, message.BinaryData.Length);

@@ -9,6 +9,9 @@ namespace Informagator.Contracts.Stages
     public interface ISupplierStage : IProcessingStage
     {
         IMessage Supply();
+
+        bool IsBlocking { get; }
+
         string ReceviedFrom { get; }
     }
 }

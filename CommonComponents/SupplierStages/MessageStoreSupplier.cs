@@ -53,5 +53,13 @@ namespace Informagator.CommonComponents.SupplierStages
         {
             get { return "MessageStoreSupplier"; }
         }
+
+        public bool IsBlocking
+        {
+            get 
+            { 
+                return false; 
+            }
+        }
     }
 }

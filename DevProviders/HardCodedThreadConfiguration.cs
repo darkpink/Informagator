@@ -35,5 +35,11 @@ namespace Informagator.DevProviders.Configuration
         {
             get { return new List<IConfigurationParameter>(); }
         }
+
+
+        public IList<IErrorHandlerConfiguration> ErrorHandlers
+        {
+            get { return new List<IErrorHandlerConfiguration>(); }
+        }
     }
 }

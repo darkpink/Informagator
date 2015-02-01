@@ -73,5 +73,11 @@ namespace Informagator.CommonComponents.SupplierStages
         {
             get { return "OldestFileFromFolderSupplier"; }
         }
+
+
+        public bool IsBlocking
+        {
+            get { return false; }
+        }
     }
 }

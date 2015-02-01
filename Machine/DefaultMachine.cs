@@ -74,6 +74,7 @@ namespace Informagator.Machine
             {
                 if (evaulator.IsRestartRequired(Threads[existingThreadName], Configuration.Workers[existingThreadName], newConfiguration.Workers[existingThreadName]))
                 {
+                    //TODO: if the thread was stopped, don't start it
                     DestroyThread(existingThreadName);
                     AddThread(newConfiguration.Workers[existingThreadName]);
                 }

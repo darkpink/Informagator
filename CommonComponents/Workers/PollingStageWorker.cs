@@ -28,8 +28,10 @@ namespace Informagator.CommonComponents.Workers
 
         protected virtual bool Continue { get; set; }
 
-        public override void Run()
+        public override void Start()
         {
+            base.Start();
+
             Continue = true;
             BuildStages();
 
@@ -39,7 +41,7 @@ namespace Informagator.CommonComponents.Workers
                 HeartBeat = DateTime.Now;
                 while (Continue)
                 {
-                    if (Stages.Execute())
+                    if (Stages.TryProcessMessage())
                     {
                         currentSleepTime = 0;
                         LastMessage = DateTime.Now;
@@ -55,9 +57,9 @@ namespace Informagator.CommonComponents.Workers
             }
         }
 
-        protected override void StopRequested()
+        public override void Stop()
         {
-            base.StopRequested();
+            base.Stop();
             Continue = false;
         }
 
