@@ -17,7 +17,7 @@ namespace Informagator.CommonComponents.ConsumerStages
         [ConfigurationParameter]
         public string FolderPathAttribute { get; set; }
 
-        public string Consume(IMessage message)
+        public IMessage Consume(IMessage message)
         {
             ValidateSettings();
 
@@ -32,7 +32,7 @@ namespace Informagator.CommonComponents.ConsumerStages
                 outFileStream.Close();
             }
             
-            return FolderPathAttribute;
+            return null;
         }
 
         public void ValidateSettings()

@@ -17,7 +17,7 @@ namespace Informagator.CommonComponents.ConsumerStages
         [ConfigurationParameter]
         public string FolderPath { get; set; }
 
-        public string Consume(IMessage message)
+        public IMessage Consume(IMessage message)
         {
             var fileName = Guid.NewGuid().ToString();
             var fullPath = Path.Combine(FolderPath, fileName);
@@ -28,7 +28,7 @@ namespace Informagator.CommonComponents.ConsumerStages
                 outFileStream.Close();
             }
             
-            return FolderPath;
+            return null;
         }
 
         public void ValidateSettings()

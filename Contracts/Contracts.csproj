@@ -57,6 +57,8 @@
     <Compile Include="Services\AdminServiceAddress.cs" />
     <Compile Include="Services\InfoServiceAddress.cs" />
     <Compile Include="Services\ThreadStatus.cs" />
+    <Compile Include="Stages\IReplySupplierStage.cs" />
+    <Compile Include="Stages\IReplyConsumerStage.cs" />
     <Compile Include="WorkerServices\IAssemblyManager.cs" />
     <Compile Include="Providers\IAssemblyProvider.cs" />
     <Compile Include="Providers\IConfigurationProvider.cs" />

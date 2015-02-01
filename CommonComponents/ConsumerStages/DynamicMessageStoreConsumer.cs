@@ -20,12 +20,12 @@ namespace Informagator.CommonComponents.ConsumerStages
         [HostProvided]
         public IMessageStore MessageStore { get; set; }
 
-        public string Consume(IMessage message)
+        public IMessage Consume(IMessage message)
         {
             ValidateSettings();
             var queueName = message.Attributes[QueueNameAttribute];
             MessageStore.Enqueue(queueName, message);
-            return "MessageStore queue " + queueName;
+            return null;
         }
 
         public void ValidateSettings()

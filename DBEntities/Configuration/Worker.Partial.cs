@@ -42,7 +42,6 @@ namespace Informagator.DBEntities.Configuration
             }
         }
 
-
         public IList<IErrorHandlerConfiguration> ErrorHandlers
         {
             get { return ErrorHandlers.Cast<IErrorHandlerConfiguration>().ToList(); }

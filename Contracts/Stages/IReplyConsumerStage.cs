@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Informagator.Contracts.Stages
 {
-    public interface IConsumerStage : IProcessingStage
+    public interface IReplyConsumerStage
     {
-        IMessage Consume(IMessage message); //returns either a reply or null
+        void ConsumeReply(IMessage reply);
     }
 }

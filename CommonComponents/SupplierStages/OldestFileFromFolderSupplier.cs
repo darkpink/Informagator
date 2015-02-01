@@ -79,5 +79,16 @@ namespace Informagator.CommonComponents.SupplierStages
         {
             get { return false; }
         }
+
+
+        public void Reply(IMessage reply)
+        {
+            throw new ConfigurationException("Cannot reply to file system");
+        }
+
+        public void Consumed()
+        {
+            //TODO: this is the appropriate time to delete the file
+        }
     }
 }

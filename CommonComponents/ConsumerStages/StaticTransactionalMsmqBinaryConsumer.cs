@@ -42,7 +42,7 @@ namespace Informagator.CommonComponents.ConsumerStages
             Queue = new MessageQueue(QueueName);
         }
 
-        public string Consume(IMessage message)
+        public IMessage Consume(IMessage message)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace Informagator.CommonComponents.ConsumerStages
                 ReopenQueue();
             }
 
-            return "MSMQ " + QueueName;
+            return null;
         }
 
 

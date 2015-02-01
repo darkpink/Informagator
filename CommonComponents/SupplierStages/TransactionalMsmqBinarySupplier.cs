@@ -1,6 +1,7 @@
 ﻿using Informagator.CommonComponents.Messages;
 using Informagator.Contracts;
 using Informagator.Contracts.Attributes;
+using Informagator.Contracts.Exceptions;
 using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
@@ -89,6 +90,17 @@ namespace Informagator.CommonComponents.SupplierStages
         public bool IsBlocking
         {
             get { return false; }
+        }
+
+
+        public void Reply(IMessage reply)
+        {
+            throw new ConfigurationException("Cannot reply to MSMQ");
+        }
+
+        public void Consumed()
+        {
+            //TODO: this is the appropriate time to delete the message from the queue
         }
     }
 }

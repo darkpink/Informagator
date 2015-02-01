@@ -13,5 +13,9 @@ namespace Informagator.Contracts.Stages
         bool IsBlocking { get; }
 
         string ReceviedFrom { get; }
+
+        void Reply(IMessage reply);
+
+        void Consumed();
     }
 }

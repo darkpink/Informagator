@@ -67,10 +67,20 @@ namespace Informagator.CommonComponents.Workers
             {
                 var stage = Stages[currentStageIndex];
                 tracker.BeginStage(stage.Name);
+                IMessage replyFromConsumer = null;
 
                 try
                 {
-                    if (stage is ITransformStage)
+                    if (stage is IReplySupplierStage)
+                    {
+                        var reply = ProcessReplyBuilderStage(stage, messagesInProcess);
+                        ((ISupplierStage)Stages[0]).Reply(reply);
+                    }
+                    else if (stage is IReplyConsumerStage)
+                    {
+                        ((IReplyConsumerStage)stage).ConsumeReply(replyFromConsumer);
+                    }
+                    else if (stage is ITransformStage)
                     {
                         messagesInProcess = ProcessTransformStage((ITransformStage)stage, tracker, messagesInProcess);
                     }
@@ -127,6 +137,12 @@ namespace Informagator.CommonComponents.Workers
             }
 
             return result;
+        }
+
+        private IMessage ProcessReplyBuilderStage(IProcessingStage stage, List<IMessage> messagesInProcess)
+        {
+            //TODO
+            return null;
         }
 
         private void InvokeErrorHandlers(IList<IMessageErrorHandler> handlers, string stageName, IMessage message, Exception ex)

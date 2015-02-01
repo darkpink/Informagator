@@ -61,5 +61,16 @@ namespace Informagator.CommonComponents.SupplierStages
                 return false; 
             }
         }
+
+
+        public void Reply(IMessage reply)
+        {
+            throw new ConfigurationException("Cannot reply to MessageStore");
+        }
+
+        public void Consumed()
+        {
+            //TODO: this is the appropriate time to delete the message from the message store queue
+        }
     }
 }
