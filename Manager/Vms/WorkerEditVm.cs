@@ -35,8 +35,7 @@ namespace Informagator.Manager.Vms
                                          .Include(w => w.Stages.Select(s => s.StageParameters))
                                          .Single(w => w.Id == EntityId);
             MachineName = worker.Machine.Name;
-            WorkerAssemblyName = worker.Assembly.Name;
-            WorkerAssemblyDotNetVersion = worker.Assembly.Version;
+            WorkerAssemblyId = worker.Assembly.Id;
             LoadStages(worker);
             return worker;
         }
@@ -49,12 +48,8 @@ namespace Informagator.Manager.Vms
             {
                 Editor.Stage editorStage = new Editor.Stage();
                 editorStage.Name = stg.Name;
-                editorStage.StageAssemblyName = stg.Assembly.Name;
-                editorStage.StageAssemblyDotNetVersion = stg.Assembly.Version;
+                editorStage.StageAssemblyId = stg.Assembly.Id;
                 editorStage.StageType = stg.Type;
-                editorStage.ErrorHandlerAssemblyName = stg.StageErrorHandlers.Select(eh => eh.ErrorHandler.Assembly.Name).FirstOrDefault();
-                editorStage.ErrorHandlerAssemblyDotNetVersion = stg.StageErrorHandlers.Select(eh => eh.ErrorHandler.Assembly.Version).FirstOrDefault();
-                editorStage.ErrorHandlerType = stg.StageErrorHandlers.Select(eh => eh.ErrorHandler.Type).FirstOrDefault();
                 foreach (StageParameter param in stg.StageParameters)
                 {
                     Editor.StageParameter editorParam = new Editor.StageParameter();
@@ -70,7 +65,7 @@ namespace Informagator.Manager.Vms
         {
             while(Entity.Stages.Count < Stages.Count)
             {
-                Entity.Stages.Add(new Stage());
+                Entity.Stages.Add(new Stage() { Worker = Entity });
             }
 
             foreach(Stage toDelete in Entity.Stages.Skip(Stages.Count).ToList())
@@ -85,10 +80,7 @@ namespace Informagator.Manager.Vms
                 Editor.Stage uiStage = Stages[index];
                 dbStage.Sequence = index;
                 dbStage.Name = uiStage.Name;
-                Assembly stageAssemblyVersion = Entities.Assemblies.SingleOrDefault(av => av.Name == uiStage.StageAssemblyName &&
-                                                                                      av.Version == uiStage.StageAssemblyDotNetVersion &&
-                                                                                      av.SystemConfiguration.Description == SelectedConfiguration
-                                                                                );
+                Assembly stageAssemblyVersion = Entities.Assemblies.SingleOrDefault(av => av.Id == uiStage.StageAssemblyId);
                 dbStage.Assembly = stageAssemblyVersion;
                 dbStage.Type = uiStage.StageType;
 
@@ -108,7 +100,7 @@ namespace Informagator.Manager.Vms
 
                 dbStage.StageParameters.Where(dbp => !uiStage.StageParameters.Any(uip => uip.Name == dbp.Name))
                        .ToList()
-                       .ForEach(p => dbStage.StageParameters.Remove(p));
+                       .ForEach(p => Entities.StageParameters.Remove(p));
             }
         }
 
@@ -145,32 +137,17 @@ namespace Informagator.Manager.Vms
             }
         }
 
-        private string _workerAssemblyName;
-        public string WorkerAssemblyName
+        private long? _workerAssemblyId;
+        public long? WorkerAssemblyId
         {
             get
             {
-                return _workerAssemblyName;
+                return _workerAssemblyId;
             }
             set
             {
-                _workerAssemblyName = value;
-                NotifyPropertyChanged("AssemblyName");
-                AttemptToSetAssembly();
-            }
-        }
-
-        private string _workerAssemblyDotNetVersion;
-        public string WorkerAssemblyDotNetVersion
-        {
-            get
-            {
-                return _workerAssemblyDotNetVersion;
-            }
-            set
-            {
-                _workerAssemblyDotNetVersion = value;
-                NotifyPropertyChanged("AssemblyDotNetVersion");
+                _workerAssemblyId = value;
+                NotifyPropertyChanged("WorkerAssemblyId");
                 AttemptToSetAssembly();
             }
         }
@@ -184,14 +161,12 @@ namespace Informagator.Manager.Vms
             SaveStages();
             base.SaveEntity();
         }
+        
         private void AttemptToSetAssembly()
         {
-            if (Entity != null && WorkerAssemblyName != null && WorkerAssemblyDotNetVersion != null)
+            if (Entity != null && WorkerAssemblyId != null)
             {
-                Assembly workerAssembly = Entities.Assemblies.SingleOrDefault(av => av.Name == WorkerAssemblyName &&
-                                                                        av.Version == WorkerAssemblyDotNetVersion &&
-                                                                        av.SystemConfiguration.Description == SelectedConfiguration
-                                                                );
+                Assembly workerAssembly = Entities.Assemblies.SingleOrDefault(av => av.Id == WorkerAssemblyId);
                 Entity.Assembly = workerAssembly;
             }
         }

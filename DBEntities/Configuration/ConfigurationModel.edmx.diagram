@@ -14,7 +14,7 @@
         <EntityTypeShape EntityType="Model.StageErrorHandler" Width="1.5" PointX="10.5" PointY="8.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.StageParameter" Width="1.5" PointX="7.5" PointY="6.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.SystemConfiguration" Width="1.5" PointX="0.75" PointY="10.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="Model.Worker" Width="1.5" PointX="5.25" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.Worker" Width="2" PointX="5.25" PointY="13.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.WorkerErrorHandler" Width="1.5" PointX="10.5" PointY="12.5" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.WorkerParameter" Width="1.5" PointX="7.5" PointY="16.375" IsExpanded="true" />
         <AssociationConnector Association="Model.FK_Assembly_SystemConfiguration" ManuallyRouted="false" />
@@ -33,6 +33,9 @@
         <AssociationConnector Association="Model.FK_StageParameter_Stage" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_WorkerErrorHandler_Worker" ManuallyRouted="false" />
         <AssociationConnector Association="Model.FK_WorkerParameter_Worker" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.SystemConfigurationErrorHandler" Width="1.5" PointX="10.5" PointY="16" />
+        <AssociationConnector Association="Model.FK_SystemConfigurationErrorHandler_ErrorHandler" />
+        <AssociationConnector Association="Model.FK_SystemConfigurationErrorHandler_SystemConfiguration" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

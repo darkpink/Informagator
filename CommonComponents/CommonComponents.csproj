@@ -52,6 +52,7 @@
     <Compile Include="Messages\ByteArrayMessage.cs" />
     <Compile Include="Messages\MessageBase.cs" />
     <Compile Include="Messages\XmlMessage.cs" />
+    <Compile Include="ReplyBuilderStages\EchoReplyBuilder.cs" />
     <Compile Include="SupplierStages\MessageStoreSupplier.cs" />
     <Compile Include="SupplierStages\TransactionalMsmqBinarySupplier.cs" />
     <Compile Include="SupplierStages\OldestFileFromFolderSupplier.cs" />

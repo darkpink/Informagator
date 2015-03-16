@@ -23,14 +23,14 @@ namespace Informagator.ProdProviders
                     .Include(sc => sc.Assemblies)
                     .Include(sc => sc.Machines.Select(m => m.Workers
                                                             .Select(w => w.WorkerErrorHandlers
-                                                                          .Select(weh => weh.Parameters))))
+                                                                          .Select(weh => weh.ErrorHandler.ErrorHandlerParameters))))
                     .Include(av => av.Machines.Select(h => h.Workers
                                                             .Select(t => t.Stages
                                                                         .Select(s => s.StageParameters))))
                     .Include(av => av.Machines.Select(h => h.Workers
                                                             .Select(t => t.Stages
                                                                         .Select(s => s.StageErrorHandlers
-                                                                                      .Select(seh => seh.ErrorHandler.Parameters)))))
+                                                                                      .Select(seh => seh.ErrorHandler.ErrorHandlerParameters)))))
                     .Single(av => av.IsActive)
                     .Machines;
             }
@@ -39,9 +39,17 @@ namespace Informagator.ProdProviders
         {
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                Machine result = GetMachineByName(hostName, entities) ??
-                                 GetMachineByIP(hostName, entities) ??
-                                 GetMachineByLoopbackAddress(entities);
+                Machine result = GetMachineByName(hostName, entities);
+
+                if (result == null)
+                {
+                    result = GetMachineByIP(hostName, entities);
+                }
+
+                if (result == null)
+                {
+                    GetMachineByLoopbackAddress(entities);
+                }
 
                 return result;
             }

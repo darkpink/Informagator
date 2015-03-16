@@ -1,0 +1,5 @@
+﻿Stage Sequence:
+-All suppliers are ISupplierStages.  If the supplier needs to reply to it's sending party, then it needs to be a IReplyingSupplierStage (which extends ISupplierStage)
+-Validation is done in IObserverStages.  Exceptions of type InformagatorException should be thrown, with the SuggestedAction property set appropriately
+-All transformations are done by ITransformStages.  If multiple messages are returned from a transform stage, they will each be processed in the remaining stages.  Not recommended to do that.  Better to debatch and enqueue to the message store.
+-Consumer stages, pretty self explanatory.  If the act of consuming a messages generates a reply, then the "Consumer" should instead be a ITransformStage (transforming a message into a reply) and then use the EchoReplyBuilderStage to echo the transformed message as the reply.

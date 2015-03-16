@@ -11,7 +11,7 @@ namespace Informagator.Manager.Commands
     {
         public enum PanelView
         {
-            ConfigurationList, MachineList, AssemblyList, WorkerList, StartStop, GlobalSettings,
+            ConfigurationList, MachineList, AssemblyList, WorkerList, StartStop,
             ConfigurationEdit, MachineEdit, AssemblyEdit, WorkerEdit
         };
 
@@ -22,7 +22,6 @@ namespace Informagator.Manager.Commands
         public static ICommand GoToWorkerList { get { return new PanelChangeCommand(PanelView.WorkerList, RequestPanelChange); } }
         public static ICommand GoToAssemblyList { get { return new PanelChangeCommand(PanelView.AssemblyList, RequestPanelChange); } }
         public static ICommand GoToStartStop { get { return new PanelChangeCommand(PanelView.StartStop, RequestPanelChange); } }
-        public static ICommand GoToGlobalSettings { get { return new PanelChangeCommand(PanelView.GlobalSettings, RequestPanelChange); } }
         public static ICommand GoToConfigurationEdit { get { return new PanelChangeCommand(PanelView.ConfigurationEdit, RequestPanelChange); } }
         public static ICommand GoToMachineEdit { get { return new PanelChangeCommand(PanelView.MachineEdit, RequestPanelChange); } }
         public static ICommand GoToWorkerEdit { get { return new PanelChangeCommand(PanelView.WorkerEdit, RequestPanelChange); } }

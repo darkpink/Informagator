@@ -20,6 +20,8 @@ namespace Informagator.Contracts.Configuration
         int InfoServicePort { get; }
         
         string InfoServiceGroup { get; }
+
+        bool SuppressSystemConfigurationErrorHandlers { get; }
         
         IDictionary<string, IWorkerConfiguration> Workers { get; }
     }

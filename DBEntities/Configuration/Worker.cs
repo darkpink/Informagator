@@ -27,6 +27,7 @@ namespace Informagator.DBEntities.Configuration
         public long AssemblyId { get; set; }
         public string Type { get; set; }
         public bool AutoStart { get; set; }
+        public bool SuppressMachineErrorHandlers { get; set; }
     
         public virtual Assembly Assembly { get; set; }
         public virtual Machine Machine { get; set; }

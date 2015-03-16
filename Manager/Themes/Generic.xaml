@@ -28,7 +28,6 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="1*" />
@@ -36,21 +35,13 @@
                             </Grid.ColumnDefinitions>
 
                             <TextBlock Grid.Row="0" HorizontalAlignment="Right" Text="{Binding TypeCaption, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0} Assembly Name:'}" />
-                            <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{Binding TypeCaption, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0} Assembly Dot Net Version:'}" />
-                            <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="{Binding TypeCaption, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0} Type:'}" />
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="{Binding TypeCaption, RelativeSource={RelativeSource TemplatedParent}, StringFormat='{}{0} Type:'}" />
 
-                            <ComboBox Grid.Row ="0" Grid.Column="1" HorizontalAlignment="Left"
-                                      ItemsSource="{Binding AssemblyNames, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      SelectedItem="{Binding SelectedAssemblyName, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
+                            <ComboBox Name="PART_AssemblyComboBox" Grid.Row ="0" Grid.Column="1" HorizontalAlignment="Left"
+                                      ItemsSource="{Binding AssemblyIdsAndNames, RelativeSource={RelativeSource TemplatedParent}}" 
                                       />
-                            <ComboBox Grid.Row ="1" Grid.Column="1" HorizontalAlignment="Left" 
-                                      ItemsSource="{Binding AssemblyVersions, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      SelectedItem="{Binding SelectedAssemblyDotNetVersion, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      IsEnabled="{Binding IsVersionSelectAllowed, RelativeSource={RelativeSource TemplatedParent}}"
-                                      />
-                            <ComboBox Grid.Row ="2" Grid.Column="1" HorizontalAlignment="Left" 
+                            <ComboBox Name="PART_TypeComboBox" Grid.Row ="1" Grid.Column="1" HorizontalAlignment="Left" 
                                       ItemsSource="{Binding AssemblyTypes, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      SelectedItem="{Binding SelectedType, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                                       IsEnabled="{Binding IsTypeSelectAllowed, RelativeSource={RelativeSource TemplatedParent}}"
                                       />
                         </Grid>

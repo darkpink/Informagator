@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Assembly">
           <Key>
             <PropertyRef Name="Id" />
@@ -44,9 +44,10 @@
           <Property Name="SystemConfigurationId" Type="bigint" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="IPAddress" Type="varchar" MaxLength="15" />
-          <Property Name="Description" Type="varchar(max)" Nullable="false" />
+          <Property Name="Description" Type="varchar(max)" />
           <Property Name="AdminServicePort" Type="int" Nullable="false" />
           <Property Name="InfoServicePort" Type="int" Nullable="false" />
+          <Property Name="SuppressSystemConfigurationErrorHandlers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -66,6 +67,7 @@
           <Property Name="Sequence" Type="int" Nullable="false" />
           <Property Name="AssemblyId" Type="bigint" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="1000" Nullable="false" />
+          <Property Name="SuppressWorkerErrorHandlers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="StageErrorHandler">
           <Key>
@@ -90,11 +92,19 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CreateDttm" Type="datetime" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="100" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="EffectiveDttm" Type="datetime" Nullable="false" />
-          <Property Name="DefaultAdminServicePort" Type="int" Nullable="false" />
-          <Property Name="DefaultInfoServicePort" Type="int" Nullable="false" />
+          <Property Name="EffectiveDttm" Type="datetime" />
+          <Property Name="DefaultAdminServicePort" Type="int" />
+          <Property Name="DefaultInfoServicePort" Type="int" />
+        </EntityType>
+        <EntityType Name="SystemConfigurationErrorHandler">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SystemConfigurationId" Type="bigint" Nullable="false" />
+          <Property Name="ErrorHandlerId" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Worker">
           <Key>
@@ -106,6 +116,7 @@
           <Property Name="AssemblyId" Type="bigint" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="AutoStart" Type="bit" Nullable="false" />
+          <Property Name="SuppressMachineErrorHandlers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkerErrorHandler">
           <Key>
@@ -272,6 +283,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SystemConfigurationErrorHandler_ErrorHandler">
+          <End Role="ErrorHandler" Type="Self.ErrorHandler" Multiplicity="1" />
+          <End Role="SystemConfigurationErrorHandler" Type="Self.SystemConfigurationErrorHandler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ErrorHandler">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SystemConfigurationErrorHandler">
+              <PropertyRef Name="ErrorHandlerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemConfigurationErrorHandler_SystemConfiguration">
+          <End Role="SystemConfiguration" Type="Self.SystemConfiguration" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="SystemConfigurationErrorHandler" Type="Self.SystemConfigurationErrorHandler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemConfiguration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SystemConfigurationErrorHandler">
+              <PropertyRef Name="SystemConfigurationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Worker_Assembly">
           <End Role="Assembly" Type="Self.Assembly" Multiplicity="1" />
           <End Role="Worker" Type="Self.Worker" Multiplicity="*" />
@@ -348,6 +385,7 @@
           <EntitySet Name="StageErrorHandler" EntityType="Self.StageErrorHandler" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="StageParameter" EntityType="Self.StageParameter" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="SystemConfiguration" EntityType="Self.SystemConfiguration" Schema="Configuration" store:Type="Tables" />
+          <EntitySet Name="SystemConfigurationErrorHandler" EntityType="Self.SystemConfigurationErrorHandler" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="Worker" EntityType="Self.Worker" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="WorkerErrorHandler" EntityType="Self.WorkerErrorHandler" Schema="Configuration" store:Type="Tables" />
           <EntitySet Name="WorkerParameter" EntityType="Self.WorkerParameter" Schema="Configuration" store:Type="Tables" />
@@ -394,6 +432,14 @@
           <AssociationSet Name="FK_StageParameter_Stage" Association="Self.FK_StageParameter_Stage">
             <End Role="Stage" EntitySet="Stage" />
             <End Role="StageParameter" EntitySet="StageParameter" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemConfigurationErrorHandler_ErrorHandler" Association="Self.FK_SystemConfigurationErrorHandler_ErrorHandler">
+            <End Role="ErrorHandler" EntitySet="ErrorHandler" />
+            <End Role="SystemConfigurationErrorHandler" EntitySet="SystemConfigurationErrorHandler" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemConfigurationErrorHandler_SystemConfiguration" Association="Self.FK_SystemConfigurationErrorHandler_SystemConfiguration">
+            <End Role="SystemConfiguration" EntitySet="SystemConfiguration" />
+            <End Role="SystemConfigurationErrorHandler" EntitySet="SystemConfigurationErrorHandler" />
           </AssociationSet>
           <AssociationSet Name="FK_Worker_Assembly" Association="Self.FK_Worker_Assembly">
             <End Role="Assembly" EntitySet="Assembly" />
@@ -451,6 +497,7 @@
           <NavigationProperty Name="MachineErrorHandlers" Relationship="Self.FK_MachineErrorHandler_ErrorHandler" FromRole="ErrorHandler" ToRole="MachineErrorHandler" />
           <NavigationProperty Name="StageErrorHandlers" Relationship="Self.FK_StageErrorHandler_ErrorHandler" FromRole="ErrorHandler" ToRole="StageErrorHandler" />
           <NavigationProperty Name="WorkerErrorHandlers" Relationship="Self.FK_WorkerErrorHandler_ErrorHandler" FromRole="ErrorHandler" ToRole="WorkerErrorHandler" />
+          <NavigationProperty Name="SystemConfigurationErrorHandlers" Relationship="Model.FK_SystemConfigurationErrorHandler_ErrorHandler" FromRole="ErrorHandler" ToRole="SystemConfigurationErrorHandler" />
         </EntityType>
         <EntityType Name="ErrorHandlerParameter">
           <Key>
@@ -470,11 +517,12 @@
           <Property Name="SystemConfigurationId" Type="Int64" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="IPAddress" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
-          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="AdminServicePort" Type="Int32" Nullable="false" />
           <Property Name="InfoServicePort" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SystemConfiguration" Relationship="Self.FK_Machine_SystemConfigurationId" FromRole="Machine" ToRole="SystemConfiguration" />
           <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_Machine" FromRole="Machine" ToRole="Worker" />
+          <Property Name="SuppressSystemConfigurationErrorHandlers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -499,6 +547,7 @@
           <NavigationProperty Name="Worker" Relationship="Self.FK_Stage_Worker" FromRole="Stage" ToRole="Worker" />
           <NavigationProperty Name="StageErrorHandlers" Relationship="Self.FK_StageErrorHandler_Stage" FromRole="Stage" ToRole="StageErrorHandler" />
           <NavigationProperty Name="StageParameters" Relationship="Self.FK_StageParameter_Stage" FromRole="Stage" ToRole="StageParameter" />
+          <Property Name="SuppressWorkerErrorHandlers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="StageErrorHandler">
           <Key>
@@ -526,14 +575,15 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreateDttm" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="EffectiveDttm" Type="DateTime" Precision="3" Nullable="false" />
-          <Property Name="DefaultAdminServicePort" Type="Int32" Nullable="false" />
-          <Property Name="DefaultInfoServicePort" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDttm" Type="DateTime" Precision="3" />
+          <Property Name="DefaultAdminServicePort" Type="Int32" />
+          <Property Name="DefaultInfoServicePort" Type="Int32" />
           <NavigationProperty Name="Assemblies" Relationship="Self.FK_Assembly_SystemConfiguration" FromRole="SystemConfiguration" ToRole="Assembly" />
           <NavigationProperty Name="ErrorHandlers" Relationship="Self.FK_ErrorHandler_SystemConfiguration" FromRole="SystemConfiguration" ToRole="ErrorHandler" />
           <NavigationProperty Name="Machines" Relationship="Self.FK_Machine_SystemConfigurationId" FromRole="SystemConfiguration" ToRole="Machine" />
+          <NavigationProperty Name="SystemConfigurationErrorHandlers" Relationship="Model.FK_SystemConfigurationErrorHandler_SystemConfiguration" FromRole="SystemConfiguration" ToRole="SystemConfigurationErrorHandler" />
         </EntityType>
         <EntityType Name="Worker">
           <Key>
@@ -550,6 +600,7 @@
           <NavigationProperty Name="Stages" Relationship="Self.FK_Stage_Worker" FromRole="Worker" ToRole="Stage" />
           <NavigationProperty Name="WorkerErrorHandlers" Relationship="Self.FK_WorkerErrorHandler_Worker" FromRole="Worker" ToRole="WorkerErrorHandler" />
           <NavigationProperty Name="WorkerParameters" Relationship="Self.FK_WorkerParameter_Worker" FromRole="Worker" ToRole="WorkerParameter" />
+          <Property Name="SuppressMachineErrorHandlers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkerErrorHandler">
           <Key>
@@ -862,7 +913,52 @@
             <End Role="Worker" EntitySet="Workers" />
             <End Role="WorkerParameter" EntitySet="WorkerParameters" />
           </AssociationSet>
+          <EntitySet Name="SystemConfigurationErrorHandlers" EntityType="Model.SystemConfigurationErrorHandler" />
+          <AssociationSet Name="FK_SystemConfigurationErrorHandler_ErrorHandler" Association="Model.FK_SystemConfigurationErrorHandler_ErrorHandler">
+            <End Role="ErrorHandler" EntitySet="ErrorHandlers" />
+            <End Role="SystemConfigurationErrorHandler" EntitySet="SystemConfigurationErrorHandlers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SystemConfigurationErrorHandler_SystemConfiguration" Association="Model.FK_SystemConfigurationErrorHandler_SystemConfiguration">
+            <End Role="SystemConfiguration" EntitySet="SystemConfigurations" />
+            <End Role="SystemConfigurationErrorHandler" EntitySet="SystemConfigurationErrorHandlers" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="SystemConfigurationErrorHandler">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SystemConfigurationId" Type="Int64" Nullable="false" />
+          <Property Name="ErrorHandlerId" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="ErrorHandler" Relationship="Model.FK_SystemConfigurationErrorHandler_ErrorHandler" FromRole="SystemConfigurationErrorHandler" ToRole="ErrorHandler" />
+          <NavigationProperty Name="SystemConfiguration" Relationship="Model.FK_SystemConfigurationErrorHandler_SystemConfiguration" FromRole="SystemConfigurationErrorHandler" ToRole="SystemConfiguration" />
+        </EntityType>
+        <Association Name="FK_SystemConfigurationErrorHandler_ErrorHandler">
+          <End Type="Model.ErrorHandler" Role="ErrorHandler" Multiplicity="1" />
+          <End Type="Model.SystemConfigurationErrorHandler" Role="SystemConfigurationErrorHandler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ErrorHandler">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SystemConfigurationErrorHandler">
+              <PropertyRef Name="ErrorHandlerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SystemConfigurationErrorHandler_SystemConfiguration">
+          <End Type="Model.SystemConfiguration" Role="SystemConfiguration" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="Model.SystemConfigurationErrorHandler" Role="SystemConfigurationErrorHandler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SystemConfiguration">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SystemConfigurationErrorHandler">
+              <PropertyRef Name="SystemConfigurationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -906,6 +1002,7 @@
           <EntitySetMapping Name="Machines">
             <EntityTypeMapping TypeName="Model.Machine">
               <MappingFragment StoreEntitySet="Machine">
+                <ScalarProperty Name="SuppressSystemConfigurationErrorHandlers" ColumnName="SuppressSystemConfigurationErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SystemConfigurationId" ColumnName="SystemConfigurationId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -928,6 +1025,7 @@
           <EntitySetMapping Name="Stages">
             <EntityTypeMapping TypeName="Model.Stage">
               <MappingFragment StoreEntitySet="Stage">
+                <ScalarProperty Name="SuppressWorkerErrorHandlers" ColumnName="SuppressWorkerErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -972,6 +1070,7 @@
           <EntitySetMapping Name="Workers">
             <EntityTypeMapping TypeName="Model.Worker">
               <MappingFragment StoreEntitySet="Worker">
+                <ScalarProperty Name="SuppressMachineErrorHandlers" ColumnName="SuppressMachineErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="MachineId" ColumnName="MachineId" />
@@ -997,6 +1096,15 @@
                 <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SystemConfigurationErrorHandlers">
+            <EntityTypeMapping TypeName="Model.SystemConfigurationErrorHandler">
+              <MappingFragment StoreEntitySet="SystemConfigurationErrorHandler">
+                <ScalarProperty Name="ErrorHandlerId" ColumnName="ErrorHandlerId" />
+                <ScalarProperty Name="SystemConfigurationId" ColumnName="SystemConfigurationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

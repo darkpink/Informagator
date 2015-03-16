@@ -12,23 +12,13 @@ namespace Informagator.DBEntities.Configuration
     using System;
     using System.Collections.Generic;
     
-    public partial class Machine
+    public partial class SystemConfigurationErrorHandler
     {
-        public Machine()
-        {
-            this.Workers = new HashSet<Worker>();
-        }
-    
         public long Id { get; set; }
         public long SystemConfigurationId { get; set; }
-        public string Name { get; set; }
-        public string IPAddress { get; set; }
-        public string Description { get; set; }
-        public int AdminServicePort { get; set; }
-        public int InfoServicePort { get; set; }
-        public bool SuppressSystemConfigurationErrorHandlers { get; set; }
+        public long ErrorHandlerId { get; set; }
     
+        public virtual ErrorHandler ErrorHandler { get; set; }
         public virtual SystemConfiguration SystemConfiguration { get; set; }
-        public virtual ICollection<Worker> Workers { get; set; }
     }
 }

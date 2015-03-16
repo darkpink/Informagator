@@ -24,5 +24,7 @@ namespace Informagator.DevProviders.Configuration
         {
             Parameters = new List<IConfigurationParameter>();
         }
+
+        public bool SuppressWorkerErrorHandlers { get; set; }
     }
 }

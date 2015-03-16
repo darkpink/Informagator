@@ -26,6 +26,7 @@ namespace Informagator.DBEntities.Configuration
         public int Sequence { get; set; }
         public long AssemblyId { get; set; }
         public string Type { get; set; }
+        public bool SuppressWorkerErrorHandlers { get; set; }
     
         public virtual Assembly Assembly { get; set; }
         public virtual Worker Worker { get; set; }

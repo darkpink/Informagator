@@ -23,8 +23,8 @@
         <Button Grid.Column="1" HorizontalAlignment="Right" Width="42" Margin="5" Command="{x:Static cmd:PanelChangeCommandManager.GoToAssemblyEdit}">New</Button>
         <DataGrid Grid.Row="1" Grid.ColumnSpan="2" ItemsSource="{Binding Entities}" CanUserAddRows="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding AssemblyName}" Width="2*" />
-                <DataGridTextColumn Header=".NET Version" Binding="{Binding AssemblyDotNetVersion}" Width="1*" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="2*" />
+                <DataGridTextColumn Header=".NET Version" Binding="{Binding Version}" Width="1*" />
                 <DataGridTextColumn Header="Load Date/Time" Binding="{Binding LoadDttm}" Width="1*" />
                 <DataGridTemplateColumn Header="Edit" Width="50">
                     <DataGridTemplateColumn.CellTemplate>

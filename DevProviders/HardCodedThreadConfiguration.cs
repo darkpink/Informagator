@@ -41,5 +41,8 @@ namespace Informagator.DevProviders.Configuration
         {
             get { return new List<IErrorHandlerConfiguration>(); }
         }
+
+
+        public bool SuppressMachineErrorHandlers { get; set; }
     }
 }

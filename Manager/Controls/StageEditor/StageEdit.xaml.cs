@@ -27,7 +27,9 @@ namespace Informagator.Manager.Controls.StageEditor
         {
             InitializeComponent();
             StageParameters = new ObservableCollection<StageParameter>();
-            ErrorHandlerParameters = new ObservableCollection<StageParameter>();
+
+            PART_IsExpandedClickBorder.MouseDown += delegate(object sender, MouseButtonEventArgs args) { IsExpanded = !IsExpanded; };
+            PART_StageTypePicker.SelectedTypeChanged += PART_StageTypePicker_SelectedTypeChanged;
         }
 
         public static DependencyProperty IsExpandedProperty = DependencyProperty.Register("IsExpanded", typeof(bool), typeof(StageEdit), new PropertyMetadata(false, new PropertyChangedCallback(IsExpandedChanged)));
@@ -106,57 +108,32 @@ namespace Informagator.Manager.Controls.StageEditor
         {
         }
 
-        public static DependencyProperty StageAssemblyNameProperty = DependencyProperty.Register("StageAssemblyName", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(StageAssemblyNameChanged)));
-        public string StageAssemblyName
+        public static DependencyProperty StageAssemblyIdProperty = DependencyProperty.Register("StageAssemblyId", typeof(long?), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(AssemblyIdChanged)));
+        public long? StageAssemblyId
         {
             get
             {
-                return (string)GetValue(StageAssemblyNameProperty);
+                return (long?)GetValue(StageAssemblyIdProperty);
             }
             set
             {
-                SetValue(StageAssemblyNameProperty, value);
+                SetValue(StageAssemblyIdProperty, value);
             }
         }
 
-        public static void StageAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        public static void AssemblyIdChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
             StageEdit picker = sender as StageEdit;
             if (picker != null)
             {
-                picker.OnStageAssemblyNameChanged();
+                picker.OnStageAssemblyIdChanged();
             }
         }
 
-        protected virtual void OnStageAssemblyNameChanged()
+        protected virtual void OnStageAssemblyIdChanged()
         {
         }
 
-        public static DependencyProperty StageAssemblyDotNetVersionProperty = DependencyProperty.Register("StageAssemblyDotNetVersion", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(StageAssemblyDotNetVersionChanged)));
-        public string StageAssemblyDotNetVersion
-        {
-            get
-            {
-                return (string)GetValue(StageAssemblyDotNetVersionProperty);
-            }
-            set
-            {
-                SetValue(StageAssemblyDotNetVersionProperty, value);
-            }
-        }
-
-        public static void StageAssemblyDotNetVersionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            StageEdit picker = sender as StageEdit;
-            if (picker != null)
-            {
-                picker.OnStageAssemblyDotNetVersionChanged();
-            }
-        }
-
-        protected virtual void OnStageAssemblyDotNetVersionChanged()
-        {
-        }
 
         public static DependencyProperty StageTypeProperty = DependencyProperty.Register("StageType", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(StageTypeChanged)));
         public string StageType
@@ -182,6 +159,7 @@ namespace Informagator.Manager.Controls.StageEditor
 
         protected virtual void OnStageTypeChanged()
         {
+            LoadParametersForStageType();
         }
 
         public static DependencyProperty StageParametersProperty = DependencyProperty.Register("StageParameters", typeof(ObservableCollection<StageParameter>), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(StageParametersChanged)));
@@ -210,165 +188,20 @@ namespace Informagator.Manager.Controls.StageEditor
         {
         }
 
-        public static DependencyProperty ErrorHandlerParametersProperty = DependencyProperty.Register("ErrorHandlerParameters", typeof(ObservableCollection<StageParameter>), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlerParametersChanged)));
-        public ObservableCollection<StageParameter> ErrorHandlerParameters
-        {
-            get
-            {
-                return (ObservableCollection<StageParameter>)GetValue(ErrorHandlerParametersProperty);
-            }
-            set
-            {
-                SetValue(ErrorHandlerParametersProperty, value);
-            }
-        }
-
-        public static void ErrorHandlerParametersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            StageEdit picker = sender as StageEdit;
-            if (picker != null)
-            {
-                picker.OnErrorHandlerParametersChanged();
-            }
-        }
-
-        protected virtual void OnErrorHandlerParametersChanged()
-        {
-        }
-
 
         private void LoadParametersForStageType()
         {
-            Dictionary<string, Type> configParams = GetConfigurationParametersForType(PART_StageTypePicker.SelectedAssemblyName, PART_StageTypePicker.SelectedAssemblyDotNetVersion,
-                                              PART_StageTypePicker.SelectedType);
+            List<StageParameter> configParams = GetConfigurationParametersForType(PART_StageTypePicker.SelectedAssemblyId, PART_StageTypePicker.SelectedType);
 
-            var parametersToDelete = StageParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
+            var parametersToDelete = StageParameters.Where(p => !configParams.Any(kvp => kvp.Name == p.Name));
             parametersToDelete.ToList().ForEach(p => StageParameters.Remove(p));
 
             BuildParameterGrid(configParams, PART_StageParametersGrid);
         }
 
-        public static DependencyProperty ErrorHandlerNameProperty = DependencyProperty.Register("ErrorHandlerName", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlerNameChanged)));
-        public string ErrorHandlerName
-        {
-            get
-            {
-                return (string)GetValue(ErrorHandlerNameProperty);
-            }
-            set
-            {
-                SetValue(ErrorHandlerNameProperty, value);
-            }
-        }
-
-        public static void ErrorHandlerNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            StageEdit picker = sender as StageEdit;
-            if (picker != null)
-            {
-                picker.OnErrorHandlerNameChanged();
-            }
-        }
-
-        protected virtual void OnErrorHandlerNameChanged()
-        {
-        }
-
-        public static DependencyProperty ErrorHandlerAssemblyNameProperty = DependencyProperty.Register("ErrorHandlerAssemblyName", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlerAssemblyNameChanged)));
-        public string ErrorHandlerAssemblyName
-        {
-            get
-            {
-                return (string)GetValue(ErrorHandlerAssemblyNameProperty);
-            }
-            set
-            {
-                SetValue(ErrorHandlerAssemblyNameProperty, value);
-            }
-        }
-
-        public static void ErrorHandlerAssemblyNameChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            StageEdit picker = sender as StageEdit;
-            if (picker != null)
-            {
-                picker.OnErrorHandlerAssemblyNameChanged();
-            }
-        }
-
-        protected virtual void OnErrorHandlerAssemblyNameChanged()
-        {
-        }
-
-        public static DependencyProperty ErrorHandlerAssemblyDotNetVersionProperty = DependencyProperty.Register("ErrorHandlerAssemblyDotNetVersion", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlerAssemblyDotNetVersionChanged)));
-        public string ErrorHandlerAssemblyDotNetVersion
-        {
-            get
-            {
-                return (string)GetValue(ErrorHandlerAssemblyDotNetVersionProperty);
-            }
-            set
-            {
-                SetValue(ErrorHandlerAssemblyDotNetVersionProperty, value);
-            }
-        }
-
-        public static void ErrorHandlerAssemblyDotNetVersionChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            StageEdit picker = sender as StageEdit;
-            if (picker != null)
-            {
-                picker.OnErrorHandlerAssemblyDotNetVersionChanged();
-            }
-        }
-
-        protected virtual void OnErrorHandlerAssemblyDotNetVersionChanged()
-        {
-        }
-
-        public static DependencyProperty ErrorHandlerTypeProperty = DependencyProperty.Register("ErrorHandlerType", typeof(string), typeof(StageEdit), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlerTypeChanged)));
-        public string ErrorHandlerType
-        {
-            get
-            {
-                return (string)GetValue(ErrorHandlerTypeProperty);
-            }
-            set
-            {
-                SetValue(ErrorHandlerTypeProperty, value);
-            }
-        }
-
-        public static void ErrorHandlerTypeChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            StageEdit picker = sender as StageEdit;
-            if (picker != null)
-            {
-                picker.OnErrorHandlerTypeChanged();
-            }
-        }
-
-        protected virtual void OnErrorHandlerTypeChanged()
-        {
-            LoadParametersForErrorHandlerType();
-        }
-
-        private void LoadParametersForErrorHandlerType()
-        {
-            Dictionary<string, Type> configParams = GetConfigurationParametersForType(ErrorHandlerAssemblyName, ErrorHandlerAssemblyDotNetVersion, ErrorHandlerType);
-
-            var parametersToDelete = ErrorHandlerParameters.Where(p => !configParams.Any(kvp => kvp.Key == p.Name));
-            parametersToDelete.ToList().ForEach(p => ErrorHandlerParameters.Remove(p));
-
-            BuildParameterGrid(configParams, PART_ErrorHandlerParametersGrid);
-        }
-
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-
-            PART_IsExpandedClickBorder.MouseDown += delegate(object sender, MouseButtonEventArgs args) { IsExpanded = !IsExpanded; };
-            PART_StageTypePicker.SelectedTypeChanged += PART_StageTypePicker_SelectedTypeChanged;
         }
 
         void PART_StageTypePicker_SelectedTypeChanged(TypePicker<IProcessingStage> obj)
@@ -379,51 +212,53 @@ namespace Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private Dictionary<string, Type> GetConfigurationParametersForType(string name, string version, string type)
+        private List<StageParameter> GetConfigurationParametersForType(long? assemblyId, string type)
         {
-            Dictionary<string, Type> result = new Dictionary<string, Type>();
+            List<StageParameter> result = new List<StageParameter>();
 
-            using (ConfigurationEntities entities = new ConfigurationEntities())
+            if (assemblyId != null)
             {
-                byte[] assemblyBinary = entities.Assemblies
-                                        .Where(av => av.Name == name &&
-                                                               av.Version == version &&
-                                                               av.SystemConfiguration.Description == SelectedConfiguration
-                                               )
-                                         .Select(av => av.Executable)
-                                         .SingleOrDefault();
-                AppDomain tempDomain = AppDomain.CreateDomain("tempDomain");
-                AssemblyInspector inspector = tempDomain.CreateInstanceAndUnwrap(this.GetType().Assembly.FullName, typeof(AssemblyInspector).FullName) as AssemblyInspector;
-                result = inspector.Inspect(SelectedConfiguration, assemblyBinary, type);
-                AppDomain.Unload(tempDomain);
+                using (ConfigurationEntities entities = new ConfigurationEntities())
+                {
+                    byte[] assemblyBinary = entities.Assemblies
+                                            .Where(av => av.Id == assemblyId)
+                                            .Select(av => av.Executable)
+                                            .SingleOrDefault();
+                    if (assemblyBinary != null)
+                    {
+                        AppDomain tempDomain = AppDomain.CreateDomain("tempDomain");
+                        AssemblyInspector inspector = tempDomain.CreateInstanceAndUnwrap(this.GetType().Assembly.FullName, typeof(AssemblyInspector).FullName) as AssemblyInspector;
+                        result = inspector.Inspect(SelectedConfiguration, assemblyBinary, type);
+                        AppDomain.Unload(tempDomain);
+                    }
+                }
             }
-
             return result;
         }
 
-        private void BuildParameterGrid(Dictionary<string, Type> configParams, Grid grid)
+        private void BuildParameterGrid(List<StageParameter> configParams, Grid grid)
         {
             grid.Children.Clear();
             grid.RowDefinitions.Clear();
             Enumerable.Range(0, configParams.Count).ToList().ForEach(n => grid.RowDefinitions.Add(new RowDefinition()));
 
             int rowNumber = 0;
-            foreach (var name in configParams.Keys)
+            foreach (var parameter in configParams)
             {
                 Control editControl;
-                if (!StageParameters.Any(p => p.Name == name))
+                if (!StageParameters.Any(p => p.Name == parameter.Name))
                 {
-                    StageParameters.Add(new StageParameter() { Name = name });
+                    StageParameters.Add(new StageParameter() { Name = parameter.Name });
                 }
 
-                var stageParameter = StageParameters.Single(p => p.Name == name);
+                var stageParameter = StageParameters.Single(p => p.Name == parameter.Name);
                 Binding editBinding = new Binding();
                 editBinding.Source = stageParameter;
                 editBinding.Path = new PropertyPath("Value");
                 editBinding.Mode = BindingMode.TwoWay;
                 editBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
 
-                if (configParams[name] == typeof(bool))
+                if (parameter.PropertyType == typeof(bool))
                 {
                     editControl = new CheckBox();
                     BindingOperations.SetBinding(editControl, CheckBox.IsCheckedProperty, editBinding);
@@ -434,7 +269,7 @@ namespace Informagator.Manager.Controls.StageEditor
                     BindingOperations.SetBinding(editControl, TextBox.TextProperty, editBinding);
                 }
 
-                TextBlock caption = new TextBlock() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Text = name };
+                TextBlock caption = new TextBlock() { HorizontalAlignment = System.Windows.HorizontalAlignment.Right, Text = parameter.DisplayName };
 
                 Grid.SetColumn(editControl, 1);
                 Grid.SetRow(caption, rowNumber);
@@ -444,6 +279,5 @@ namespace Informagator.Manager.Controls.StageEditor
                 rowNumber++;
             }
         }
-
     }
 }

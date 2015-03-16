@@ -11,11 +11,11 @@ using System.Data.Entity;
 
 namespace Informagator.Manager.Controls
 {
-    public class AssemblyNamePicker : ComboBox
+    public class AssemblyPicker : ComboBox
     {
-        static AssemblyNamePicker()
+        static AssemblyPicker()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(AssemblyNamePicker), new FrameworkPropertyMetadata(typeof(ComboBox)));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AssemblyPicker), new FrameworkPropertyMetadata(typeof(ComboBox)));
         }
 
         protected override void OnInitialized(EventArgs e)
@@ -39,11 +39,8 @@ namespace Informagator.Manager.Controls
                                       .Include(conf => conf.Assemblies)          
                                       .Single(conf => conf.IsActive)
                                       .Assemblies
-                                      .Select(asc => asc.Name)
-                                      .Distinct()
-                                      .OrderBy(a => a);
+                                      .OrderBy(a => a.ToString());
             }
         }
-
     }
 }

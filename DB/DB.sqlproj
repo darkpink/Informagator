@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{6d53927c-a5d3-4963-b3a6-025dda8c5722}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -89,5 +89,6 @@
     <Build Include="Configuration\Tables\MachineErrorHandler.sql" />
     <Build Include="Configuration\Tables\ErrorHandler.sql" />
     <Build Include="Configuration\Tables\Assembly.sql" />
+    <Build Include="Configuration\Tables\SystemConfigurationErrorHandler.sql" />
   </ItemGroup>
 </Project>

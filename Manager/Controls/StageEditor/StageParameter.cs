@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 
 namespace Informagator.Manager.Controls.StageEditor
 {
+    [Serializable]
     public class StageParameter : INotifyPropertyChanged
     {
+        public Type PropertyType { get; set; }
+        
         private string _name;
         public string Name
         {
@@ -23,8 +26,22 @@ namespace Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private object _value;
-        public object Value
+        private string _displayName;
+        public string DisplayName
+        {
+            get
+            {
+                return _displayName;
+            }
+            set
+            {
+                _displayName = value;
+                NotifyPropertyChanged("DisplayName");
+            }
+        }
+
+        private string _value;
+        public string Value
         {
             get
             {

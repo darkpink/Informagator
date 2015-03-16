@@ -37,5 +37,6 @@ namespace Informagator.DBEntities.Configuration
         public virtual DbSet<Worker> Workers { get; set; }
         public virtual DbSet<WorkerErrorHandler> WorkerErrorHandlers { get; set; }
         public virtual DbSet<WorkerParameter> WorkerParameters { get; set; }
+        public virtual DbSet<SystemConfigurationErrorHandler> SystemConfigurationErrorHandlers { get; set; }
     }
 }

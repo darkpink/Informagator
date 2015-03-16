@@ -19,18 +19,20 @@ namespace Informagator.DBEntities.Configuration
             this.Assemblies = new HashSet<Assembly>();
             this.ErrorHandlers = new HashSet<ErrorHandler>();
             this.Machines = new HashSet<Machine>();
+            this.SystemConfigurationErrorHandlers = new HashSet<SystemConfigurationErrorHandler>();
         }
     
         public long Id { get; set; }
         public System.DateTime CreateDttm { get; set; }
         public string Description { get; set; }
         public bool IsActive { get; set; }
-        public System.DateTime EffectiveDttm { get; set; }
-        public int DefaultAdminServicePort { get; set; }
-        public int DefaultInfoServicePort { get; set; }
+        public Nullable<System.DateTime> EffectiveDttm { get; set; }
+        public Nullable<int> DefaultAdminServicePort { get; set; }
+        public Nullable<int> DefaultInfoServicePort { get; set; }
     
         public virtual ICollection<Assembly> Assemblies { get; set; }
         public virtual ICollection<ErrorHandler> ErrorHandlers { get; set; }
         public virtual ICollection<Machine> Machines { get; set; }
+        public virtual ICollection<SystemConfigurationErrorHandler> SystemConfigurationErrorHandlers { get; set; }
     }
 }

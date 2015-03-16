@@ -43,7 +43,7 @@
 
         <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Name}" />
         <ctrl:MachinePicker Grid.Row="2" Grid.Column="1" Width="200" HorizontalAlignment="Left" Margin="3" SelectedItem="{Binding MachineName}"/>
-        <ctrl:WorkerTypePicker Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" SelectedConfiguration="{Binding SelectedConfiguration}" SelectedAssemblyName="{Binding WorkerAssemblyName, Mode=TwoWay}" SelectedAssemblyDotNetVersion="{Binding WorkerAssemblyDotNetVersion, Mode=TwoWay}" SelectedType="{Binding Entity.WorkerType, Mode=TwoWay}" TypeCaption="Worker" />
+        <ctrl:WorkerTypePicker Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" SelectedConfiguration="{Binding SelectedConfiguration}" SelectedAssemblyId="{Binding WorkerAssemblyId, Mode=TwoWay}" SelectedType="{Binding Entity.Type, Mode=TwoWay}" TypeCaption="Worker" />
         <CheckBox Grid.Row="6" Grid.Column="1" IsChecked="{Binding Entity.AutoStart}" />
 
         <ScrollViewer Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">

@@ -121,5 +121,8 @@ namespace Informagator.DevProviders
         {
             get { return @"DOM\Everyone"; }
         }
+
+
+        public bool SuppressSystemConfigurationErrorHandlers { get; set; }
     }
 }

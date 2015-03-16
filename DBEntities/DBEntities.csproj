@@ -51,6 +51,7 @@
     <Compile Include="Configuration\Assembly.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration\Assembly.Partial.cs" />
     <Compile Include="Configuration\ConfigurationModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,6 +94,9 @@
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Configuration\SystemConfiguration.cs">
+      <DependentUpon>ConfigurationModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Configuration\SystemConfigurationErrorHandler.cs">
       <DependentUpon>ConfigurationModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Configuration\Worker.cs">

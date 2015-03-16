@@ -25,31 +25,17 @@ namespace Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private string _stageAssemblyName;
-        public string StageAssemblyName
+        private long? _stageAssemblyId;
+        public long? StageAssemblyId
         {
             get
             {
-                return _stageAssemblyName;
+                return _stageAssemblyId;
             }
             set
             {
-                _stageAssemblyName = value;
-                NotifyPropertyChanged("StageAssemblyName");
-            }
-        }
-
-        private string _stageAssemblyDotNetVersion;
-        public string StageAssemblyDotNetVersion
-        {
-            get
-            {
-                return _stageAssemblyDotNetVersion;
-            }
-            set
-            {
-                _stageAssemblyDotNetVersion = value;
-                NotifyPropertyChanged("StageAssemblyDotNetVersion");
+                _stageAssemblyId = value;
+                NotifyPropertyChanged("StageAssemblyId");
             }
         }
 
@@ -67,48 +53,6 @@ namespace Informagator.Manager.Controls.StageEditor
             }
         }
 
-        private string _errorHandlerAssemblyName;
-        public string ErrorHandlerAssemblyName
-        {
-            get
-            {
-                return _errorHandlerAssemblyName;
-            }
-            set
-            {
-                _errorHandlerAssemblyName = value;
-                NotifyPropertyChanged("ErrorHandlerAssemblyName");
-            }
-        }
-
-        private string _errorHandlerAssemblyDotNetVersion;
-        public string ErrorHandlerAssemblyDotNetVersion
-        {
-            get
-            {
-                return _errorHandlerAssemblyDotNetVersion;
-            }
-            set
-            {
-                _errorHandlerAssemblyDotNetVersion = value;
-                NotifyPropertyChanged("ErrorHandlerAssemblyDotNetVersion");
-            }
-        }
-
-        private string _errorHandlerType;
-        public string ErrorHandlerType
-        {
-            get
-            {
-                return _errorHandlerType;
-            }
-            set
-            {
-                _errorHandlerType = value;
-                NotifyPropertyChanged("ErrorHandlerType");
-            }
-        }
-
         private ObservableCollection<StageParameter> _stageParameters;
         public ObservableCollection<StageParameter> StageParameters
         {
@@ -120,20 +64,6 @@ namespace Informagator.Manager.Controls.StageEditor
             {
                 _stageParameters = value;
                 NotifyPropertyChanged("StageParameters");
-            }
-        }
-
-        private ObservableCollection<StageParameter> _errorHandlerParameters;
-        public ObservableCollection<StageParameter> ErrorHandlerParameters
-        {
-            get
-            {
-                return _errorHandlerParameters;
-            }
-            set
-            {
-                _errorHandlerParameters = value;
-                NotifyPropertyChanged("ErrorHandlerParameters");
             }
         }
 
@@ -150,7 +80,6 @@ namespace Informagator.Manager.Controls.StageEditor
         public Stage()
         {
             StageParameters = new ObservableCollection<StageParameter>();
-            ErrorHandlerParameters = new ObservableCollection<StageParameter>();
         }
     }
 }

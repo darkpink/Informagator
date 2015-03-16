@@ -107,16 +107,10 @@ namespace Informagator.Manager.Controls.StageEditor
                     BindingOperations.SetBinding(editor, StageEdit.StageNameProperty, stageNameBinding);
 
                     Binding stageAssemblyNameBinding = new Binding();
-                    stageAssemblyNameBinding.Path = new PropertyPath("StageAssemblyName");
+                    stageAssemblyNameBinding.Path = new PropertyPath("StageAssemblyId");
                     stageAssemblyNameBinding.Source = stg;
                     stageAssemblyNameBinding.Mode = BindingMode.TwoWay;
-                    BindingOperations.SetBinding(editor, StageEdit.StageAssemblyNameProperty, stageAssemblyNameBinding);
-
-                    Binding stageAssemblyDotNetVersionBinding = new Binding();
-                    stageAssemblyDotNetVersionBinding.Path = new PropertyPath("StageAssemblyDotNetVersion");
-                    stageAssemblyDotNetVersionBinding.Source = stg;
-                    stageAssemblyDotNetVersionBinding.Mode = BindingMode.TwoWay;
-                    BindingOperations.SetBinding(editor, StageEdit.StageAssemblyDotNetVersionProperty, stageAssemblyDotNetVersionBinding);
+                    BindingOperations.SetBinding(editor, StageEdit.StageAssemblyIdProperty, stageAssemblyNameBinding);
 
                     Binding stageTypeBinding = new Binding();
                     stageTypeBinding.Path = new PropertyPath("StageType");
@@ -130,30 +124,6 @@ namespace Informagator.Manager.Controls.StageEditor
                     stageParametersBinding.Mode = BindingMode.TwoWay;
                     BindingOperations.SetBinding(editor, StageEdit.StageParametersProperty, stageParametersBinding);
 
-                    Binding errorHandlerAssemblyNameBinding = new Binding();
-                    errorHandlerAssemblyNameBinding.Path = new PropertyPath("ErrorHandlerAssemblyName");
-                    errorHandlerAssemblyNameBinding.Source = stg;
-                    errorHandlerAssemblyNameBinding.Mode = BindingMode.TwoWay;
-                    BindingOperations.SetBinding(editor, StageEdit.ErrorHandlerAssemblyNameProperty, errorHandlerAssemblyNameBinding);
-
-                    Binding errorHandlerAssemblyDotNetVersionBinding = new Binding();
-                    errorHandlerAssemblyDotNetVersionBinding.Path = new PropertyPath("ErrorHandlerAssemblyDotNetVersion");
-                    errorHandlerAssemblyDotNetVersionBinding.Source = stg;
-                    errorHandlerAssemblyDotNetVersionBinding.Mode = BindingMode.TwoWay;
-                    BindingOperations.SetBinding(editor, StageEdit.ErrorHandlerAssemblyDotNetVersionProperty, errorHandlerAssemblyDotNetVersionBinding);
-
-                    Binding errorHandlerTypeBinding = new Binding();
-                    errorHandlerTypeBinding.Path = new PropertyPath("ErrorHandlerType");
-                    errorHandlerTypeBinding.Source = stg;
-                    errorHandlerTypeBinding.Mode = BindingMode.TwoWay;
-                    BindingOperations.SetBinding(editor, StageEdit.ErrorHandlerTypeProperty, errorHandlerTypeBinding);
-
-                    Binding errorHandlerParametersBinding = new Binding();
-                    errorHandlerParametersBinding.Path = new PropertyPath("ErrorHandlerParameters");
-                    errorHandlerParametersBinding.Source = stg;
-                    errorHandlerParametersBinding.Mode = BindingMode.TwoWay;
-                    BindingOperations.SetBinding(editor, StageEdit.ErrorHandlerParametersProperty, errorHandlerParametersBinding);
-                    
                     Grid.SetColumn(editor, 1);
                     Grid.SetRow(editor, index + 1);
                     editor.SelectedConfiguration = SelectedSystemConfiguration;

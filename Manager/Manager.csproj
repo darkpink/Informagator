@@ -75,7 +75,7 @@
     <Compile Include="Commands\StopThreadCommand.cs" />
     <Compile Include="Commands\ThreadControlCommandManager.cs" />
     <Compile Include="Commands\UpdateConfigurationCommand.cs" />
-    <Compile Include="Controls\AssemblyNamePicker.cs" />
+    <Compile Include="Controls\AssemblyPicker.cs" />
     <Compile Include="Controls\ErrorHandlerPicker.cs" />
     <Compile Include="Controls\MachinePicker.cs" />
     <Compile Include="Controls\StageEditor\AssemblyInspector.cs" />
@@ -112,6 +112,7 @@
     <Compile Include="Panels\WorkerEdit.xaml.cs">
       <DependentUpon>WorkerEdit.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utilities.cs" />
     <Compile Include="ValueConverters\PassthroughConverter.cs" />
     <Compile Include="Vms\AssemblyEditVm.cs" />
     <Compile Include="Vms\AssemblyListVm.cs" />

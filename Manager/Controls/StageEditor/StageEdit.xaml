@@ -84,24 +84,11 @@
                     <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding StageName, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
                 <ctrl:StageTypePicker Grid.Row="1" x:Name="PART_StageTypePicker" TypeCaption="Stage" HorizontalAlignment="Stretch"
-                                      SelectedAssemblyName="{Binding StageAssemblyName, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Mode=TwoWay}"
-                                      SelectedAssemblyDotNetVersion="{Binding StageAssemblyDotNetVersion, RelativeSource={RelativeSource FindAncestor, AncestorType=stgedt:StageEdit}, Mode=TwoWay}"
-                                      SelectedType="{Binding StageType, RelativeSource={RelativeSource FindAncestor, AncestorType=stgedt:StageEdit}, Mode=TwoWay}"
+                                      SelectedAssemblyId="{Binding StageAssemblyId, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      SelectedType="{Binding StageType, RelativeSource={RelativeSource FindAncestor, AncestorType=stgedt:StageEdit}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                       SelectedConfiguration="{Binding SelectedConfiguration, ElementName=ux}"
                                       />
                 <Grid Grid.Row="2" x:Name="PART_StageParametersGrid" HorizontalAlignment="Stretch">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition />
-                        <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                </Grid>
-                <ctrl:ErrorHandlerPicker Grid.Row="3" x:Name="PART_ErrorHandlerTypePicker" TypeCaption="Error Handler" HorizontalAlignment="Stretch"
-                                      SelectedAssemblyName="{Binding ErrorHandlerAssemblyName, RelativeSource={RelativeSource FindAncestor, AncestorType=stgedt:StageEdit}, Mode=TwoWay}"
-                                      SelectedAssemblyDotNetVersion="{Binding ErrorHandlerAssemblyDotNetVersion, RelativeSource={RelativeSource FindAncestor, AncestorType=stgedt:StageEdit}, Mode=TwoWay}"
-                                      SelectedType="{Binding ErrorHandlerType, RelativeSource={RelativeSource FindAncestor, AncestorType=stgedt:StageEdit}, Mode=TwoWay}"
-                                      SelectedConfiguration="{Binding SelectedConfiguration, ElementName=ux}"
-                                         />
-                <Grid Grid.Row="4" x:Name="PART_ErrorHandlerParametersGrid" HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />

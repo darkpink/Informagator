@@ -99,6 +99,5 @@ namespace Informagator.Machine
 
             return result;
         }
-
     }
 }

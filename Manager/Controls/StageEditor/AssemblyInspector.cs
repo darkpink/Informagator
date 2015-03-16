@@ -13,9 +13,9 @@ namespace Informagator.Manager.Controls.StageEditor
     {
         protected string SelectedSystemConfiguration { get; set; }
 
-        public Dictionary<string, Type> Inspect(string selectedSystemConfiguration, byte[] toReflect, string type)
+        public List<StageParameter> Inspect(string selectedSystemConfiguration, byte[] toReflect, string type)
         {
-            Dictionary<string, Type> result = new Dictionary<string, Type>();
+            List<StageParameter> result = new List<StageParameter>();
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             System.Reflection.Assembly asm = System.Reflection.Assembly.Load(toReflect);
@@ -27,7 +27,7 @@ namespace Informagator.Manager.Controls.StageEditor
                 ConfigurationParameterAttribute attr = (ConfigurationParameterAttribute)info.GetCustomAttributes().Single(a => a.GetType() == typeof(ConfigurationParameterAttribute));
                 string displayName = attr.DisplayName ?? info.Name;
                 Type propType = info.PropertyType;
-                result.Add(displayName, propType);
+                result.Add(new StageParameter() { DisplayName = displayName, Name = info.Name, PropertyType = propType });
             }
 
             return result;
