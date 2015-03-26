@@ -43,5 +43,10 @@ namespace Informagator.DBEntities.Configuration
                 return Workers.ToDictionary(w => w.Name, w => (IWorkerConfiguration)w);
             }
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

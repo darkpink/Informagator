@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace Informagator.Manager.Vms
 {
-    public abstract class ListPanelVmBase<T> : SelectedConfigurationVmBase
+    public abstract class ListPanelVmBase<T> : VmBase
     {
         public ListPanelVmBase()
             : base()
         {
+            ConfigurationSelection.SelectedConfigurationChanged += Refresh;
         }
 
         public override void Refresh()
@@ -43,11 +44,5 @@ namespace Informagator.Manager.Vms
 
         }
         protected abstract T[] GetEntities();
-
-        protected override void ActiveSystemConfigurationChanged()
-        {
-            base.ActiveSystemConfigurationChanged();
-            Entities = GetEntities();
-        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Informagator.Contracts.Configuration
 {
-    public interface IWorkerConfiguration : IConfigurableType
+    public interface IWorkerConfiguration : IConfigurableTypeConfiguration
     {
         string Name { get; }
         

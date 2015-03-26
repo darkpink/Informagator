@@ -7,63 +7,63 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls
 {
     public class Stage : DependencyObject, INotifyPropertyChanged
     {
-        private string _name;
-        public string Name
+        private string _entityName;
+        public string EntityName
         { 
             get
             {
-                return _name;
+                return _entityName;
             }
             set
             {
-                _name = value;
-                NotifyPropertyChanged("Name");
+                _entityName = value;
+                NotifyPropertyChanged("EntityName");
             }
         }
 
-        private long? _stageAssemblyId;
-        public long? StageAssemblyId
+        private long? _assemblyId;
+        public long? AssemblyId
         {
             get
             {
-                return _stageAssemblyId;
+                return _assemblyId;
             }
             set
             {
-                _stageAssemblyId = value;
-                NotifyPropertyChanged("StageAssemblyId");
+                _assemblyId = value;
+                NotifyPropertyChanged("AssemblyId");
             }
         }
 
-        private string _stageType;
-        public string StageType
+        private string _entityType;
+        public string EntityType
         {
             get
             {
-                return _stageType;
+                return _entityType;
             }
             set
             {
-                _stageType = value;
-                NotifyPropertyChanged("StageType");
+                _entityType = value;
+                NotifyPropertyChanged("EntityType");
             }
         }
 
-        private ObservableCollection<StageParameter> _stageParameters;
-        public ObservableCollection<StageParameter> StageParameters
+        private ObservableCollection<Parameter> _parameters;
+        public ObservableCollection<Parameter> Parameters
         {
             get
             {
-                return _stageParameters;
+                return _parameters;
             }
             set
             {
-                _stageParameters = value;
-                NotifyPropertyChanged("StageParameters");
+                _parameters = value;
+                NotifyPropertyChanged("Parameters");
             }
         }
 
@@ -79,7 +79,7 @@ namespace Informagator.Manager.Controls.StageEditor
 
         public Stage()
         {
-            StageParameters = new ObservableCollection<StageParameter>();
+            Parameters = new ObservableCollection<Parameter>();
         }
     }
 }

@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Informagator.Manager.Vms
 {
-    public abstract class EntityEditVmBase<T> : SelectedConfigurationVmBase
+    public abstract class EntityEditVmBase<T> : VmBase
     {
         protected ConfigurationEntities Entities { get; set; }
         protected long? EntityId { get; set; }

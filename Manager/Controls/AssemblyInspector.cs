@@ -7,15 +7,13 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls
 {
     public class AssemblyInspector : MarshalByRefObject
     {
-        protected string SelectedSystemConfiguration { get; set; }
-
-        public List<StageParameter> Inspect(string selectedSystemConfiguration, byte[] toReflect, string type)
+        public List<Parameter> Inspect(byte[] toReflect, string type)
         {
-            List<StageParameter> result = new List<StageParameter>();
+            List<Parameter> result = new List<Parameter>();
 
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
             System.Reflection.Assembly asm = System.Reflection.Assembly.Load(toReflect);
@@ -27,7 +25,7 @@ namespace Informagator.Manager.Controls.StageEditor
                 ConfigurationParameterAttribute attr = (ConfigurationParameterAttribute)info.GetCustomAttributes().Single(a => a.GetType() == typeof(ConfigurationParameterAttribute));
                 string displayName = attr.DisplayName ?? info.Name;
                 Type propType = info.PropertyType;
-                result.Add(new StageParameter() { DisplayName = displayName, Name = info.Name, PropertyType = propType });
+                result.Add(new Parameter() { DisplayName = displayName, Name = info.Name, PropertyType = propType });
             }
 
             return result;
@@ -46,7 +44,7 @@ namespace Informagator.Manager.Controls.StageEditor
                 byte[] assemblyBinary = entities.Assemblies
                                         .Where(av => av.Name == n &&
                                                      av.Version == v &&
-                                                     av.SystemConfiguration.Description == SelectedSystemConfiguration
+                                                     av.SystemConfiguration.Description == ConfigurationSelection.SelectedConfiguration
                                                )
                                          .Select(av => av.Executable)
                                          .SingleOrDefault();

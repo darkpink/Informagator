@@ -3,10 +3,55 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Informagator.Manager"
     xmlns:ctrl="clr-namespace:Informagator.Manager.Controls"
-    xmlns:stgedt="clr-namespace:Informagator.Manager.Controls.StageEditor"
+    xmlns:cvt="clr-namespace:Informagator.Manager.ValueConverters"
     >
 
+    <Style TargetType="ctrl:SystemConfigurationPicker">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Name="uxBorder" Background="{TemplateBinding Background}"
+                            BorderThickness="{TemplateBinding BorderThickness}" Padding="5"
+                            CornerRadius="2">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="BorderBrush" Value="Black" />
+                            </Style>
+                        </Border.Style>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Margin="5" Text="Select Configuration:" HorizontalAlignment="Center" />
+                            <ComboBox Grid.Row="1" Margin="5" SelectedItem="{Binding SelectedConfiguration, RelativeSource={RelativeSource TemplatedParent}}" ItemsSource="{Binding Configurations, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center" />
+                            <Grid Margin="5" Grid.Row="2" HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Polygon Name="uxActiveIcon" Fill="Green" StrokeThickness="1" Points="0,5 4,10 6,10 10,0 5,7 1,5" VerticalAlignment="Center" Margin="2" />
+                                <Polygon Name="uxInactiveIcon" Fill="Yellow" StrokeThickness="1" Points="0,0 4,5 0,10 5,6 10,10 6,5 10,0 5,4" VerticalAlignment="Center" Margin="2" />
+                                <TextBlock HorizontalAlignment="Left" Name="uxActiveText" Grid.Column="1" Text="Active" TextWrapping="Wrap" TextAlignment="Center" Margin="2" />
+                            </Grid>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ctrl:SystemConfigurationPicker.IsSelectedConfigurationActive" Value="false">
+                            <Setter TargetName="uxBorder" Property="BorderBrush" Value="Yellow" />
+                            <Setter TargetName="uxActiveText" Property="Text" Value="Not Active" />
+                            <Setter TargetName="uxActiveIcon" Property="Visibility" Value="Hidden" />
+                        </Trigger>
 
+                        <Trigger Property="ctrl:SystemConfigurationPicker.IsSelectedConfigurationActive" Value="true">
+                            <Setter TargetName="uxInactiveIcon" Property="Visibility" Value="Hidden" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="Control" x:Key="TypePicker">
         <Setter Property="Template">
             <Setter.Value>
@@ -17,10 +62,10 @@
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.Resources>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="Margin" Value="5" />
                                 </Style>
                                 <Style TargetType="ComboBox">
-                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="Margin" Value="5" />
                                     <Setter Property="MinWidth" Value="260" />
                                 </Style>
                             </Grid.Resources>
@@ -55,10 +100,114 @@
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:StageTypePicker" />
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:ErrorHandlerPicker" />
 
-    <!--<Style TargetType="stgedt:SingleStageEditor">
+    <ControlTemplate x:Key="ConfigurableType" TargetType="Control">
+        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+            <Grid HorizontalAlignment="Stretch" Name="PART_EditorGrid">
+                <Grid.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Margin" Value="5" />
+                        <Setter Property="MinWidth" Value="266" />
+                    </Style>
+                    <Style TargetType="CheckBox">
+                        <Setter Property="Margin" Value="5" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Right" Text="Name:" />
+                <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding EntityName, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                <Grid Grid.Row="2" Grid.ColumnSpan="2" x:Name="PART_ParametersGrid" HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+    <Style TargetType="ctrl:ErrorHandlerEditor">
+        <Setter Property="Template" Value="{StaticResource ConfigurableType}" />
+    </Style>
+
+    <Style TargetType="ctrl:WorkerEditor">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="stgedt:SingleStageEditor">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid HorizontalAlignment="Stretch" Name="PART_EditorGrid">
+                            <Grid.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Margin" Value="5" />
+                                </Style>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Margin" Value="5" />
+                                    <Setter Property="Width" Value="266" />
+                                </Style>
+                                <Style TargetType="CheckBox">
+                                    <Setter Property="Margin" Value="5" />
+                                </Style>
+                                <Style TargetType="ctrl:MachinePicker">
+                                    <Setter Property="Margin" Value="5" />
+                                </Style>
+                                <Style TargetType="ctrl:WorkerTypePicker">
+                                    <Setter Property="Margin" Value="5" />
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            
+                            <TextBlock HorizontalAlignment="Right" Text="Name:" />
+                            <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding EntityName, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                            
+                            <Grid Grid.Row="2" Grid.ColumnSpan="2" x:Name="PART_ParametersGrid" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                            </Grid>
+
+                            <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="Machine:" />
+                            <ctrl:MachinePicker Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="200"
+                                                MachineId="{Binding MachineId, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                />
+
+                            <TextBlock Grid.Row="4" HorizontalAlignment="Right" Text="Auto Start:" />
+                            <CheckBox Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" IsChecked="{Binding AutoStart, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="ctrl:StageEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
                     <Border Background="LightGray" BorderThickness="1" BorderBrush="Black" CornerRadius="2" VerticalAlignment="Top" HorizontalAlignment="Stretch">
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.Resources>
@@ -88,8 +237,19 @@
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Stretch" TextAlignment="Center"/>
-                                <Polygon x:Name="uxArrow" Grid.Column="1" Fill="Black" Points="0,0 4,6 8,0" Margin="3,3,8,3" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding EntityName, RelativeSource={RelativeSource TemplatedParent}}" HorizontalAlignment="Stretch" TextAlignment="Center"/>
+                                <Polygon x:Name="uxArrow" Grid.Column="1" Fill="Black"  Margin="3,3,8,3" VerticalAlignment="Center">
+                                    <Polygon.Style>
+                                        <Style TargetType="Polygon">
+                                            <Setter Property="Points" Value="0,0 4,6 8,0" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}}" Value="True" >
+                                                    <Setter Property="Points" Value="0,6 4,0 8,6" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Polygon.Style>
+                                </Polygon>
                                 <Border Background="Transparent" Grid.ColumnSpan="2" x:Name="PART_IsExpandedClickBorder" CornerRadius="2" BorderThickness="1">
                                     <Border.Style>
                                         <Style TargetType="Border">
@@ -103,35 +263,31 @@
                                     </Border.Style>
                                 </Border>
                             </Grid>
-                            <Grid x:Name="uxEditGrid" Grid.Row="1" Visibility="Collapsed">
+                            <Grid HorizontalAlignment="Stretch" Name="PART_EditorGrid" Grid.Row="1" Visibility="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Converter={cvt:EmptyIsCollapsed}}">
+                                <Grid.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Margin" Value="5" />
+                                    </Style>
+                                    <Style TargetType="TextBox">
+                                        <Setter Property="Margin" Value="5" />
+                                        <Setter Property="MinWidth" Value="266" />
+                                    </Style>
+                                    <Style TargetType="CheckBox">
+                                        <Setter Property="Margin" Value="5" />
+                                    </Style>
+                                </Grid.Resources>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
-                                <Grid HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock HorizontalAlignment="Right" Text="Name:" />
-                                    <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding Stage.Name, RelativeSource={RelativeSource TemplatedParent}}" />
-                                </Grid>
-                                <ctrl:StageTypePicker Grid.Row="1" x:Name="PART_StageTypePicker" TypeCaption="Stage" HorizontalAlignment="Stretch"
-                                      SelectedAssemblyName="Informagator.dll"  />
-                                <Grid Grid.Row="2" x:Name="PART_StageParametersGrid" HorizontalAlignment="Stretch">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                </Grid>
-                                <ctrl:ErrorHandlerPicker Grid.Row="3" x:Name="PART_ErrorHandlerTypePicker" TypeCaption="Error Handler" HorizontalAlignment="Stretch"
-                                      SelectedAssemblyName="{Binding Stage.ErrorHandlerAssemblyName, RelativeSource={RelativeSource TemplatedParent}}" 
-                                      SelectedAssemblyDotNetVersion="{Binding Stage.ErrorHandlerAssemblyDotNetVersion, RelativeSource={RelativeSource TemplatedParent}}"
-                                      SelectedType="{Binding Stage.ErrorHandlerType, RelativeSource={RelativeSource TemplatedParent}}"/>
-                                <Grid Grid.Row="4" x:Name="PART_ErrorHandlerParametersGrid" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock HorizontalAlignment="Right" Text="Name:" />
+                                <TextBox Grid.Column="1" HorizontalAlignment="Left" Text="{Binding EntityName, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                <Grid Grid.Row="2" Grid.ColumnSpan="2" x:Name="PART_ParametersGrid" HorizontalAlignment="Stretch">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition />
@@ -140,20 +296,15 @@
                             </Grid>
                         </Grid>
                     </Border>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsExpanded" Value="True">
-                            <Setter TargetName="uxEditGrid" Property="Visibility" Value="Visible" />
-                            <Setter TargetName="uxArrow" Property="Points" Value="0,6 4,0 8,6" />
-                        </Trigger>
-                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
-    <Style TargetType="stgedt:WorkerStageEditor">
+
+    <Style TargetType="ctrl:StageSequenceEditor">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="stgedt:WorkerStageEditor">
+                <ControlTemplate>
                     <Border Background="LightGray" BorderThickness="1" BorderBrush="Black" CornerRadius="2" VerticalAlignment="Top">
                         <Grid x:Name="PART_PrimaryGrid">
                             <Grid.Resources>
@@ -169,7 +320,7 @@
                                         </Setter.Value>
                                     </Setter>
                                 </Style>
-                                <Style TargetType="stgedt:SingleStageEditor">
+                                <Style TargetType="ctrl:StageEditor">
                                     <Setter Property="RenderTransform">
                                         <Setter.Value>
                                             <TranslateTransform Y="-15" />
@@ -210,5 +361,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
+
 </ResourceDictionary>

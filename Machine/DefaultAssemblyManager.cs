@@ -87,7 +87,7 @@ namespace Informagator.Machine
             }
         }
 
-        public object CreateConfiguredObject(IConfigurableType type, object host)
+        public object CreateConfiguredObject(IConfigurableTypeConfiguration type, object host)
         {
             object result;
 

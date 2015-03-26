@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace Informagator.Manager.Vms
 {
-    public class ConfigurationListVm : SelectedConfigurationVmBase
+    public class ConfigurationListVm : VmBase
     {
         public ObservableCollection<SystemConfiguration> SystemConfigurations { get; protected set; }
 
@@ -34,12 +34,6 @@ namespace Informagator.Manager.Vms
         public ConfigurationListVm()
             : base()
         {
-            RefreshSystemConfigurations();
-        }
-
-        protected override void ActiveSystemConfigurationChanged()
-        {
-            base.ActiveSystemConfigurationChanged();
             RefreshSystemConfigurations();
         }
     }

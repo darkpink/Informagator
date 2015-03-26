@@ -22,7 +22,7 @@ namespace Informagator.Manager.Vms
         protected override Informagator.DBEntities.Configuration.Machine CreateNewEntity()
         {
             var mach = Entities.Machines.Create();
-            mach.SystemConfiguration = Entities.SystemConfigurations.Single(sc => sc.Description == SelectedConfiguration);
+            mach.SystemConfiguration = Entities.SystemConfigurations.Single(sc => sc.Description == ConfigurationSelection.SelectedConfiguration);
             Entities.Machines.Add(mach);
             return mach;
         }

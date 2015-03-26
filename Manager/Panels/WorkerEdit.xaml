@@ -2,7 +2,6 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:ctrl="clr-namespace:Informagator.Manager.Controls"
-             xmlns:stgedt="clr-namespace:Informagator.Manager.Controls.StageEditor"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
@@ -22,11 +21,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -36,20 +30,16 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="New/Edit Worker" />
+        <ctrl:WorkerEditor Grid.Row="1" Grid.ColumnSpan="2" 
+                           AssemblyId="{Binding WorkerAssemblyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                           EntityName="{Binding Entity.Name}" EntityType="{Binding Entity.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           MachineId="{Binding MachineId, Mode=TwoWay}" AutoStart="{Binding Entity.AutoStart}"
+                           />
 
-        <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="Name:" />
-        <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="Machine:" />
-        <TextBlock Grid.Row="6" HorizontalAlignment="Right" Text="Auto Start:" />
-
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Name}" />
-        <ctrl:MachinePicker Grid.Row="2" Grid.Column="1" Width="200" HorizontalAlignment="Left" Margin="3" SelectedItem="{Binding MachineName}"/>
-        <ctrl:WorkerTypePicker Grid.Row="3" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" SelectedConfiguration="{Binding SelectedConfiguration}" SelectedAssemblyId="{Binding WorkerAssemblyId, Mode=TwoWay}" SelectedType="{Binding Entity.Type, Mode=TwoWay}" TypeCaption="Worker" />
-        <CheckBox Grid.Row="6" Grid.Column="1" IsChecked="{Binding Entity.AutoStart}" />
-
-        <ScrollViewer Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <stgedt:StageSequenceEditor SelectedSystemConfiguration="{Binding SelectedConfiguration}" Stages="{Binding Stages}" Margin="20,5,20,5" />
+        <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+            <ctrl:StageSequenceEditor Stages="{Binding Stages}" Margin="20,5,20,5" />
         </ScrollViewer>
-        <Button Grid.Row="8" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
-        <Button Grid.Row="8" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
+        <Button Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
+        <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
     </Grid>
 </UserControl>

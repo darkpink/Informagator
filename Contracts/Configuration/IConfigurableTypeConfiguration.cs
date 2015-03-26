@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.Contracts.Configuration
 {
-    public interface IConfigurableType
+    public interface IConfigurableTypeConfiguration
     {
         string AssemblyName { get; }
 

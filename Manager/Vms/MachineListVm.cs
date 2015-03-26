@@ -16,7 +16,7 @@ namespace Informagator.Manager.Vms
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                result = entities.Machines.Where(m => m.SystemConfiguration.Description == SelectedConfiguration).ToArray();
+                result = entities.Machines.Where(m => m.SystemConfiguration.Description == ConfigurationSelection.SelectedConfiguration).ToArray();
             }
 
             return result;

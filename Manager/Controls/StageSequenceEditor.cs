@@ -8,41 +8,17 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls
 {
-    public class WorkerStageEditor : Control
+    public class StageSequenceEditor : Control
     {
-        static WorkerStageEditor()
+        static StageSequenceEditor()
         {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(WorkerStageEditor), new FrameworkPropertyMetadata(typeof(WorkerStageEditor)));
-            FocusableProperty.OverrideMetadata(typeof(WorkerStageEditor), new FrameworkPropertyMetadata(false));
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(StageSequenceEditor), new FrameworkPropertyMetadata(typeof(StageSequenceEditor)));
+            FocusableProperty.OverrideMetadata(typeof(StageSequenceEditor), new FrameworkPropertyMetadata(false));
         }
 
-        public static DependencyProperty SelectedSystemConfigurationProperty = DependencyProperty.Register("SelectedSystemConfiguration", typeof(string), typeof(WorkerStageEditor), new PropertyMetadata(new PropertyChangedCallback(SelectedSystemConfigurationChanged)));
-        public string SelectedSystemConfiguration
-        {
-            get
-            {
-                return (string)GetValue(SelectedSystemConfigurationProperty);
-            }
-            set
-            {
-                SetValue(SelectedSystemConfigurationProperty, value);
-            }
-        }
-        public static void SelectedSystemConfigurationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            WorkerStageEditor editor = sender as WorkerStageEditor;
-            if (editor != null)
-            {
-                editor.SelectedSystemConfigurationChanged();
-            }
-        }
-        protected virtual void SelectedSystemConfigurationChanged()
-        {
-        }
-
-        public static DependencyProperty StagesProperty = DependencyProperty.Register("Stages", typeof(ObservableCollection<Stage>), typeof(WorkerStageEditor), new PropertyMetadata(new PropertyChangedCallback(StagesChanged)));
+        public static DependencyProperty StagesProperty = DependencyProperty.Register("Stages", typeof(ObservableCollection<Stage>), typeof(StageSequenceEditor), new PropertyMetadata(new PropertyChangedCallback(StagesChanged)));
         public ObservableCollection<Stage> Stages
         {
             get
@@ -54,9 +30,10 @@ namespace Informagator.Manager.Controls.StageEditor
                 SetValue(StagesProperty, value);
             }
         }
+        
         public static void StagesChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            WorkerStageEditor editor = sender as WorkerStageEditor;
+            StageSequenceEditor editor = sender as StageSequenceEditor;
             if (editor != null)
             {
                 editor.StagesChanged();
@@ -87,11 +64,34 @@ namespace Informagator.Manager.Controls.StageEditor
                 {
                     Stage stg = Stages[index];
 
-                    SingleStageEditor editor = new SingleStageEditor();
-                    //editor.Stage = stg;
+                    StageEditor editor = new StageEditor();
+
+                    Binding stageNameBinding = new Binding();
+                    stageNameBinding.Path = new PropertyPath("EntityName");
+                    stageNameBinding.Source = stg;
+                    stageNameBinding.Mode = BindingMode.TwoWay;
+                    BindingOperations.SetBinding(editor, StageEditor.EntityNameProperty, stageNameBinding);
+
+                    Binding stageAssemblyNameBinding = new Binding();
+                    stageAssemblyNameBinding.Path = new PropertyPath("AssemblyId");
+                    stageAssemblyNameBinding.Source = stg;
+                    stageAssemblyNameBinding.Mode = BindingMode.TwoWay;
+                    BindingOperations.SetBinding(editor, StageEditor.AssemblyIdProperty, stageAssemblyNameBinding);
+
+                    Binding stageTypeBinding = new Binding();
+                    stageTypeBinding.Path = new PropertyPath("EntityType");
+                    stageTypeBinding.Source = stg;
+                    stageTypeBinding.Mode = BindingMode.TwoWay;
+                    BindingOperations.SetBinding(editor, StageEditor.EntityTypeProperty, stageTypeBinding);
+
+                    Binding stageParametersBinding = new Binding();
+                    stageParametersBinding.Path = new PropertyPath("Parameters");
+                    stageParametersBinding.Source = stg;
+                    stageParametersBinding.Mode = BindingMode.TwoWay;
+                    BindingOperations.SetBinding(editor, StageEditor.ParametersProperty, stageParametersBinding);
+
                     Grid.SetColumn(editor, 1);
                     Grid.SetRow(editor, index + 1);
-                    //editor.SelectedSystemConfiguration = SelectedSystemConfiguration;
                     PART_PrimaryGrid.Children.Add(editor);
 
                     Button addButton = new Button();
@@ -125,13 +125,6 @@ namespace Informagator.Manager.Controls.StageEditor
             Stage newStage = new Stage();
             Stages.Insert(index + 1, newStage);
         }
-        protected Button PART_SupplierButton { get; set; }
-        protected Grid PART_PrimaryGrid { get; set; }
-
-        public WorkerStageEditor()
-        {
-            Stages = new ObservableCollection<Stage>();
-        }
 
         public void Stages_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -141,14 +134,17 @@ namespace Informagator.Manager.Controls.StageEditor
             }
         }
 
+        protected Button PART_SupplierButton { get; set; }
+        protected Grid PART_PrimaryGrid { get; set; }
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
 
             PART_SupplierButton = GetTemplateChild("PART_SupplierButton") as Button;
+            PART_PrimaryGrid = GetTemplateChild("PART_PrimaryGrid") as Grid;
+
             PART_SupplierButton.Click += PART_SupplierButton_Click;
 
-            PART_PrimaryGrid = GetTemplateChild("PART_PrimaryGrid") as Grid;
             BuildStages();
         }
 
@@ -156,7 +152,6 @@ namespace Informagator.Manager.Controls.StageEditor
         {
             Stage newStage = new Stage();
             Stages.Insert(0, newStage);
-            
         }
     }
 }

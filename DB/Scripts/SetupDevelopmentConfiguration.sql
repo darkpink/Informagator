@@ -27,12 +27,12 @@ INSERT (Name, Version, SystemConfigurationId, LoadDttm, Executable, DebuggingSym
 SELECT @commonId = Id from Configuration.Assembly where Name = 'Informagator.CommonComponents.dll' and Version = '1.0.0.0';
 
 merge configuration.machine as t
-using (select 1 jnk) as s
+using (select 1 jnk) s
 ON t.Name = 'Development' and t.SystemConfigurationId = @configId
 when matched then
 UPDATE SET t.IPAddress = '127.0.0.1', Description = 'Local dev machine'
 when not matched by target then
-INSERT (SystemConfigurationId, Name, IPAddress, Description) VALUES (@configId, 'Development', '127.0.0.1', 'Local dev machine');
+INSERT (SystemConfigurationId, Name, IPAddress, Description, SuppressSystemConfigurationErrorHandlers) VALUES (@configId, 'Development', '127.0.0.1', 'Local dev machine', 0);
 
 DECLARE @machineId BIGINT;
 select @machineId = Id from configuration.machine where name = 'Development' and SystemConfigurationId = @configId;
@@ -43,7 +43,7 @@ on t.MachineId = s.machineId and t.Name = s.Name
 WHEN Matched then
 update set t.AssemblyId = WorkerAssemblyVersionId, t.Type = s.WorkerType, t.AutoStart = s.AutoStart
 WHEN NOT MATCHED THEN
-insert (machineId, name, assemblyid, Type, AutoStart) VALUES (s.machineId, s.name, s.workerassemblyversionid, s.workertype, s.AutoStart);
+insert (machineId, name, assemblyid, Type, AutoStart, SuppressMachineErrorHandlers) VALUES (s.machineId, s.name, s.workerassemblyversionid, s.workertype, s.AutoStart, 0);
 
 DECLARE @workerId BIGINT;
 select @workerId = Id from configuration.worker where name = 'FileMover' and machineId = @machineId;
@@ -54,7 +54,7 @@ on t.workerId = s.workerId and t.Name = s.Name
 WHEN Matched then
 update set t.sequence = s.sequence, t.assemblyid = s.stageassemblyversionid, t.type = s.stagetype
 WHEN NOT MATCHED THEN
-insert (workerId, name, Sequence, assemblyid, Type) VALUES (s.workerId, s.name, s.sequence, s.stageassemblyversionid, s.stagetype);
+insert (workerId, name, Sequence, assemblyid, Type, SuppressWorkerErrorHandlers) VALUES (s.workerId, s.name, s.sequence, s.stageassemblyversionid, s.stagetype, 0);
 
 merge configuration.Stage as t
 using (select @workerId WorkerId, 'Output' Name, 20 sequence, @commonId StageAssemblyVersionId, 'Informagator.CommonComponents.ConsumerStages.StaticOutputFolderConsumer' StageType, @commonId ErrorHandlerAssemblyVersionId) as s
@@ -62,7 +62,7 @@ on t.workerId = s.workerId and t.Name = s.Name
 WHEN Matched then
 update set t.sequence = s.sequence, t.assemblyid = s.stageassemblyversionid, t.type = s.stagetype
 WHEN NOT MATCHED THEN
-insert (workerId, name, Sequence, assemblyid, Type) VALUES (s.workerId, s.name, s.sequence, s.stageassemblyversionid, s.stagetype);
+insert (workerId, name, Sequence, assemblyid, Type, SuppressWorkerErrorHandlers) VALUES (s.workerId, s.name, s.sequence, s.stageassemblyversionid, s.stagetype, 0);
 
 DECLARE @inputId BIGINT;
 DECLARE @outputId BIGINT;
@@ -84,5 +84,17 @@ WHEN Matched then
 update set t.value = s.value
 WHEN NOT MATCHED THEN
 insert (stageId, name, value) VALUES (s.stageId, s.name, s.value);
+
+merge configuration.ErrorHandler as t
+using (select 'Ignore' Name, @commonId errorHandlerAssemblyVersionId, 'Informagator.CommonComponents.ErrorHandlers.IgnoreErrorHandler' errorHandlerType) as s
+on t.Name = s.Name and t.SystemConfigurationId = @configId
+WHEN Matched then
+update set t.AssemblyId = errorHandlerAssemblyVersionId, t.Type = s.errorHandlerType
+WHEN NOT MATCHED THEN
+insert (SystemConfigurationId, name, assemblyid, Type) VALUES (@configId, s.name, s.errorHandlerAssemblyversionid, s.errorHandlertype);
+
+DECLARE @errorHandlerId BIGINT;
+select @errorHandlerId = Id from configuration.errorHandler where name = 'Ignore' and SystemConfigurationId = @configId;
+
 
 select * From configuration.SystemConfiguration

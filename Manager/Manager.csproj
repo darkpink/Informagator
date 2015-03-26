@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -75,24 +76,21 @@
     <Compile Include="Commands\StopThreadCommand.cs" />
     <Compile Include="Commands\ThreadControlCommandManager.cs" />
     <Compile Include="Commands\UpdateConfigurationCommand.cs" />
+    <Compile Include="ConfigurationSelection.cs" />
+    <Compile Include="Controls\AssemblyInspector.cs" />
     <Compile Include="Controls\AssemblyPicker.cs" />
+    <Compile Include="Controls\ConfigurableTypeEditor.cs" />
+    <Compile Include="Controls\ErrorHandlerEditor.cs" />
     <Compile Include="Controls\ErrorHandlerPicker.cs" />
     <Compile Include="Controls\MachinePicker.cs" />
-    <Compile Include="Controls\StageEditor\AssemblyInspector.cs" />
-    <Compile Include="Controls\StageEditor\SingleStageEditor.cs" />
-    <Compile Include="Controls\StageEditor\Stage.cs" />
-    <Compile Include="Controls\StageEditor\StageEdit.xaml.cs">
-      <DependentUpon>StageEdit.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\StageEditor\StageParameter.cs" />
-    <Compile Include="Controls\StageEditor\StageSequenceEditor.xaml.cs">
-      <DependentUpon>StageSequenceEditor.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\StageEditor\WorkerStageEditor.cs" />
+    <Compile Include="Controls\Parameter.cs" />
+    <Compile Include="Controls\Stage.cs" />
+    <Compile Include="Controls\StageEditor.cs" />
+    <Compile Include="Controls\StageSequenceEditor.cs" />
     <Compile Include="Controls\StageTypePicker.cs" />
     <Compile Include="Controls\SystemConfigurationPicker.cs" />
     <Compile Include="Controls\TypePicker.cs" />
-    <Compile Include="Controls\TypeSelection.cs" />
+    <Compile Include="Controls\WorkerEditor.cs" />
     <Compile Include="Controls\WorkerTypePicker.cs" />
     <Compile Include="ExportedHostConfiguration.cs" />
     <Compile Include="ExportedApplicationVersion.cs" />
@@ -101,6 +99,12 @@
     </Compile>
     <Compile Include="Panels\ConfigurationEdit.xaml.cs">
       <DependentUpon>ConfigurationEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ErrorHandlerEdit.xaml.cs">
+      <DependentUpon>ErrorHandlerEdit.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ErrorHandlerList.xaml.cs">
+      <DependentUpon>ErrorHandlerList.xaml</DependentUpon>
     </Compile>
     <Compile Include="Panels\MachineEdit.xaml.cs">
       <DependentUpon>MachineEdit.xaml</DependentUpon>
@@ -118,6 +122,8 @@
     <Compile Include="Vms\AssemblyListVm.cs" />
     <Compile Include="Vms\ConfigurationEditVm.cs" />
     <Compile Include="Vms\EntityEditVmBase.cs" />
+    <Compile Include="Vms\ErrorHandlerEditVm.cs" />
+    <Compile Include="Vms\ErrorHandlerListVm.cs" />
     <Compile Include="Vms\MachineEditVm.cs" />
     <Compile Include="Vms\MachineListVm.cs" />
     <Compile Include="Vms\MainWindowVm.cs" />
@@ -128,19 +134,10 @@
     <Compile Include="ValueConverters\ReverseBool.cs" />
     <Compile Include="Vms\ConfigurationListVm.cs" />
     <Compile Include="Vms\ListPanelVmBase.cs" />
-    <Compile Include="Vms\SelectedConfigurationVmBase.cs" />
     <Compile Include="Vms\StartStopVm.cs" />
     <Compile Include="Vms\VmBase.cs" />
     <Compile Include="Vms\WorkerEditVm.cs" />
     <Compile Include="Vms\WorkerListVm.cs" />
-    <Page Include="Controls\StageEditor\StageEdit.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\StageEditor\StageSequenceEditor.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -166,6 +163,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Panels\ConfigurationList.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\ErrorHandlerEdit.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Panels\ErrorHandlerList.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

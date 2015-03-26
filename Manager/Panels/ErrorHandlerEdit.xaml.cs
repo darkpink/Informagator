@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Informagator.Manager.Panels
 {
     /// <summary>
-    /// Interaction logic for ConfigurationList.xaml
+    /// Interaction logic for ErrorHandlerEdit.xaml
     /// </summary>
-    public partial class ConfigurationList : UserControl
+    public partial class ErrorHandlerEdit : UserControl
     {
-        public ConfigurationList()
+        public ErrorHandlerEdit()
         {
             InitializeComponent();
         }

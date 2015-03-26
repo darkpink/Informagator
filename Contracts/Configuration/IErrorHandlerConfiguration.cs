@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.Contracts.Configuration
 {
-    public interface IErrorHandlerConfiguration : IConfigurableType
+    public interface IErrorHandlerConfiguration : IConfigurableTypeConfiguration
     {
     }
 }

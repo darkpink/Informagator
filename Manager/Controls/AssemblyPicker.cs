@@ -27,7 +27,7 @@ namespace Informagator.Manager.Controls
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 RefreshAssemblies();
-                (App.Current as Manager.App).ActiveSystemConfigurationChanged += RefreshAssemblies;
+                ConfigurationSelection.SelectedConfigurationChanged += RefreshAssemblies;
             }
         }
 
@@ -37,7 +37,7 @@ namespace Informagator.Manager.Controls
             {
                 ItemsSource = entities.SystemConfigurations
                                       .Include(conf => conf.Assemblies)          
-                                      .Single(conf => conf.IsActive)
+                                      .Single(conf => conf.Description == ConfigurationSelection.SelectedConfiguration)
                                       .Assemblies
                                       .OrderBy(a => a.ToString());
             }

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Informagator.Manager.Controls.StageEditor
+namespace Informagator.Manager.Controls
 {
     [Serializable]
-    public class StageParameter : INotifyPropertyChanged
+    public class Parameter : INotifyPropertyChanged
     {
         public Type PropertyType { get; set; }
-        
+
         private string _name;
         public string Name
         {
@@ -63,5 +63,6 @@ namespace Informagator.Manager.Controls.StageEditor
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
     }
 }

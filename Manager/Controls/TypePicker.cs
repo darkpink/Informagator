@@ -25,32 +25,6 @@ namespace Informagator.Manager.Controls
             }
         }
 
-        public static readonly DependencyProperty SelectedConfigurationProperty = DependencyProperty.Register("SelectedConfiguration", typeof(string), typeof(TypePicker<T>), new FrameworkPropertyMetadata(new PropertyChangedCallback(SelectedConfigurationChanged)) { BindsTwoWayByDefault = true });
-        public string SelectedConfiguration
-        {
-            get
-            {
-                return (string)GetValue(SelectedConfigurationProperty);
-            }
-            set
-            {
-                SetValue(SelectedConfigurationProperty, value);
-            }
-        }
-        public static void SelectedConfigurationChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            var picker = sender as TypePicker<T>;
-            if (picker != null)
-            {
-                picker.OnSelectedConfigurationChanged();
-            }
-        }
-
-        private void OnSelectedConfigurationChanged()
-        {
-            LoadAssembliesForSelectedConfiguraiton();
-        }
-
         public static DependencyProperty SelectedAssemblyIdProperty = DependencyProperty.Register("SelectedAssemblyId", typeof(long?), typeof(TypePicker<T>), new PropertyMetadata(new PropertyChangedCallback(SelectedAssemblyIdChanged)));
         
         public long? SelectedAssemblyId
@@ -71,8 +45,9 @@ namespace Informagator.Manager.Controls
             picker.OnSelectedAssemblyIdChanged();
         }
 
-        protected void OnSelectedAssemblyIdChanged()
+        protected virtual void OnSelectedAssemblyIdChanged()
         {
+            //TODO make all the *changed methods virtual
             EvaluateProperties();
             if (SelectedAssemblyId != null)
             {
@@ -169,7 +144,7 @@ namespace Informagator.Manager.Controls
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                App.CurrentApplication.ActiveSystemConfigurationChanged += CurrentApplication_ActiveSystemConfigurationChanged;
+                ConfigurationSelection.SelectedConfigurationChanged += CurrentApplication_ActiveSystemConfigurationChanged;
                 LoadAssembliesForSelectedConfiguraiton();
                 EvaluateProperties();
             }
@@ -184,7 +159,7 @@ namespace Informagator.Manager.Controls
                 AssemblyIdsAndNames.ToList().ForEach(n => AssemblyIdsAndNames.Remove(n));
                 entities.SystemConfigurations
                         .Include(c => c.Assemblies)
-                        .Where(c => c.Description == SelectedConfiguration)
+                        .Where(c => c.Description == ConfigurationSelection.SelectedConfiguration)
                         .SelectMany(c => c.Assemblies)
                         .OrderBy(a => a.Name)
                         .Distinct()

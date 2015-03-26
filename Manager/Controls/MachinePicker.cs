@@ -13,6 +13,7 @@ namespace Informagator.Manager.Controls
 {
     public class MachinePicker : ComboBox
     {
+        //TODO: don't derive Combobox
         static MachinePicker()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(MachinePicker), new FrameworkPropertyMetadata(typeof(ComboBox)));
@@ -27,7 +28,53 @@ namespace Informagator.Manager.Controls
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 RefreshMachines();
-                (App.Current as Manager.App).ActiveSystemConfigurationChanged += RefreshMachines;
+                ConfigurationSelection.SelectedConfigurationChanged += RefreshMachines;
+            }
+        }
+
+
+        public static readonly DependencyProperty MachineIdProperty = DependencyProperty.Register("MachineId", typeof(long?), typeof(MachinePicker), new FrameworkPropertyMetadata(new PropertyChangedCallback(MachineIdChanged)) { BindsTwoWayByDefault = true });
+        public long? MachineId
+        {
+            get
+            {
+                return (long?)GetValue(MachineIdProperty);
+            }
+            set
+            {
+                SetValue(MachineIdProperty, value);
+            }
+        }
+        public static void MachineIdChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            var picker = sender as MachinePicker;
+            if (picker != null)
+            {
+                picker.OnMachineIdChanged();
+            }
+        }
+
+        private void OnMachineIdChanged()
+        {
+            SetSelectedItem();
+        }
+
+        private void SetSelectedItem()
+        {
+            var source = (ItemsSource as IEnumerable<Machine>);
+            Machine selectedItem;
+            if (source != null)
+            {
+                selectedItem = source.SingleOrDefault(m => m.Id == MachineId);
+            }
+            else
+            {
+                selectedItem = null;
+            }
+
+            if (selectedItem != SelectedItem)
+            {
+                SelectedItem = selectedItem;
             }
         }
 
@@ -36,12 +83,26 @@ namespace Informagator.Manager.Controls
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
                 ItemsSource = entities.SystemConfigurations
-                                      .Include(conf => conf.Machines)          
-                                      .Single(conf => conf.IsActive)
+                                      .Include(conf => conf.Machines)
+                                      .Single(conf => conf.Description == ConfigurationSelection.SelectedConfiguration)
                                       .Machines
-                                      .Select(asc => asc.Name)
-                                      .Distinct()
-                                      .OrderBy(a => a);
+                                      .OrderBy(a => a.Name)
+                                      .ToArray();
+
+            }
+
+            SetSelectedItem();
+        }
+
+        protected override void OnSelectionChanged(SelectionChangedEventArgs e)
+        {
+            base.OnSelectionChanged(e);
+
+            var selected = e.AddedItems.OfType<Machine>().SingleOrDefault();
+            var machineId = selected == null ? (long?)null : selected.Id;
+            if (machineId != MachineId)
+            {
+                MachineId = machineId;
             }
         }
     }

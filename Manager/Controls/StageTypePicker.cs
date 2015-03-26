@@ -17,5 +17,10 @@ namespace Informagator.Manager.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(StageTypePicker), new FrameworkPropertyMetadata(typeof(StageTypePicker)));
             FocusableProperty.OverrideMetadata(typeof(StageTypePicker), new FrameworkPropertyMetadata(false));
         }
+
+        protected override void OnSelectedAssemblyIdChanged()
+        {
+            base.OnSelectedAssemblyIdChanged();
+        }
     }
 }

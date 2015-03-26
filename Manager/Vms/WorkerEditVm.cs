@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity;
-using Editor = Informagator.Manager.Controls.StageEditor;
+using Editor = Informagator.Manager.Controls;
 using System.Collections.ObjectModel;
 
 namespace Informagator.Manager.Vms
@@ -34,7 +34,7 @@ namespace Informagator.Manager.Vms
             var worker = Entities.Workers.Include(w => w.Machine)
                                          .Include(w => w.Stages.Select(s => s.StageParameters))
                                          .Single(w => w.Id == EntityId);
-            MachineName = worker.Machine.Name;
+            MachineId = worker.Machine.Id;
             WorkerAssemblyId = worker.Assembly.Id;
             LoadStages(worker);
             return worker;
@@ -47,13 +47,13 @@ namespace Informagator.Manager.Vms
             foreach (Stage stg in workerEntity.Stages)
             {
                 Editor.Stage editorStage = new Editor.Stage();
-                editorStage.Name = stg.Name;
-                editorStage.StageAssemblyId = stg.Assembly.Id;
-                editorStage.StageType = stg.Type;
+                editorStage.EntityName = stg.Name;
+                editorStage.AssemblyId = stg.Assembly.Id;
+                editorStage.EntityType = stg.Type;
                 foreach (StageParameter param in stg.StageParameters)
                 {
-                    Editor.StageParameter editorParam = new Editor.StageParameter();
-                    editorStage.StageParameters.Add(editorParam);
+                    Editor.Parameter editorParam = new Editor.Parameter();
+                    editorStage.Parameters.Add(editorParam);
                     editorParam.Name = param.Name;
                     editorParam.Value = param.Value;
                 }
@@ -63,28 +63,36 @@ namespace Informagator.Manager.Vms
 
         private void SaveStages()
         {
-            while(Entity.Stages.Count < Stages.Count)
+            //possible violations of unique constraints on sequence and name
+            foreach(Stage toDelete in Entity.Stages.Where(s => !Enumerable.Range(0, Stages.Count).Any(index => Stages[index].EntityName == s.Name && index == s.Sequence)).ToList())
+            {
+                Entities.StageParameters.RemoveRange(toDelete.StageParameters);
+                Entities.Stages.Remove(toDelete);
+            }
+
+            Entities.SaveChanges();
+
+            while (Entity.Stages.Count < Stages.Count)
             {
                 Entity.Stages.Add(new Stage() { Worker = Entity });
             }
 
-            foreach(Stage toDelete in Entity.Stages.Skip(Stages.Count).ToList())
+            for (int index = 0; index < Stages.Count; index++)
             {
-                toDelete.StageParameters.Clear();
-                Entity.Stages.Remove(toDelete);
-            }
-
-            for(int index = 0; index < Stages.Count; index++)
-            {
-                Stage dbStage = Entity.Stages.ElementAt(index);
                 Editor.Stage uiStage = Stages[index];
-                dbStage.Sequence = index;
-                dbStage.Name = uiStage.Name;
-                Assembly stageAssemblyVersion = Entities.Assemblies.SingleOrDefault(av => av.Id == uiStage.StageAssemblyId);
-                dbStage.Assembly = stageAssemblyVersion;
-                dbStage.Type = uiStage.StageType;
+                Stage dbStage = Entity.Stages.FirstOrDefault(s => s.Name == uiStage.EntityName);
+                if (dbStage == null)
+                {
+                    dbStage = Entity.Stages.First(s => !Stages.Any(uis => s.Name == uis.EntityName));
+                }
 
-                foreach (var uiParam in uiStage.StageParameters)
+                dbStage.Sequence = index;
+                dbStage.Name = uiStage.EntityName;
+                Assembly stageAssemblyVersion = Entities.Assemblies.SingleOrDefault(av => av.Id == uiStage.AssemblyId);
+                dbStage.Assembly = stageAssemblyVersion;
+                dbStage.Type = uiStage.EntityType;
+
+                foreach (var uiParam in uiStage.Parameters)
                 {
                     var dbParam = dbStage.StageParameters.SingleOrDefault(p => p.Name == uiParam.Name);
                     if (dbParam == null)
@@ -98,7 +106,7 @@ namespace Informagator.Manager.Vms
                     dbParam.Value = uiParam.Value.ToString();
                 }
 
-                dbStage.StageParameters.Where(dbp => !uiStage.StageParameters.Any(uip => uip.Name == dbp.Name))
+                dbStage.StageParameters.Where(dbp => !uiStage.Parameters.Any(uip => uip.Name == dbp.Name))
                        .ToList()
                        .ForEach(p => Entities.StageParameters.Remove(p));
             }
@@ -111,29 +119,24 @@ namespace Informagator.Manager.Vms
             return worker;
         }
 
-        private string _machineName;
-        public string MachineName
+        private long? _machineId;
+        public long? MachineId
         {
             get
             {
-                return _machineName;
+                return _machineId;
             }
             set
             {
-                _machineName = value;
-                NotifyPropertyChanged("MachineName");
+                _machineId = value;
 
                 if (Entity != null)
                 {
-                    var mach = Entities.SystemConfigurations
-                                       .Where(sc => sc.Description == SelectedConfiguration)
-                                       .SelectMany(sc => sc.Machines)
-                                       .SingleOrDefault(m => m.Name == value);
-                    if (mach != null)
-                    {
-                        Entity.Machine = mach;
-                    }
+                    var mach = Entities.Machines.SingleOrDefault(m => m.Id == _machineId);
+                    Entity.Machine = mach;
                 }
+
+                NotifyPropertyChanged("MachineId");
             }
         }
 

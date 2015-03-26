@@ -9,6 +9,6 @@ namespace Informagator.Contracts.WorkerServices
 
         bool AnyAssemblyChanged { get; }
 
-        object CreateConfiguredObject(IConfigurableType type, object host);
+        object CreateConfiguredObject(IConfigurableTypeConfiguration type, object host);
     }
 }

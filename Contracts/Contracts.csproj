@@ -47,7 +47,7 @@
     <Compile Include="Attributes\StageWorkerAttribute.cs" />
     <Compile Include="Configuration\IErrorHandlerConfiguration.cs" />
     <Compile Include="Configuration\IConfigurationParameter.cs" />
-    <Compile Include="Configuration\IConfigurableType.cs" />
+    <Compile Include="Configuration\IConfigurableTypeConfiguration.cs" />
     <Compile Include="Exceptions\ConfigurationException.cs" />
     <Compile Include="Exceptions\ErrorHandlerException.cs" />
     <Compile Include="Exceptions\InformagatorException.cs" />
