@@ -12,6 +12,20 @@ namespace Informagator.Manager.Vms
 {
     public class WorkerEditVm : EntityEditVmBase<Worker>
     {
+        private ObservableCollection<long?> _errorHandlerIds;
+        public ObservableCollection<long?> ErrorHandlerIds
+        {
+            get
+            {
+                return _errorHandlerIds;
+            }
+            set
+            {
+                _errorHandlerIds = value;
+                NotifyPropertyChanged("ErrorHandlerIds");
+            }
+        }
+
         private ObservableCollection<Editor.Stage> _stages;
         public ObservableCollection<Editor.Stage> Stages
         {
@@ -33,10 +47,12 @@ namespace Informagator.Manager.Vms
         {
             var worker = Entities.Workers.Include(w => w.Machine)
                                          .Include(w => w.Stages.Select(s => s.StageParameters))
+                                         .Include(w => w.WorkerErrorHandlers.Select(eh => eh.ErrorHandler))
                                          .Single(w => w.Id == EntityId);
             MachineId = worker.Machine.Id;
             WorkerAssemblyId = worker.Assembly.Id;
             LoadStages(worker);
+            LoadErrorHandlers(worker);
             return worker;
         }
 
@@ -58,6 +74,16 @@ namespace Informagator.Manager.Vms
                     editorParam.Value = param.Value;
                 }
                 Stages.Add(editorStage);
+            }
+        }
+
+        private void LoadErrorHandlers(Worker workerEntity)
+        {
+            ErrorHandlerIds.Clear();
+
+            foreach (WorkerErrorHandler handler in workerEntity.WorkerErrorHandlers)
+            {
+                ErrorHandlerIds.Add(handler.ErrorHandler.Id);
             }
         }
 
@@ -112,6 +138,28 @@ namespace Informagator.Manager.Vms
             }
         }
 
+        private void SaveErrorHandlers()
+        {
+            foreach(WorkerErrorHandler existingErrorHandler in Entity.WorkerErrorHandlers.ToList())
+            {
+                if (!ErrorHandlerIds.Contains((long)(existingErrorHandler.ErrorHandler.Id)))
+                {
+                    Entities.WorkerErrorHandlers.Remove(existingErrorHandler);
+                }
+            }
+
+            foreach(long id in ErrorHandlerIds.Where(id => id != null).Cast<long>().Distinct())
+            {
+                if (!Entity.WorkerErrorHandlers.Any(weh => weh.ErrorHandler.Id == id ))
+                {
+                    WorkerErrorHandler newErrorHandler = new WorkerErrorHandler();
+                    newErrorHandler.ErrorHandler = Entities.ErrorHandlers.Single(eh => eh.Id == id);
+                    newErrorHandler.Worker = Entity;
+                    Entities.WorkerErrorHandlers.Add(newErrorHandler);
+                }
+            }
+        }
+
         protected override Worker CreateNewEntity()
         {
             var worker = Entities.Workers.Create();
@@ -158,10 +206,12 @@ namespace Informagator.Manager.Vms
         public WorkerEditVm()
         {
             Stages = new ObservableCollection<Editor.Stage>();
+            ErrorHandlerIds = new ObservableCollection<long?>();
         }
         public override void SaveEntity()
         {
             SaveStages();
+            SaveErrorHandlers();
             base.SaveEntity();
         }
         

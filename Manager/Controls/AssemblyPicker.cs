@@ -37,7 +37,7 @@ namespace Informagator.Manager.Controls
             {
                 ItemsSource = entities.SystemConfigurations
                                       .Include(conf => conf.Assemblies)          
-                                      .Single(conf => conf.Description == ConfigurationSelection.SelectedConfiguration)
+                                      .Single(conf => conf.Name == ConfigurationSelection.SelectedConfiguration)
                                       .Assemblies
                                       .OrderBy(a => a.ToString());
             }

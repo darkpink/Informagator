@@ -1,13 +1,15 @@
 ﻿CREATE TABLE [Configuration].[SystemConfiguration] (
     [Id]                      BIGINT        IDENTITY (1, 1) NOT NULL,
     [CreateDttm]              DATETIME      CONSTRAINT [DF_ApplicationVersion_CreateDttm] DEFAULT (getdate()) NOT NULL,
-    [Description]             VARCHAR (100) NULL,
+    [Name]                    VARCHAR (100) NULL,
     [IsActive]                BIT           NOT NULL,
     [EffectiveDttm]           DATETIME      NULL,
     [DefaultAdminServicePort] INT           NULL,
     [DefaultInfoServicePort]  INT           NULL,
     CONSTRAINT [PK_SystemConfiguration] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 
@@ -38,3 +40,7 @@ BEGIN
       SET IsActive = 0
       where Id NOT IN (Select Id from inserted)
 END
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [UC_Name]
+    ON [Configuration].[SystemConfiguration]([Name] ASC);
+

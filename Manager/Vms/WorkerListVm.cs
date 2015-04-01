@@ -17,7 +17,7 @@ namespace Informagator.Manager.Vms
         { 
             get 
             { 
-                return new DeleteEntityCommand<Worker>(entities => entities.Workers, (workers, id) => workers.Single(w => w.Id == (long)id), null); 
+                return new DeleteEntityCommand<Worker>(entities => entities.Workers, (workers, id) => workers.Single(w => w.Id == (long)id), null, Refresh); 
             } 
         }
 
@@ -27,7 +27,7 @@ namespace Informagator.Manager.Vms
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                result = entities.Workers.Include(t => t.Machine).Where(w => w.Machine.SystemConfiguration.Description == ConfigurationSelection.SelectedConfiguration).ToArray();
+                result = entities.Workers.Include(t => t.Machine).Where(w => w.Machine.SystemConfiguration.Name == ConfigurationSelection.SelectedConfiguration).ToArray();
             }
 
             return result;

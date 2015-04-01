@@ -159,7 +159,7 @@ namespace Informagator.Manager.Controls
                 AssemblyIdsAndNames.ToList().ForEach(n => AssemblyIdsAndNames.Remove(n));
                 entities.SystemConfigurations
                         .Include(c => c.Assemblies)
-                        .Where(c => c.Description == ConfigurationSelection.SelectedConfiguration)
+                        .Where(c => c.Name == ConfigurationSelection.SelectedConfiguration)
                         .SelectMany(c => c.Assemblies)
                         .OrderBy(a => a.Name)
                         .Distinct()

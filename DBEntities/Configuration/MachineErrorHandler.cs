@@ -19,5 +19,6 @@ namespace Informagator.DBEntities.Configuration
         public long ErrorHandlerId { get; set; }
     
         public virtual ErrorHandler ErrorHandler { get; set; }
+        public virtual Machine Machine { get; set; }
     }
 }

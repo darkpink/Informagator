@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace Informagator.Manager.Controls
 {
-    public class ErrorHandlerEditor :ConfigurableTypeEditor<ErrorHandlerPicker,IMessageErrorHandler>
+    public class ErrorHandlerEditor : ConfigurableTypeEditor<ErrorHandlerTypePicker,IMessageErrorHandler>
     {
         static ErrorHandlerEditor()
         {

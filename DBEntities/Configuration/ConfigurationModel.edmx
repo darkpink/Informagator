@@ -92,7 +92,7 @@
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CreateDttm" Type="datetime" Nullable="false" />
-          <Property Name="Description" Type="varchar" MaxLength="100" />
+          <Property Name="Name" Type="varchar" MaxLength="100" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="EffectiveDttm" Type="datetime" />
           <Property Name="DefaultAdminServicePort" Type="int" />
@@ -214,6 +214,18 @@
             </Principal>
             <Dependent Role="MachineErrorHandler">
               <PropertyRef Name="ErrorHandlerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MachineErrorHandler_Machine">
+          <End Role="Machine" Type="Self.Machine" Multiplicity="1" />
+          <End Role="MachineErrorHandler" Type="Self.MachineErrorHandler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Machine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MachineErrorHandler">
+              <PropertyRef Name="MachineId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -413,6 +425,10 @@
             <End Role="ErrorHandler" EntitySet="ErrorHandler" />
             <End Role="MachineErrorHandler" EntitySet="MachineErrorHandler" />
           </AssociationSet>
+          <AssociationSet Name="FK_MachineErrorHandler_Machine" Association="Self.FK_MachineErrorHandler_Machine">
+            <End Role="Machine" EntitySet="Machine" />
+            <End Role="MachineErrorHandler" EntitySet="MachineErrorHandler" />
+          </AssociationSet>
           <AssociationSet Name="FK_Stage_Assembly" Association="Self.FK_Stage_Assembly">
             <End Role="Assembly" EntitySet="Assembly" />
             <End Role="Stage" EntitySet="Stage" />
@@ -523,6 +539,7 @@
           <NavigationProperty Name="SystemConfiguration" Relationship="Self.FK_Machine_SystemConfigurationId" FromRole="Machine" ToRole="SystemConfiguration" />
           <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_Machine" FromRole="Machine" ToRole="Worker" />
           <Property Name="SuppressSystemConfigurationErrorHandlers" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="MachineErrorHandlers" Relationship="Model.FK_MachineErrorHandler_Machine" FromRole="Machine" ToRole="MachineErrorHandler" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -532,6 +549,7 @@
           <Property Name="MachineId" Type="Int64" Nullable="false" />
           <Property Name="ErrorHandlerId" Type="Int64" Nullable="false" />
           <NavigationProperty Name="ErrorHandler" Relationship="Self.FK_MachineErrorHandler_ErrorHandler" FromRole="MachineErrorHandler" ToRole="ErrorHandler" />
+          <NavigationProperty Name="Machine" Relationship="Model.FK_MachineErrorHandler_Machine" FromRole="MachineErrorHandler" ToRole="Machine" />
         </EntityType>
         <EntityType Name="Stage">
           <Key>
@@ -575,7 +593,7 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CreateDttm" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="EffectiveDttm" Type="DateTime" Precision="3" />
           <Property Name="DefaultAdminServicePort" Type="Int32" />
@@ -922,6 +940,10 @@
             <End Role="SystemConfiguration" EntitySet="SystemConfigurations" />
             <End Role="SystemConfigurationErrorHandler" EntitySet="SystemConfigurationErrorHandlers" />
           </AssociationSet>
+          <AssociationSet Name="FK_MachineErrorHandler_Machine" Association="Model.FK_MachineErrorHandler_Machine">
+            <End Role="Machine" EntitySet="Machines" />
+            <End Role="MachineErrorHandler" EntitySet="MachineErrorHandlers" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="SystemConfigurationErrorHandler">
           <Key>
@@ -956,6 +978,18 @@
             </Principal>
             <Dependent Role="SystemConfigurationErrorHandler">
               <PropertyRef Name="SystemConfigurationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MachineErrorHandler_Machine">
+          <End Type="Model.Machine" Role="Machine" Multiplicity="1" />
+          <End Type="Model.MachineErrorHandler" Role="MachineErrorHandler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Machine">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="MachineErrorHandler">
+              <PropertyRef Name="MachineId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1057,9 +1091,9 @@
           <EntitySetMapping Name="SystemConfigurations">
             <EntityTypeMapping TypeName="Model.SystemConfiguration">
               <MappingFragment StoreEntitySet="SystemConfiguration">
+                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreateDttm" ColumnName="CreateDttm" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="EffectiveDttm" ColumnName="EffectiveDttm" />
                 <ScalarProperty Name="DefaultAdminServicePort" ColumnName="DefaultAdminServicePort" />

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ctrl="clr-namespace:Informagator.Manager.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="800">
     <Grid>
@@ -18,29 +19,42 @@
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="New/Edit Machine" />
-        
-        <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="Name:" />
-        <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="IP Address:" />
-        <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="Description:" />
-        
-        <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Name}" />
-        <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.IPAddress}" />
-        <TextBox Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Description}"/>
-        
-        <Button Grid.Row="4" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
-        <Button Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
-        
+        <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" HorizontalAlignment="Right" Text="Name:" />
+                <TextBlock Grid.Row="1" HorizontalAlignment="Right" Text="IP Address:" />
+                <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="Description:" />
+                <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="Override Error Handlers:" />
+                <TextBlock Grid.Row="4" HorizontalAlignment="Right" Text="Error Handlers:" />
+
+                <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Name}" />
+                <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.IPAddress}" />
+                <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Description}"/>
+                <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Entity.SuppressSystemConfigurationErrorHandlers}" />
+                <ctrl:ErrorHandlerListEditor Grid.Row="4" Grid.Column="1" ErrorHandlerIds="{Binding ErrorHandlerIds}" />
+            </Grid>
+        </ScrollViewer>
+        <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
+        <Button Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
     </Grid>
 </UserControl>

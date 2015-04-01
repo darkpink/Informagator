@@ -41,7 +41,7 @@ namespace Informagator.Manager.Controls
             {
                 using (ConfigurationEntities entities = new ConfigurationEntities())
                 {
-                    List<string> newConfigs = entities.SystemConfigurations.OrderByDescending(c => c.IsActive).ThenBy(c => c.Description).Select(c => c.Description).ToList();
+                    List<string> newConfigs = entities.SystemConfigurations.OrderByDescending(c => c.IsActive).ThenBy(c => c.Name).Select(c => c.Name).ToList();
                     foreach(string deleted in Configurations.Except(newConfigs).ToList())
                     {
                         Configurations.Remove(deleted);
@@ -57,12 +57,12 @@ namespace Informagator.Manager.Controls
 
                     if (SelectedConfiguration == null)
                     {
-                        SelectedConfiguration = entities.SystemConfigurations.Where(c => c.IsActive).Select(c => c.Description).SingleOrDefault();
+                        SelectedConfiguration = entities.SystemConfigurations.Where(c => c.IsActive).Select(c => c.Name).SingleOrDefault();
                     }
 
                     if (SelectedConfiguration == null)
                     {
-                        SelectedConfiguration = entities.SystemConfigurations.Select(c => c.Description).FirstOrDefault();
+                        SelectedConfiguration = entities.SystemConfigurations.Select(c => c.Name).FirstOrDefault();
                     }
                 }
             }

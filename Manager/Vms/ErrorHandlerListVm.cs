@@ -16,7 +16,7 @@ namespace Informagator.Manager.Vms
         {
             get
             {
-                return new DeleteEntityCommand<ErrorHandler>(entities => entities.ErrorHandlers, (ErrorHandlers, id) => ErrorHandlers.Single(w => w.Id == (long)id), null);
+                return new DeleteEntityCommand<ErrorHandler>(entities => entities.ErrorHandlers, (ErrorHandlers, id) => ErrorHandlers.Single(w => w.Id == (long)id), null, Refresh);
             }
         }
 
@@ -26,7 +26,7 @@ namespace Informagator.Manager.Vms
 
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                result = entities.ErrorHandlers.Include(t => t.ErrorHandlerParameters).Where(w => w.SystemConfiguration.Description == ConfigurationSelection.SelectedConfiguration).ToArray();
+                result = entities.ErrorHandlers.Include(t => t.ErrorHandlerParameters).Where(w => w.SystemConfiguration.Name == ConfigurationSelection.SelectedConfiguration).ToArray();
             }
 
             return result;

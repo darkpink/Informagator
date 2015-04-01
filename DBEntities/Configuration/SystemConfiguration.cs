@@ -24,7 +24,7 @@ namespace Informagator.DBEntities.Configuration
     
         public long Id { get; set; }
         public System.DateTime CreateDttm { get; set; }
-        public string Description { get; set; }
+        public string Name { get; set; }
         public bool IsActive { get; set; }
         public Nullable<System.DateTime> EffectiveDttm { get; set; }
         public Nullable<int> DefaultAdminServicePort { get; set; }

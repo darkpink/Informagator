@@ -17,6 +17,7 @@ namespace Informagator.DBEntities.Configuration
         public Machine()
         {
             this.Workers = new HashSet<Worker>();
+            this.MachineErrorHandlers = new HashSet<MachineErrorHandler>();
         }
     
         public long Id { get; set; }
@@ -30,5 +31,6 @@ namespace Informagator.DBEntities.Configuration
     
         public virtual SystemConfiguration SystemConfiguration { get; set; }
         public virtual ICollection<Worker> Workers { get; set; }
+        public virtual ICollection<MachineErrorHandler> MachineErrorHandlers { get; set; }
     }
 }

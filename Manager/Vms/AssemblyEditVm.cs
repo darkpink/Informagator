@@ -29,7 +29,7 @@ namespace Informagator.Manager.Vms
         {
             Assembly result = Entities.Assemblies.Create();
             Entities.Assemblies.Add(result);
-            var configuration = Entities.SystemConfigurations.Single(c => c.Description == ConfigurationSelection.SelectedConfiguration);
+            var configuration = Entities.SystemConfigurations.Single(c => c.Name == ConfigurationSelection.SelectedConfiguration);
             result.SystemConfiguration = configuration;
             return result;
         }

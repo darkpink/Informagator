@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="600">
+             d:DesignHeight="800" d:DesignWidth="600">
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock">
@@ -19,27 +19,46 @@
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center" Text="New/Edit Worker" />
+        <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible" HorizontalContentAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="New/Edit Worker" />
-        <ctrl:WorkerEditor Grid.Row="1" Grid.ColumnSpan="2" 
+                <ctrl:WorkerEditor Grid.Row="1" Grid.ColumnSpan="2" 
                            AssemblyId="{Binding WorkerAssemblyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                            EntityName="{Binding Entity.Name}" EntityType="{Binding Entity.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            MachineId="{Binding MachineId, Mode=TwoWay}" AutoStart="{Binding Entity.AutoStart}"
                            />
 
-        <ScrollViewer Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
-            <ctrl:StageSequenceEditor Stages="{Binding Stages}" Margin="20,5,20,5" />
+                <TextBlock Text="Error Handlers:" Grid.Row="2" VerticalAlignment="Top" HorizontalAlignment="Right" Margin="5" />
+                <ctrl:ErrorHandlerListEditor Grid.Row="2" Grid.Column="1" ErrorHandlerIds="{Binding ErrorHandlerIds}" HorizontalAlignment="Left" Margin="5"/>
+
+                <TextBlock Text="Stages:" Grid.Row="3" Margin="20,5,5,5" />
+                <ctrl:StageSequenceEditor Grid.Row="4" Grid.ColumnSpan="2" Stages="{Binding Stages}" Margin="20,5,20,5" />
+            </Grid>
         </ScrollViewer>
-        <Button Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
-        <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
+        <Grid Grid.Row="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Row="3" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>
+            <Button Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="80" Margin="10" Command="{Binding Cancel}">Cancel</Button>
+        </Grid>
     </Grid>
 </UserControl>

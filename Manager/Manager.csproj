@@ -80,8 +80,11 @@
     <Compile Include="Controls\AssemblyInspector.cs" />
     <Compile Include="Controls\AssemblyPicker.cs" />
     <Compile Include="Controls\ConfigurableTypeEditor.cs" />
+    <Compile Include="Controls\EntityPicker.cs" />
     <Compile Include="Controls\ErrorHandlerEditor.cs" />
+    <Compile Include="Controls\ErrorHandlerListEditor.cs" />
     <Compile Include="Controls\ErrorHandlerPicker.cs" />
+    <Compile Include="Controls\ErrorHandlerTypePicker.cs" />
     <Compile Include="Controls\MachinePicker.cs" />
     <Compile Include="Controls\Parameter.cs" />
     <Compile Include="Controls\Stage.cs" />
@@ -109,7 +112,6 @@
     <Compile Include="Panels\MachineEdit.xaml.cs">
       <DependentUpon>MachineEdit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Panels\OldestFileFromFolderSupplier.cs" />
     <Compile Include="Panels\StartStop.xaml.cs">
       <DependentUpon>StartStop.xaml</DependentUpon>
     </Compile>

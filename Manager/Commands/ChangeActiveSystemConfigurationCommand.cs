@@ -33,7 +33,7 @@ namespace Informagator.Manager.Commands
                 newActiveConfiguration = activate(ent.SystemConfigurations.Single(c => c.Id == (long)parameter));
                 ent.SaveChanges();
 
-                ConfigurationSelection.ActiveConfiguration = newActiveConfiguration.Description;
+                ConfigurationSelection.ActiveConfiguration = newActiveConfiguration.Name;
             }
 
             ThreadControlCommandManager.UpdateConfiguration.Execute(null);

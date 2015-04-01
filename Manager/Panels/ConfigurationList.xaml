@@ -2,15 +2,25 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:cmd="clr-namespace:Informagator.Manager.Commands"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:ctrl="clr-namespace:Informagator.Manager.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="800">
     <Grid>
-        <DataGrid ItemsSource="{Binding SystemConfigurations}" CanUserAddRows="False" AutoGenerateColumns="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="1" HorizontalAlignment="Right" Width="42" Margin="5" Command="{x:Static cmd:PanelChangeCommandManager.GoToConfigurationEdit}">New</Button>
+        <DataGrid Grid.Row="1" Grid.ColumnSpan="2" Name="uxConfigurationList" ItemsSource="{Binding SystemConfigurations}" CanUserAddRows="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridCheckBoxColumn Header="Active" Binding="{Binding IsActive}" IsReadOnly="True" />
-                <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" Width="1*" />
+                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="1*" />
                 <DataGridTextColumn Header="Effective" Binding="{Binding EffectiveDttm}" IsReadOnly="True" Width="1*" />
                 <DataGridTemplateColumn Width="80">
                     <DataGridTemplateColumn.CellTemplate>
@@ -28,10 +38,17 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTemplateColumn Width="80">
+                <DataGridTemplateColumn Header="Edit" Width="50">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Button Margin="4,2,4,2">Delete</Button>
+                            <Button Margin="4,2,4,2" Command="{x:Static cmd:PanelChangeCommandManager.GoToConfigurationEdit}" CommandParameter="{Binding Id}">Edit</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Delete" Width="50">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Margin="4,2,4,2" Command="{Binding Path=DataContext.DeleteConfiguration, ElementName=uxConfigurationList}" CommandParameter="{Binding Id}">Delete</Button>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>

@@ -18,11 +18,14 @@ namespace Informagator.Manager.Commands
 
         Action<TEntity> AdditionalActionsBeforeDelete { get; set; }
 
-        public DeleteEntityCommand(Func<ConfigurationEntities, DbSet<TEntity>> entitySetGetter, Func<DbSet<TEntity>, object, TEntity> entityGetter,  Action<TEntity> additionalActionsBeforeDelete)
+        protected Action ActionAfterDelete { get; set; }
+
+        public DeleteEntityCommand(Func<ConfigurationEntities, DbSet<TEntity>> entitySetGetter, Func<DbSet<TEntity>, object, TEntity> entityGetter,  Action<TEntity> additionalActionsBeforeDelete, Action actionAfterDelete)
         {
             EntitySetGetter = entitySetGetter;
             EntityGetter = entityGetter;
             AdditionalActionsBeforeDelete = additionalActionsBeforeDelete;
+            ActionAfterDelete = actionAfterDelete;
         }
 
         public bool CanExecute(object parameter)
@@ -48,6 +51,11 @@ namespace Informagator.Manager.Commands
                     AdditionalActionsBeforeDelete(entity);
                 }
                 entities.SaveChanges();
+            }
+
+            if (ActionAfterDelete != null)
+            {
+                ActionAfterDelete();
             }
         }
     }

@@ -52,6 +52,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style TargetType="Control" x:Key="TypePicker">
         <Setter Property="Template">
             <Setter.Value>
@@ -98,7 +99,7 @@
 
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:WorkerTypePicker" />
     <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:StageTypePicker" />
-    <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:ErrorHandlerPicker" />
+    <Style BasedOn="{StaticResource ResourceKey=TypePicker}" TargetType="ctrl:ErrorHandlerTypePicker" />
 
     <ControlTemplate x:Key="ConfigurableType" TargetType="Control">
         <Border Background="{TemplateBinding Background}"
@@ -192,7 +193,7 @@
 
                             <TextBlock Grid.Row="3" HorizontalAlignment="Right" Text="Machine:" />
                             <ctrl:MachinePicker Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Width="200"
-                                                MachineId="{Binding MachineId, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                EntityId="{Binding MachineId, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 />
 
                             <TextBlock Grid.Row="4" HorizontalAlignment="Right" Text="Auto Start:" />
@@ -305,7 +306,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Border Background="LightGray" BorderThickness="1" BorderBrush="Black" CornerRadius="2" VerticalAlignment="Top">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                        >
                         <Grid x:Name="PART_PrimaryGrid">
                             <Grid.Resources>
                                 <Style TargetType="Button" x:Key="AddStage">
@@ -362,5 +366,61 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
+    <Style x:Key="EntityPicker" TargetType="Control">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <ComboBox ItemsSource="{Binding Entities, RelativeSource={RelativeSource TemplatedParent}}" SelectedValue="{Binding EntityId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" DisplayMemberPath="Name" SelectedValuePath="Id" HorizontalContentAlignment="Center"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style TargetType="ctrl:MachinePicker" BasedOn="{StaticResource EntityPicker}" />
+    <Style TargetType="ctrl:ErrorHandlerPicker" BasedOn="{StaticResource EntityPicker}" />
 
+    <Style TargetType="ctrl:ErrorHandlerListEditor">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid Name="PART_PrimaryGrid" HorizontalAlignment="Center" Width="200">
+                            <Grid.Resources>
+                                <Style TargetType="Button" x:Key="AddErrorHandler">
+                                    <Setter Property="Height" Value="20" />
+                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="VerticalAlignment" Value="Bottom" />
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Polygon Fill="Green" Points="0,3 0,6 3,6 3,9 6,9 6,6 9,6 9,3 6,3 6,0 3,0 3,3" Margin="3" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                                <Style TargetType="Button" x:Key="RemoveErrorHandler">
+                                    <Setter Property="Height" Value="20" />
+                                    <Setter Property="Margin" Value="3" />
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="ContentTemplate">
+                                        <Setter.Value>
+                                            <DataTemplate>
+                                                <Polygon Fill="Red" Points="0,0 0,3 9,3 9,0" Margin="3" />
+                                            </DataTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="30" />
+                            </Grid.ColumnDefinitions>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

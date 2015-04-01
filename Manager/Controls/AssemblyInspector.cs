@@ -44,7 +44,7 @@ namespace Informagator.Manager.Controls
                 byte[] assemblyBinary = entities.Assemblies
                                         .Where(av => av.Name == n &&
                                                      av.Version == v &&
-                                                     av.SystemConfiguration.Description == ConfigurationSelection.SelectedConfiguration
+                                                     av.SystemConfiguration.Name == ConfigurationSelection.SelectedConfiguration
                                                )
                                          .Select(av => av.Executable)
                                          .SingleOrDefault();

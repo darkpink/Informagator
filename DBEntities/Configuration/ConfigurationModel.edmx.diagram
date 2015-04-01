@@ -36,6 +36,7 @@
         <EntityTypeShape EntityType="Model.SystemConfigurationErrorHandler" Width="1.5" PointX="10.5" PointY="16" />
         <AssociationConnector Association="Model.FK_SystemConfigurationErrorHandler_ErrorHandler" />
         <AssociationConnector Association="Model.FK_SystemConfigurationErrorHandler_SystemConfiguration" />
+        <AssociationConnector Association="Model.FK_MachineErrorHandler_Machine" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

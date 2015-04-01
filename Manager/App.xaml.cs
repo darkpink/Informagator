@@ -38,7 +38,7 @@ namespace Informagator.Manager
         {
             using (ConfigurationEntities entities = new ConfigurationEntities())
             {
-                ConfigurationSelection.ActiveConfiguration = entities.SystemConfigurations.Where(c => c.IsActive).Select(c => c.Description).SingleOrDefault();
+                ConfigurationSelection.ActiveConfiguration = entities.SystemConfigurations.Where(c => c.IsActive).Select(c => c.Name).SingleOrDefault();
                 ConfigurationSelection.SelectedConfiguration = ConfigurationSelection.ActiveConfiguration;
             }
         }
