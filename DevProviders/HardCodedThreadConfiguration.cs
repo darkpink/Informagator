@@ -43,6 +43,6 @@ namespace Informagator.DevProviders.Configuration
         }
 
 
-        public bool SuppressMachineErrorHandlers { get; set; }
+        public bool SuppressParentErrorHandlers { get; set; }
     }
 }
