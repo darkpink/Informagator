@@ -21,7 +21,6 @@ namespace Informagator.Manager.Controls
 
         public ErrorHandlerListEditor()
         {
-            ErrorHandlerIds = new ObservableCollection<long?>();
         }
 
         public static DependencyProperty ErrorHandlerIdsProperty = DependencyProperty.Register("ErrorHandlerIds", typeof(ObservableCollection<long?>), typeof(ErrorHandlerListEditor), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlersChanged)));
@@ -91,7 +90,8 @@ namespace Informagator.Manager.Controls
                 addButton.Style = PART_PrimaryGrid.Resources["AddErrorHandler"] as Style;
                 addButton.Click += AddButton_Click;
                 Grid.SetRow(addButton, newNumberOfRowDefinitions);
-                Grid.SetColumn(addButton, 1);
+                //Grid.SetColumn(addButton, 1);
+                addButton.HorizontalAlignment = System.Windows.HorizontalAlignment.Left;
                 PART_PrimaryGrid.Children.Add(addButton);
             }
         }

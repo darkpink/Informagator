@@ -47,7 +47,7 @@
           <Property Name="Description" Type="varchar(max)" />
           <Property Name="AdminServicePort" Type="int" Nullable="false" />
           <Property Name="InfoServicePort" Type="int" Nullable="false" />
-          <Property Name="SuppressSystemConfigurationErrorHandlers" Type="bit" Nullable="false" />
+          <Property Name="SuppressParentErrorHandlers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -67,7 +67,7 @@
           <Property Name="Sequence" Type="int" Nullable="false" />
           <Property Name="AssemblyId" Type="bigint" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="1000" Nullable="false" />
-          <Property Name="SuppressWorkerErrorHandlers" Type="bit" Nullable="false" />
+          <Property Name="SuppressParentErrorHandlers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="StageErrorHandler">
           <Key>
@@ -116,7 +116,7 @@
           <Property Name="AssemblyId" Type="bigint" Nullable="false" />
           <Property Name="Type" Type="varchar" MaxLength="1000" Nullable="false" />
           <Property Name="AutoStart" Type="bit" Nullable="false" />
-          <Property Name="SuppressMachineErrorHandlers" Type="bit" Nullable="false" />
+          <Property Name="SuppressParentErrorHandlers" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkerErrorHandler">
           <Key>
@@ -538,8 +538,8 @@
           <Property Name="InfoServicePort" Type="Int32" Nullable="false" />
           <NavigationProperty Name="SystemConfiguration" Relationship="Self.FK_Machine_SystemConfigurationId" FromRole="Machine" ToRole="SystemConfiguration" />
           <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_Machine" FromRole="Machine" ToRole="Worker" />
-          <Property Name="SuppressSystemConfigurationErrorHandlers" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="MachineErrorHandlers" Relationship="Model.FK_MachineErrorHandler_Machine" FromRole="Machine" ToRole="MachineErrorHandler" />
+          <Property Name="SuppressParentErrorHandlers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -565,7 +565,7 @@
           <NavigationProperty Name="Worker" Relationship="Self.FK_Stage_Worker" FromRole="Stage" ToRole="Worker" />
           <NavigationProperty Name="StageErrorHandlers" Relationship="Self.FK_StageErrorHandler_Stage" FromRole="Stage" ToRole="StageErrorHandler" />
           <NavigationProperty Name="StageParameters" Relationship="Self.FK_StageParameter_Stage" FromRole="Stage" ToRole="StageParameter" />
-          <Property Name="SuppressWorkerErrorHandlers" Type="Boolean" Nullable="false" />
+          <Property Name="SuppressParentErrorHandlers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="StageErrorHandler">
           <Key>
@@ -618,7 +618,7 @@
           <NavigationProperty Name="Stages" Relationship="Self.FK_Stage_Worker" FromRole="Worker" ToRole="Stage" />
           <NavigationProperty Name="WorkerErrorHandlers" Relationship="Self.FK_WorkerErrorHandler_Worker" FromRole="Worker" ToRole="WorkerErrorHandler" />
           <NavigationProperty Name="WorkerParameters" Relationship="Self.FK_WorkerParameter_Worker" FromRole="Worker" ToRole="WorkerParameter" />
-          <Property Name="SuppressMachineErrorHandlers" Type="Boolean" Nullable="false" />
+          <Property Name="SuppressParentErrorHandlers" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="WorkerErrorHandler">
           <Key>
@@ -1036,7 +1036,7 @@
           <EntitySetMapping Name="Machines">
             <EntityTypeMapping TypeName="Model.Machine">
               <MappingFragment StoreEntitySet="Machine">
-                <ScalarProperty Name="SuppressSystemConfigurationErrorHandlers" ColumnName="SuppressSystemConfigurationErrorHandlers" />
+                <ScalarProperty Name="SuppressParentErrorHandlers" ColumnName="SuppressParentErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SystemConfigurationId" ColumnName="SystemConfigurationId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1059,7 +1059,7 @@
           <EntitySetMapping Name="Stages">
             <EntityTypeMapping TypeName="Model.Stage">
               <MappingFragment StoreEntitySet="Stage">
-                <ScalarProperty Name="SuppressWorkerErrorHandlers" ColumnName="SuppressWorkerErrorHandlers" />
+                <ScalarProperty Name="SuppressParentErrorHandlers" ColumnName="SuppressParentErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="WorkerId" ColumnName="WorkerId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -1104,7 +1104,7 @@
           <EntitySetMapping Name="Workers">
             <EntityTypeMapping TypeName="Model.Worker">
               <MappingFragment StoreEntitySet="Worker">
-                <ScalarProperty Name="SuppressMachineErrorHandlers" ColumnName="SuppressMachineErrorHandlers" />
+                <ScalarProperty Name="SuppressParentErrorHandlers" ColumnName="SuppressParentErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="MachineId" ColumnName="MachineId" />

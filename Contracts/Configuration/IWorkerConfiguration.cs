@@ -9,7 +9,7 @@ namespace Informagator.Contracts.Configuration
         
         IList<IStageConfiguration> Stages { get; }
 
-        bool SuppressMachineErrorHandlers { get; }
+        bool SuppressParentErrorHandlers { get; }
 
         IList<IErrorHandlerConfiguration> ErrorHandlers { get; }
     }

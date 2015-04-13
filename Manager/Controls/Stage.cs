@@ -53,6 +53,34 @@ namespace Informagator.Manager.Controls
             }
         }
 
+        private bool _suppressParentErrorHandlers;
+        public bool SuppressParentErrorHandlers
+        {
+            get
+            {
+                return _suppressParentErrorHandlers;
+            }
+            set
+            {
+                _suppressParentErrorHandlers = value;
+                NotifyPropertyChanged("SuppressParentErrorHandlers");
+            }
+        }
+
+        private ObservableCollection<long?> _errorHandlerIds;
+        public ObservableCollection<long?> ErrorHandlerIds
+        {
+            get
+            {
+                return _errorHandlerIds;
+            }
+            set
+            {
+                _errorHandlerIds = value;
+                NotifyPropertyChanged("ErrorHandlerIds");
+            }
+        }
+
         private ObservableCollection<Parameter> _parameters;
         public ObservableCollection<Parameter> Parameters
         {
@@ -80,6 +108,13 @@ namespace Informagator.Manager.Controls
         public Stage()
         {
             Parameters = new ObservableCollection<Parameter>();
+            ErrorHandlerIds = new ObservableCollection<long?>();
+            ErrorHandlerIds.CollectionChanged += ErrorHandlerIds_CollectionChanged;
+        }
+
+        void ErrorHandlerIds_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            
         }
     }
 }

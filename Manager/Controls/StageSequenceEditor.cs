@@ -84,6 +84,18 @@ namespace Informagator.Manager.Controls
                     stageTypeBinding.Mode = BindingMode.TwoWay;
                     BindingOperations.SetBinding(editor, StageEditor.EntityTypeProperty, stageTypeBinding);
 
+                    Binding suppressParentErrorHandlerBinding = new Binding();
+                    suppressParentErrorHandlerBinding.Path = new PropertyPath("SuppressParentErrorHandlers");
+                    suppressParentErrorHandlerBinding.Source = stg;
+                    suppressParentErrorHandlerBinding.Mode = BindingMode.TwoWay;
+                    BindingOperations.SetBinding(editor, StageEditor.SuppressParentErrorHandlersProperty, suppressParentErrorHandlerBinding);
+
+                    Binding errorHandlerBinding = new Binding();
+                    errorHandlerBinding.Path = new PropertyPath("ErrorHandlerIds");
+                    errorHandlerBinding.Source = stg;
+                    errorHandlerBinding.Mode = BindingMode.TwoWay;
+                    BindingOperations.SetBinding(editor, StageEditor.ErrorHandlerIdsProperty, errorHandlerBinding);
+
                     Binding stageParametersBinding = new Binding();
                     stageParametersBinding.Path = new PropertyPath("Parameters");
                     stageParametersBinding.Source = stg;

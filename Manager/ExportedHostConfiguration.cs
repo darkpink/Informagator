@@ -30,6 +30,6 @@ namespace Informagator.Manager
 
         public IDictionary<string, IWorkerConfiguration> Workers { get; set; }
 
-        public bool SuppressSystemConfigurationErrorHandlers { get; set; }
+        public bool SuppressParentErrorHandlers { get; set; }
     }
 }

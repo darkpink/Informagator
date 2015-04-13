@@ -47,6 +47,7 @@ namespace Informagator.Manager.Vms
         {
             var worker = Entities.Workers.Include(w => w.Machine)
                                          .Include(w => w.Stages.Select(s => s.StageParameters))
+                                         .Include(w => w.Stages.Select(s => s.StageErrorHandlers.Select(e => e.ErrorHandler)))
                                          .Include(w => w.WorkerErrorHandlers.Select(eh => eh.ErrorHandler))
                                          .Single(w => w.Id == EntityId);
             MachineId = worker.Machine.Id;
@@ -66,6 +67,13 @@ namespace Informagator.Manager.Vms
                 editorStage.EntityName = stg.Name;
                 editorStage.AssemblyId = stg.Assembly.Id;
                 editorStage.EntityType = stg.Type;
+                editorStage.SuppressParentErrorHandlers = stg.SuppressParentErrorHandlers;
+
+                foreach(StageErrorHandler errorHandler in stg.StageErrorHandlers)
+                {
+                    editorStage.ErrorHandlerIds.Add(errorHandler.ErrorHandler.Id);
+                }
+
                 foreach (StageParameter param in stg.StageParameters)
                 {
                     Editor.Parameter editorParam = new Editor.Parameter();
@@ -117,6 +125,26 @@ namespace Informagator.Manager.Vms
                 Assembly stageAssemblyVersion = Entities.Assemblies.SingleOrDefault(av => av.Id == uiStage.AssemblyId);
                 dbStage.Assembly = stageAssemblyVersion;
                 dbStage.Type = uiStage.EntityType;
+                dbStage.SuppressParentErrorHandlers = uiStage.SuppressParentErrorHandlers;
+
+                foreach (StageErrorHandler existingErrorHandler in dbStage.StageErrorHandlers.ToList())
+                {
+                    if (!uiStage.ErrorHandlerIds.Contains((long)(existingErrorHandler.ErrorHandler.Id)))
+                    {
+                        Entities.StageErrorHandlers.Remove(existingErrorHandler);
+                    }
+                }
+
+                foreach (long id in uiStage.ErrorHandlerIds.Where(id => id != null).Cast<long>().Distinct())
+                {
+                    if (!dbStage.StageErrorHandlers.Any(weh => weh.ErrorHandler.Id == id))
+                    {
+                        StageErrorHandler newErrorHandler = new StageErrorHandler();
+                        newErrorHandler.ErrorHandler = Entities.ErrorHandlers.Single(eh => eh.Id == id);
+                        newErrorHandler.Stage = dbStage;
+                        Entities.StageErrorHandlers.Add(newErrorHandler);
+                    }
+                }
 
                 foreach (var uiParam in uiStage.Parameters)
                 {
@@ -207,6 +235,12 @@ namespace Informagator.Manager.Vms
         {
             Stages = new ObservableCollection<Editor.Stage>();
             ErrorHandlerIds = new ObservableCollection<long?>();
+            ErrorHandlerIds.CollectionChanged += ErrorHandlerIds_CollectionChanged;
+        }
+
+        void ErrorHandlerIds_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            
         }
         public override void SaveEntity()
         {

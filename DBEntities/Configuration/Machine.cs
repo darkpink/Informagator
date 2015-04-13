@@ -27,7 +27,7 @@ namespace Informagator.DBEntities.Configuration
         public string Description { get; set; }
         public int AdminServicePort { get; set; }
         public int InfoServicePort { get; set; }
-        public bool SuppressSystemConfigurationErrorHandlers { get; set; }
+        public bool SuppressParentErrorHandlers { get; set; }
     
         public virtual SystemConfiguration SystemConfiguration { get; set; }
         public virtual ICollection<Worker> Workers { get; set; }

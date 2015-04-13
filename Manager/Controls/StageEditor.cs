@@ -1,6 +1,7 @@
 ﻿using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -54,6 +55,56 @@ namespace Informagator.Manager.Controls
 
             PART_IsExpandedClickBorder = GetTemplateChild("PART_IsExpandedClickBorder") as Border;
             PART_IsExpandedClickBorder.MouseDown += delegate(object sender, MouseButtonEventArgs args) { IsExpanded = !IsExpanded; };
+        }
+
+        public static DependencyProperty SuppressParentErrorHandlersProperty = DependencyProperty.Register("SuppressParentErrorHandlers", typeof(bool), typeof(StageEditor), new PropertyMetadata(false, new PropertyChangedCallback(SuppressParentErrorHandlersChanged)));
+        public bool SuppressParentErrorHandlers
+        {
+            get
+            {
+                return (bool)GetValue(SuppressParentErrorHandlersProperty);
+            }
+            set
+            {
+                SetValue(SuppressParentErrorHandlersProperty, value);
+            }
+        }
+        public static void SuppressParentErrorHandlersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            StageEditor editor = sender as StageEditor;
+            if (editor != null)
+            {
+                editor.SuppressParentErrorHandlersChanged();
+            }
+        }
+        protected virtual void SuppressParentErrorHandlersChanged()
+        {
+        }
+
+        public static DependencyProperty ErrorHandlerIdsProperty = DependencyProperty.Register("ErrorHandlerIds", typeof(ObservableCollection<long?>), typeof(StageEditor), new PropertyMetadata(new PropertyChangedCallback(ErrorHandlersChanged)));
+
+        public ObservableCollection<long?> ErrorHandlerIds
+        {
+            get
+            {
+                return (ObservableCollection<long?>)GetValue(ErrorHandlerIdsProperty);
+            }
+            set
+            {
+                SetValue(ErrorHandlerIdsProperty, value);
+            }
+        }
+
+        public static void ErrorHandlersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            StageEditor editor = sender as StageEditor;
+            if (editor != null)
+            {
+                editor.ErrorHandlersChanged();
+            }
+        }
+        protected virtual void ErrorHandlersChanged()
+        {
         }
 
     }

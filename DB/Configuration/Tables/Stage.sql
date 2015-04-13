@@ -5,11 +5,13 @@
     [Sequence]                    INT            NOT NULL,
     [AssemblyId]                  BIGINT         NOT NULL,
     [Type]                        VARCHAR (1000) NOT NULL,
-    [SuppressWorkerErrorHandlers] BIT            NOT NULL,
+    [SuppressParentErrorHandlers] BIT            NOT NULL,
     CONSTRAINT [PK_Stage] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_Stage_Assembly] FOREIGN KEY ([AssemblyId]) REFERENCES [Configuration].[Assembly] ([Id]),
     CONSTRAINT [FK_Stage_Worker] FOREIGN KEY ([WorkerId]) REFERENCES [Configuration].[Worker] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 

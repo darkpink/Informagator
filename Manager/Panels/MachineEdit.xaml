@@ -50,8 +50,8 @@
                 <TextBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Name}" />
                 <TextBox Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.IPAddress}" />
                 <TextBox Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Width="200" Text="{Binding Entity.Description}"/>
-                <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Entity.SuppressSystemConfigurationErrorHandlers}" />
-                <ctrl:ErrorHandlerListEditor Grid.Row="4" Grid.Column="1" ErrorHandlerIds="{Binding ErrorHandlerIds}" />
+                <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding Entity.SuppressParentErrorHandlers}" />
+                <ctrl:ErrorHandlerListEditor Grid.Row="4" HorizontalAlignment="Left" Grid.Column="1" ErrorHandlerIds="{Binding ErrorHandlerIds}" />
             </Grid>
         </ScrollViewer>
         <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Width="80" Margin="10" Command="{Binding Save}">Save</Button>

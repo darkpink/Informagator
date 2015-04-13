@@ -19,8 +19,9 @@
 
         <TextBlock Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Text="New/Edit Error Handler" />
 
-        <ctrl:ErrorHandlerEditor Grid.Row="1" Grid.ColumnSpan="2" EntityName="{Binding Entity.Name}" 
-                                 AssemblyId="{Binding AssemblyId}" 
+        <ctrl:ErrorHandlerEditor Grid.Row="1" Grid.ColumnSpan="2" 
+                                 EntityName="{Binding Entity.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                 AssemblyId="{Binding AssemblyId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  EntityType="{Binding Entity.Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                  Parameters="{Binding Parameters}">
         </ctrl:ErrorHandlerEditor>

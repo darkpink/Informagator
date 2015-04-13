@@ -138,7 +138,7 @@ namespace Informagator.Manager.Controls
                                             .Where(av => av.Id == assemblyId)
                                             .Select(av => av.Executable)
                                             .SingleOrDefault();
-                    if (assemblyBinary != null)
+                    if (assemblyBinary != null && !String.IsNullOrWhiteSpace(type))
                     {
                         AppDomain tempDomain = AppDomain.CreateDomain("tempDomain");
                         AssemblyInspector inspector = tempDomain.CreateInstanceAndUnwrap(this.GetType().Assembly.FullName, typeof(AssemblyInspector).FullName) as AssemblyInspector;

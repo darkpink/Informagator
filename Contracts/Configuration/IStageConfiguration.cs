@@ -5,7 +5,7 @@ namespace Informagator.Contracts.Configuration
 {
     public interface IStageConfiguration : IConfigurableTypeConfiguration
     {
-        bool SuppressWorkerErrorHandlers { get; }
+        bool SuppressParentErrorHandlers { get; }
 
         IList<IErrorHandlerConfiguration> ErrorHandlers { get; }
     }

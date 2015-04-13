@@ -56,7 +56,9 @@ namespace Informagator.Manager.Vms
         {
             while(Entity.ErrorHandlerParameters.Count < Parameters.Count)
             {
-                Entity.ErrorHandlerParameters.Add(new ErrorHandlerParameter() { ErrorHandler = Entity });
+                ErrorHandlerParameter newParam = new ErrorHandlerParameter() { ErrorHandler = Entity };
+                Entities.ErrorHandlerParameters.Add(newParam);
+                Entity.ErrorHandlerParameters.Add(newParam);
             }
 
             foreach(ErrorHandlerParameter param in Entity.ErrorHandlerParameters.Skip(Parameters.Count).ToList())
@@ -77,6 +79,7 @@ namespace Informagator.Manager.Vms
         {
             var ErrorHandler = Entities.ErrorHandlers.Create();
             Entities.ErrorHandlers.Add(ErrorHandler);
+            ErrorHandler.SystemConfiguration = Entities.SystemConfigurations.Single(c => c.Name == ConfigurationSelection.SelectedConfiguration);
             return ErrorHandler;
         }
 
@@ -90,7 +93,7 @@ namespace Informagator.Manager.Vms
             set
             {
                 _assemblyId = value;
-                NotifyPropertyChanged("ErrorHandlerAssemblyId");
+                NotifyPropertyChanged("AssemblyId");
                 AttemptToSetAssembly();
             }
         }

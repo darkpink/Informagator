@@ -21,7 +21,7 @@ namespace Informagator.Contracts.Configuration
         
         string InfoServiceGroup { get; }
 
-        bool SuppressSystemConfigurationErrorHandlers { get; }
+        bool SuppressParentErrorHandlers { get; }
         
         IDictionary<string, IWorkerConfiguration> Workers { get; }
     }

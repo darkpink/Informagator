@@ -123,6 +123,6 @@ namespace Informagator.DevProviders
         }
 
 
-        public bool SuppressSystemConfigurationErrorHandlers { get; set; }
+        public bool SuppressParentErrorHandlers { get; set; }
     }
 }

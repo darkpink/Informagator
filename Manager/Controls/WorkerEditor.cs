@@ -72,5 +72,31 @@ namespace Informagator.Manager.Controls
         protected virtual void OnAutoStartChanged()
         {
         }
+
+        public static DependencyProperty OverrideMachineErrorHandlersProperty = DependencyProperty.Register("OverrideMachineErrorHandlers", typeof(bool), typeof(WorkerEditor), new PropertyMetadata(new PropertyChangedCallback(OverrideMachineErrorHandlersChanged)));
+        public bool OverrideMachineErrorHandlers
+        {
+            get
+            {
+                return (bool)GetValue(OverrideMachineErrorHandlersProperty);
+            }
+            set
+            {
+                SetValue(OverrideMachineErrorHandlersProperty, value);
+            }
+        }
+
+        public static void OverrideMachineErrorHandlersChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            WorkerEditor picker = sender as WorkerEditor;
+            if (picker != null)
+            {
+                picker.OnOverrideMachineErrorHandlersChanged();
+            }
+        }
+
+        protected virtual void OnOverrideMachineErrorHandlersChanged()
+        {
+        }
     }
 }
