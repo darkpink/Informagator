@@ -48,6 +48,8 @@
           <Property Name="AdminServicePort" Type="int" Nullable="false" />
           <Property Name="InfoServicePort" Type="int" Nullable="false" />
           <Property Name="SuppressParentErrorHandlers" Type="bit" Nullable="false" />
+          <Property Name="AdminServiceGroup" Type="varchar" MaxLength="100" />
+          <Property Name="InfoServiceGroup" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -97,6 +99,8 @@
           <Property Name="EffectiveDttm" Type="datetime" />
           <Property Name="DefaultAdminServicePort" Type="int" />
           <Property Name="DefaultInfoServicePort" Type="int" />
+          <Property Name="DefaultAdminServiceGroup" Type="varchar" MaxLength="100" />
+          <Property Name="DefaultInfoServiceGroup" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="SystemConfigurationErrorHandler">
           <Key>
@@ -540,6 +544,8 @@
           <NavigationProperty Name="Workers" Relationship="Self.FK_Worker_Machine" FromRole="Machine" ToRole="Worker" />
           <NavigationProperty Name="MachineErrorHandlers" Relationship="Model.FK_MachineErrorHandler_Machine" FromRole="Machine" ToRole="MachineErrorHandler" />
           <Property Name="SuppressParentErrorHandlers" Type="Boolean" Nullable="false" />
+          <Property Name="AdminServiceGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="InfoServiceGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MachineErrorHandler">
           <Key>
@@ -602,6 +608,8 @@
           <NavigationProperty Name="ErrorHandlers" Relationship="Self.FK_ErrorHandler_SystemConfiguration" FromRole="SystemConfiguration" ToRole="ErrorHandler" />
           <NavigationProperty Name="Machines" Relationship="Self.FK_Machine_SystemConfigurationId" FromRole="SystemConfiguration" ToRole="Machine" />
           <NavigationProperty Name="SystemConfigurationErrorHandlers" Relationship="Model.FK_SystemConfigurationErrorHandler_SystemConfiguration" FromRole="SystemConfiguration" ToRole="SystemConfigurationErrorHandler" />
+          <Property Name="DefaultAdminServiceGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultInfoServiceGroup" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Worker">
           <Key>
@@ -1036,6 +1044,8 @@
           <EntitySetMapping Name="Machines">
             <EntityTypeMapping TypeName="Model.Machine">
               <MappingFragment StoreEntitySet="Machine">
+                <ScalarProperty Name="InfoServiceGroup" ColumnName="InfoServiceGroup" />
+                <ScalarProperty Name="AdminServiceGroup" ColumnName="AdminServiceGroup" />
                 <ScalarProperty Name="SuppressParentErrorHandlers" ColumnName="SuppressParentErrorHandlers" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="SystemConfigurationId" ColumnName="SystemConfigurationId" />
@@ -1091,6 +1101,8 @@
           <EntitySetMapping Name="SystemConfigurations">
             <EntityTypeMapping TypeName="Model.SystemConfiguration">
               <MappingFragment StoreEntitySet="SystemConfiguration">
+                <ScalarProperty Name="DefaultInfoServiceGroup" ColumnName="DefaultInfoServiceGroup" />
+                <ScalarProperty Name="DefaultAdminServiceGroup" ColumnName="DefaultAdminServiceGroup" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreateDttm" ColumnName="CreateDttm" />

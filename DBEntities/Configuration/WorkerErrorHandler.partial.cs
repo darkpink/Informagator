@@ -9,12 +9,13 @@ namespace Informagator.DBEntities.Configuration
 {
     public partial class WorkerErrorHandler : IErrorHandlerConfiguration
     {
-        //TODO protect against nullreferenceexceptions if not loaded
         public string AssemblyName
         {
             get 
             {
-                return ErrorHandler.Assembly.Name;
+                return ErrorHandler == null ? null :
+                    ErrorHandler.Assembly == null ? null :   
+                    ErrorHandler.Assembly.Name;
             }
         }
 
@@ -22,7 +23,9 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return ErrorHandler.Assembly.Version;
+                return ErrorHandler == null ? null :
+                    ErrorHandler.Assembly == null ? null : 
+                    ErrorHandler.Assembly.Version;
             }
         }
 
@@ -30,7 +33,7 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return ErrorHandler.Type;
+                return ErrorHandler == null ? null : ErrorHandler.Type;
             }
         }
 
@@ -38,7 +41,9 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return ErrorHandler.Parameters.Cast<IConfigurationParameter>().ToList();
+                return ErrorHandler == null ? null : 
+                    ErrorHandler.Parameters == null ? null :
+                    ErrorHandler.Parameters.Cast<IConfigurationParameter>().ToList();
             }
         }
     }

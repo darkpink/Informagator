@@ -12,7 +12,8 @@ namespace Informagator.Machine
     [ServiceBehavior(ConcurrencyMode=ConcurrencyMode.Single, InstanceContextMode=InstanceContextMode.Single, UseSynchronizationContext=true)]
     internal class InfoService : IInfoService
     {
-        protected DefaultMachine Informagator { get; set; }
+        protected IMachine Informagator { get; set; }
+        
         public InfoService(DefaultMachine informagator)
         {
             Informagator = informagator;
@@ -22,9 +23,9 @@ namespace Informagator.Machine
             return;
         }
 
-        public ThreadStatus GetStatus(string threadName)
+        public IThreadStatus GetStatus(string threadName)
         {
-            return new ThreadStatus(Informagator.Threads[threadName].Status);
+            return Informagator.GetThreadStatus(threadName);
         }
     }
 }

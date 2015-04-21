@@ -156,7 +156,7 @@ namespace Informagator.Machine
             //TODO: need good, descriptive configuration exceptions if any of these steps fail
             WorkerObject = AssemblyManager.CreateConfiguredObject(Configuration, this) as IWorker;
             WorkerObject.Configuration = Configuration;
-            //TODO: add validate settings on the worker.  this is the last point where I want configurationexceptions
+            WorkerObject.ValidateSettings();
         }
 
 

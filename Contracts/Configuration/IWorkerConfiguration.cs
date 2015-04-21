@@ -11,6 +11,8 @@ namespace Informagator.Contracts.Configuration
 
         bool SuppressParentErrorHandlers { get; }
 
+        bool AutoStart { get; }
+
         IList<IErrorHandlerConfiguration> ErrorHandlers { get; }
     }
 }

@@ -15,6 +15,6 @@ namespace Informagator.Contracts.Services
         void Ping();
 
         [OperationContract]
-        ThreadStatus GetStatus(string threadName);
+        IThreadStatus GetStatus(string threadName);
     }
 }

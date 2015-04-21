@@ -29,6 +29,8 @@ namespace Informagator.DBEntities.Configuration
         public Nullable<System.DateTime> EffectiveDttm { get; set; }
         public Nullable<int> DefaultAdminServicePort { get; set; }
         public Nullable<int> DefaultInfoServicePort { get; set; }
+        public string DefaultAdminServiceGroup { get; set; }
+        public string DefaultInfoServiceGroup { get; set; }
     
         public virtual ICollection<Assembly> Assemblies { get; set; }
         public virtual ICollection<ErrorHandler> ErrorHandlers { get; set; }

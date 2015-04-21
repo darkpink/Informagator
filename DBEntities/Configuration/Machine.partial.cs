@@ -9,7 +9,6 @@ namespace Informagator.DBEntities.Configuration
 {
     public partial class Machine : IMachineConfiguration
     {
-        //TODO protect against nullreferenceexceptions when not loaded
         public string HostName
         {
             get 
@@ -18,29 +17,11 @@ namespace Informagator.DBEntities.Configuration
             }
         }
 
-        public string AdminServiceGroup
-        {
-            get 
-            { 
-                //TODO
-                return null; 
-            }
-        }
-
-        public string InfoServiceGroup
-        {
-            get 
-            { 
-                //TODO
-                return null;
-            }
-        }
-
         IDictionary<string, IWorkerConfiguration> IMachineConfiguration.Workers
         {
             get 
             {
-                return Workers.ToDictionary(w => w.Name, w => (IWorkerConfiguration)w);
+                return Workers == null ? null : Workers.ToDictionary(w => w.Name, w => (IWorkerConfiguration)w);
             }
         }
 

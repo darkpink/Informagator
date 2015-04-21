@@ -1,13 +1,17 @@
 ﻿CREATE TABLE [Configuration].[SystemConfiguration] (
-    [Id]                      BIGINT        IDENTITY (1, 1) NOT NULL,
-    [CreateDttm]              DATETIME      CONSTRAINT [DF_ApplicationVersion_CreateDttm] DEFAULT (getdate()) NOT NULL,
-    [Name]                    VARCHAR (100) NULL,
-    [IsActive]                BIT           NOT NULL,
-    [EffectiveDttm]           DATETIME      NULL,
-    [DefaultAdminServicePort] INT           NULL,
-    [DefaultInfoServicePort]  INT           NULL,
+    [Id]                       BIGINT        IDENTITY (1, 1) NOT NULL,
+    [CreateDttm]               DATETIME      CONSTRAINT [DF_ApplicationVersion_CreateDttm] DEFAULT (getdate()) NOT NULL,
+    [Name]                     VARCHAR (100) NULL,
+    [IsActive]                 BIT           NOT NULL,
+    [EffectiveDttm]            DATETIME      NULL,
+    [DefaultAdminServicePort]  INT           NULL,
+    [DefaultInfoServicePort]   INT           NULL,
+    [DefaultAdminServiceGroup] VARCHAR (100) NULL,
+    [DefaultInfoServiceGroup]  VARCHAR (100) NULL,
     CONSTRAINT [PK_SystemConfiguration] PRIMARY KEY CLUSTERED ([Id] ASC)
 );
+
+
 
 
 

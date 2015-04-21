@@ -27,8 +27,8 @@ namespace Informagator.Machine
 
         protected virtual Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            //TODO: make sure this is going to work
-            return GetAssembly(args.Name, "1.0.0.0");
+            AssemblyName name = new AssemblyName(args.Name);
+            return GetAssembly(name.Name, name.Version.ToString());
         }
 
         public Assembly GetAssembly(string name, string version)
@@ -102,6 +102,7 @@ namespace Informagator.Machine
         {
             object result;
 
+            //TODO - need good exceptions if any of these fail
             Assembly typeAssembly = GetAssembly(assemblyName, assemblyVersion);
             Type objectType = typeAssembly.GetType(type);
             result = Activator.CreateInstance(objectType);

@@ -16,7 +16,7 @@ namespace Informagator.Machine
     {
         public  IWorkerConfiguration Configuration { get; protected set; }
 
-        public string MachineName { get; protected set; }
+        protected IMachine Machine { get; set; }
 
         protected IsolatedWorkerHost CrossDomainProxy { get; set; }
 
@@ -28,21 +28,25 @@ namespace Informagator.Machine
 
         protected Exception StatusException { get; set; }
 
-        public HostIsolator(string machineName, IWorkerConfiguration configuration)
+        protected List<DateTime> StartTimes { get; set; }
+
+        public HostIsolator(IMachine machine, IWorkerConfiguration configuration)
         {
             InitializedDateTime = DateTime.Now;
-            MachineName = machineName;
+            Machine = machine;
             Configuration = configuration;
+            StartTimes = new List<DateTime>();
         }
 
         public void Start()
         {
             StatusException = null;
+            StartTimes.Add(DateTime.Now);
 
             try
             {
                 InnerThreadDomain = AppDomain.CreateDomain(Configuration.Name);
-                IsolatedWorkerHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().GetName().Name + ".dll", typeof(IsolatedWorkerHost).FullName, false, BindingFlags.CreateInstance, null, new object[] { MachineName, Configuration.Name }, null, null) as IsolatedWorkerHost;
+                IsolatedWorkerHost host = InnerThreadDomain.CreateInstanceFromAndUnwrap(Assembly.GetExecutingAssembly().GetName().Name + ".dll", typeof(IsolatedWorkerHost).FullName, false, BindingFlags.CreateInstance, null, new object[] { Machine.Name, Configuration.Name }, null, null) as IsolatedWorkerHost;
                 CrossDomainProxy = host;
                 host.UnhandledException += InnerThreadDomain_UnhandledException;
                 host.Start();
@@ -75,9 +79,15 @@ namespace Informagator.Machine
             }
             else
             {
-                //seems like a reasonable default action
-                //TODO: put a limit on the number of restarts within a timeframe, like windows services
-                whatToDo = Contracts.Exceptions.Action.RestartThread;  
+                StartTimes.Where(t => (DateTime.Now - t) > TimeSpan.FromMinutes(1)).ToList().ForEach(t => StartTimes.Remove(t));
+                if (StartTimes.Count > 2)
+                {
+                    whatToDo = Contracts.Exceptions.Action.StopThread;
+                }
+                else
+                {
+                    whatToDo = Contracts.Exceptions.Action.RestartThread;
+                }
             }
 
             switch(whatToDo)
@@ -101,8 +111,7 @@ namespace Informagator.Machine
 
         private void TerminateApplication()
         {
-            //TODO: this should be attempted gracefully
-            Process.GetCurrentProcess().Close();
+            Machine.Stop();
         }
 
         public void Stop()
@@ -136,9 +145,8 @@ namespace Informagator.Machine
                 IThreadStatus result;
                 if (CrossDomainProxy == null)
                 {
-                    //TODO this is wrong
                     result = new HostStatus();
-                    result.HostName = Environment.MachineName;
+                    result.HostName = Machine.Name;
                     result.ThreadName = Configuration.Name;
                     result.Stopped = StopDateTime;
                     result.Initialized = InitializedDateTime;

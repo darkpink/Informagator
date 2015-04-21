@@ -46,11 +46,6 @@ namespace Informagator.ProdProviders
                     result = GetMachineByIP(hostName, entities);
                 }
 
-                if (result == null)
-                {
-                    GetMachineByLoopbackAddress(entities);
-                }
-
                 return result;
             }
         }
@@ -76,16 +71,6 @@ namespace Informagator.ProdProviders
                          .SingleOrDefault(h => h.IPAddress == ip[candidateIpIndex]);
                 candidateIpIndex++;
             }
-
-            return result;
-        }
-
-        private Machine GetMachineByLoopbackAddress(ConfigurationEntities entities)
-        {
-            //TODO: decide if this is a good idea, obviously this means only one machine should be in the config with 127.0.0.1 as the IP.  
-            Machine result = MachineQuery(entities)
-                             .SingleOrDefault(h => h.IPAddress == IPAddress.Loopback.ToString());
-            
 
             return result;
         }

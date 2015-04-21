@@ -41,6 +41,7 @@ namespace Informagator.Machine
 
             result &= AreWorkerConfigurationParametersIdentical(config1.Parameters, config2.Parameters);
             result &= AreStageConfigurationsEqual(config1.Stages, config2.Stages);
+            result &= AreErrorHandlersIdentical(config1.ErrorHandlers, config2.ErrorHandlers);
 
             return result;
         }
@@ -73,17 +74,40 @@ namespace Informagator.Machine
 
             foreach (IStageConfiguration config1Param in list1)
             {
-                //TODO: include the error handlers in the comparison
-                result &= list2.Count(config2Param => config2Param.AssemblyName == config1Param.AssemblyName &&
+                result &= list2.Count(config2Param => config2Param.SuppressParentErrorHandlers == config1Param.SuppressParentErrorHandlers &&
+                                                      config2Param.AssemblyName == config1Param.AssemblyName &&
                                                       config2Param.Type == config1Param.Type &&
                                                       config1Param.AssemblyVersion == config2Param.AssemblyVersion &&
-                                                      AreStageConfigurationParametersIdentical(config1Param.Parameters, config2Param.Parameters)) == 1;
+                                                      AreConfigurationParametersIdentical(config1Param.Parameters, config2Param.Parameters) &&
+                                                      AreErrorHandlersIdentical(config1Param.ErrorHandlers, config2Param.ErrorHandlers)
+                                     ) == 1;
             }
 
             return result;
         }
 
-        private bool AreStageConfigurationParametersIdentical(IList<IConfigurationParameter> list1, IList<IConfigurationParameter> list2)
+        protected bool AreErrorHandlersIdentical(IList<IErrorHandlerConfiguration> list1, IList<IErrorHandlerConfiguration> list2)
+        {
+            bool result = true;
+
+            list1 = list1 ?? new List<IErrorHandlerConfiguration>();
+            list2 = list2 ?? new List<IErrorHandlerConfiguration>();
+
+            result &= list1.Count == list2.Count;
+
+            foreach (IErrorHandlerConfiguration errorHandler1 in list1)
+            {
+                result &= list2.Count(errorHandler2 => errorHandler2.AssemblyName == errorHandler1.AssemblyName &&
+                                                   errorHandler2.Type == errorHandler1.Type &&
+                                                   errorHandler1.AssemblyVersion == errorHandler2.AssemblyVersion &&
+                                                   AreConfigurationParametersIdentical(errorHandler1.Parameters, errorHandler2.Parameters)
+                                  ) == 1;
+            }
+
+            return result;
+        }
+
+        private bool AreConfigurationParametersIdentical(IList<IConfigurationParameter> list1, IList<IConfigurationParameter> list2)
         {
             bool result = true;
 

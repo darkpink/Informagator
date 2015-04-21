@@ -9,12 +9,11 @@ namespace Informagator.DBEntities.Configuration
 {
     public partial class Worker : IWorkerConfiguration
     {
-        //TODO: protect against nullreferenceexceptions when not loaded
         IList<IStageConfiguration> IWorkerConfiguration.Stages
         {
             get 
             {
-                return Stages.Cast<IStageConfiguration>().ToList();
+                return Stages == null ? null : Stages.Cast<IStageConfiguration>().ToList();
             }
         }
 
@@ -22,7 +21,7 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return WorkerParameters.Cast<IConfigurationParameter>().ToList();
+                return WorkerParameters == null ? null : WorkerParameters.Cast<IConfigurationParameter>().ToList();
             }
         }
 
@@ -30,7 +29,7 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return Assembly.Name;
+                return Assembly == null ? null : Assembly.Name;
             }
         }
 
@@ -38,13 +37,13 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return Assembly.Version;
+                return Assembly == null ? null : Assembly.Version;
             }
         }
 
         public IList<IErrorHandlerConfiguration> ErrorHandlers
         {
-            get { return ErrorHandlers.Cast<IErrorHandlerConfiguration>().ToList(); }
+            get { return this.WorkerErrorHandlers == null ? null : WorkerErrorHandlers.Cast<IErrorHandlerConfiguration>().ToList(); }
         }
     }
 }

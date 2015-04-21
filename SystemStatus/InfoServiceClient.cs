@@ -1,4 +1,5 @@
-﻿using Informagator.Contracts.Services;
+﻿using Informagator.Contracts;
+using Informagator.Contracts.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,9 +34,9 @@ namespace Informagator.SystemStatus
             }
         }
 
-        public ThreadStatus GetStatus(string threadName)
+        public IThreadStatus GetStatus(string threadName)
         {
-            ThreadStatus result;
+            IThreadStatus result;
 
             var client = ChannelFactory.CreateChannel();
             try

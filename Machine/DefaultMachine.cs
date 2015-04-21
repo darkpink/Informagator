@@ -1,6 +1,7 @@
 ﻿using Informagator.Contracts;
 using Informagator.Contracts.Configuration;
 using Informagator.Contracts.Providers;
+using Informagator.Contracts.Services;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using System;
@@ -16,9 +17,9 @@ namespace Informagator.Machine
 {
     public class DefaultMachine : IMachine
     {
-        public string MachineName { get; protected set; }
+        public string Name { get; protected set; }
         
-        internal Dictionary<string, HostIsolator> Threads { get; set; }
+        protected Dictionary<string, HostIsolator> Threads { get; set; }
 
         protected IMachineConfiguration Configuration { get; set; }
 
@@ -26,9 +27,9 @@ namespace Informagator.Machine
 
         protected IAssemblyProvider AssemblySource { get; set; }
 
-        private InfoService RemoteInfoService { get; set; }
+        protected IInfoService RemoteInfoService { get; set; }
 
-        private AdminService RemoteAdminService { get; set; }
+        protected IAdminService RemoteAdminService { get; set; }
 
         protected IUnityContainer Container { get; set; }
 
@@ -40,7 +41,7 @@ namespace Informagator.Machine
             AssemblySource = Container.Resolve<IAssemblyProvider>();
             ConfigurationProvider = Container.Resolve<IConfigurationProvider>();
 
-            MachineName = machineName ?? DetectMachineName();
+            Name = machineName ?? DetectMachineName();
         }
 
         protected virtual string DetectMachineName()
@@ -54,7 +55,7 @@ namespace Informagator.Machine
 
         public void Start()
         {
-            Configuration = ConfigurationProvider.GetMachineConfiguration(MachineName);
+            Configuration = ConfigurationProvider.GetMachineConfiguration(Name);
             LaunchControlService();
             LaunchInfoService();
             BuildThreads();
@@ -62,7 +63,7 @@ namespace Informagator.Machine
 
         public void UpdateConfiguration()
         {
-            IMachineConfiguration newConfiguration = ConfigurationProvider.GetMachineConfiguration(MachineName);
+            IMachineConfiguration newConfiguration = ConfigurationProvider.GetMachineConfiguration(Name);
             ConfigurationChangeEvaluator evaulator = new ConfigurationChangeEvaluator();
 
             foreach (string removedThreadName in Configuration.Workers.Keys.Except(newConfiguration.Workers.Keys))
@@ -74,25 +75,28 @@ namespace Informagator.Machine
             {
                 if (evaulator.IsRestartRequired(Threads[existingThreadName], Configuration.Workers[existingThreadName], newConfiguration.Workers[existingThreadName]))
                 {
-                    //TODO: if the thread was stopped, don't start it
                     DestroyThread(existingThreadName);
-                    AddThread(newConfiguration.Workers[existingThreadName]);
+                    bool wasStopped = Threads[existingThreadName].Status.RunStatus == ThreadRunStatus.Stopped;
+                    AddThread(newConfiguration.Workers[existingThreadName], suppressAutoStart: wasStopped);
                 }
             }
 
             foreach (string newThreadName in newConfiguration.Workers.Keys.Except(Configuration.Workers.Keys))
             {
-                AddThread(newConfiguration.Workers[newThreadName]);
+                AddThread(newConfiguration.Workers[newThreadName], suppressAutoStart: false);
             }
 
             Configuration = newConfiguration;
         }
 
-        private void AddThread(IWorkerConfiguration threadConfiguration)
+        private void AddThread(IWorkerConfiguration threadConfiguration, bool suppressAutoStart)
         {
-            var thread = new HostIsolator(MachineName, threadConfiguration);
+            var thread = new HostIsolator(this, threadConfiguration);
             Threads.Add(threadConfiguration.Name, thread);
-            thread.Start();
+            if (!suppressAutoStart && threadConfiguration.AutoStart)
+            {
+                thread.Start();
+            }
         }
 
         private void DestroyThread(string removedThreadName)
@@ -117,11 +121,11 @@ namespace Informagator.Machine
         {
             Threads = new Dictionary<string, HostIsolator>();
 
-            Configuration = ConfigurationProvider.GetMachineConfiguration(MachineName);
+            Configuration = ConfigurationProvider.GetMachineConfiguration(Name);
 
             foreach (string threadName in Configuration.Workers.Keys)
             {
-                AddThread(Configuration.Workers[threadName]);
+                AddThread(Configuration.Workers[threadName], suppressAutoStart: false);
             }
         }
 
@@ -132,7 +136,7 @@ namespace Informagator.Machine
             StopThreads();
         }
 
-        private void StopThreads()
+        protected void StopThreads()
         {
             foreach (HostIsolator host in Threads.Values)
             {
@@ -140,12 +144,12 @@ namespace Informagator.Machine
             }
         }
 
-        private void StopInfoService()
+        protected void StopInfoService()
         {
             InfoServiceHost.StopService();
         }
 
-        private void StopControlService()
+        protected void StopControlService()
         {
             AdminServiceHost.StopService();
         }
@@ -160,5 +164,9 @@ namespace Informagator.Machine
             Threads[threadName].Start();
         }
 
+        public IThreadStatus GetThreadStatus(string threadName)
+        {
+            return Threads[threadName].Status;
+        }
     }
 }

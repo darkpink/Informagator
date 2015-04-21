@@ -55,7 +55,7 @@ namespace Informagator.HL7Assist
             }
             set
             {
-                EnsureListIndex(index);  //todo - this potentially creates one more object than we need
+                EnsureListIndex(index);
                 InnerList[index] = value;
             }
         }

@@ -13,7 +13,7 @@ namespace Informagator.Machine
     {
         private static ServiceHost adminServiceHost = null;
 
-        internal static void StartService(AdminService instance, int port)
+        internal static void StartService(IAdminService instance, int port)
         {
             adminServiceHost = new ServiceHost(instance);
             adminServiceHost.AddServiceEndpoint(typeof(IAdminService), new WSHttpBinding(), AdminServiceAddress.Format("localhost", port));

@@ -9,5 +9,7 @@ namespace Informagator.Contracts
         void StartThread(string threadName);
         void Stop();
         void StopThread(string threadName);
+        string Name { get; }
+        IThreadStatus GetThreadStatus(string threadName);
     }
 }

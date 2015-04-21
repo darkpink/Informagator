@@ -9,12 +9,11 @@ namespace Informagator.DBEntities.Configuration
 {
     public partial class Stage : IStageConfiguration
     {
-        //TODO protect against nullreferenceexceptions when not fully loaded
         public string AssemblyName
         {
             get 
             { 
-                return Assembly.Name; 
+                return Assembly == null ? null : Assembly.Name; 
             }
         }
 
@@ -22,7 +21,7 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return Assembly.Version; 
+                return Assembly == null ? null : Assembly.Version; 
             }
         }
 
@@ -30,7 +29,7 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return this.StageParameters.Cast<IConfigurationParameter>().ToList();
+                return StageParameters == null ? null : StageParameters.Cast<IConfigurationParameter>().ToList();
             }
         }
 
@@ -38,7 +37,7 @@ namespace Informagator.DBEntities.Configuration
         {
             get 
             {
-                return StageErrorHandlers.Cast<IErrorHandlerConfiguration>().ToList();
+                return StageErrorHandlers == null ? null : StageErrorHandlers.Cast<IErrorHandlerConfiguration>().ToList();
             }
         }
     }

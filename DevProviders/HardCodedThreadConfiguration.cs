@@ -31,6 +31,8 @@ namespace Informagator.DevProviders.Configuration
 
         public string Type { get; set; }
 
+        public bool AutoStart { get; set; }
+
         public IList<IConfigurationParameter> Parameters
         {
             get { return new List<IConfigurationParameter>(); }
