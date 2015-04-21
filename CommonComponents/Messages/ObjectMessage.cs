@@ -1,15 +1,16 @@
 ﻿using Informagator.Contracts;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Informagator.CommonComponents.Messages
 {
     public class ObjectMessage<TBody> : MessageBase<TBody>
+        where TBody : class, new()
     {
         protected BinaryFormatter Formatter { get; set; }
 
@@ -21,11 +22,18 @@ namespace Informagator.CommonComponents.Messages
                 using (MemoryStream stream = new MemoryStream())
                 {
                     Formatter.Serialize(stream, Body);
+                    result = new byte[stream.Length];
+                    stream.Read(result, 0, result.Length);
                 }
+                
+                return result;
             }
             set
             {
-                throw new NotImplementedException();
+                using (MemoryStream stream = new System.IO.MemoryStream(value))
+                {
+                    Body = (TBody)Formatter.Deserialize(stream);
+                }
             }
         }
 

@@ -34,5 +34,12 @@ namespace Informagator.Contracts.Exceptions
         {
         }
 
+        public override Action SuggestedAction
+        {
+            get
+            {
+                return Action.StopThread;
+            }
+        }
     }
 }

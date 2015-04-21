@@ -1,8 +1,10 @@
-﻿using Informagator.Contracts.Attributes;
+﻿using Informagator.CommonComponents.Messages;
+using Informagator.Contracts.Attributes;
 using Informagator.Contracts.Exceptions;
 using Informagator.Contracts.Stages;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,8 +12,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.CommonComponents.SupplierStages
 {
-    public abstract class DatabaseObjectSupplier<TObject> : ISupplierStage
-        where TObject : new()
+    public abstract class DataTableSupplier : ISupplierStage
     {
         [ConfigurationParameter]
         public string Server { get; set; }
@@ -25,7 +26,8 @@ namespace Informagator.CommonComponents.SupplierStages
 
         public Contracts.IMessage Supply()
         {
-            TObject
+            ObjectMessage<DataTable> result = null;
+
             if (Connection == null)
             {
                 RebuildConnection();
@@ -35,15 +37,28 @@ namespace Informagator.CommonComponents.SupplierStages
             {
                 using (SqlCommand cmd = new SqlCommand(SqlStatement, Connection))
                 {
+                    DataTable resultBody = new DataTable();
                     SqlDataReader reader = cmd.ExecuteReader();
-
+                    while(reader.HasRows)
+                    {
+                        resultBody.Load(reader);
+                    }
+                    result.Body = resultBody;
                 }
             }
+
+            return result;
         }
 
         private void RebuildConnection()
         {
-            throw new NotImplementedException();
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
+            builder.DataSource = Server;
+            builder.InitialCatalog = Database;
+            builder.IntegratedSecurity = true;
+
+            Connection = new SqlConnection(builder.ConnectionString);
+            Connection.Open();
         }
 
         public bool IsBlocking
@@ -53,12 +68,12 @@ namespace Informagator.CommonComponents.SupplierStages
 
         public string ReceviedFrom
         {
-            get { throw new NotImplementedException(); }
+            get { return Server + "/" + Database + " (" +  Name + ")"; }
         }
 
         public string Name
         {
-            get { throw new NotImplementedException(); }
+            get { return GetType().Name; }
         }
 
         public void ValidateSettings()
@@ -72,8 +87,6 @@ namespace Informagator.CommonComponents.SupplierStages
             {
                 throw new ConfigurationException("Database is a required parameter for " + Name + " [" + this.GetType() + "]");
             }
-
-
         }
     }
 }
