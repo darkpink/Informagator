@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,14 +40,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppConfigFileConfigurationProvider.cs" />
+    <Compile Include="DotNetConfiguration\ErrorHandler.cs" />
+    <Compile Include="DotNetConfiguration\ErrorHandlerCollection.cs" />
+    <Compile Include="DotNetConfiguration\ErrorHandlerParameter.cs" />
+    <Compile Include="DotNetConfiguration\ErrorHandlerParameterCollection.cs" />
+    <Compile Include="DotNetConfiguration\InformagatorConfigurationSection.cs" />
+    <Compile Include="DotNetConfiguration\Machine.cs" />
+    <Compile Include="DotNetConfiguration\MachineCollection.cs" />
+    <Compile Include="DotNetConfiguration\Stage.cs" />
+    <Compile Include="DotNetConfiguration\StageCollection.cs" />
+    <Compile Include="DotNetConfiguration\StageParameter.cs" />
+    <Compile Include="DotNetConfiguration\StageParameterCollection.cs" />
+    <Compile Include="DotNetConfiguration\Worker.cs" />
+    <Compile Include="DotNetConfiguration\WorkerCollection.cs" />
+    <Compile Include="DotNetConfiguration\WorkerParameter.cs" />
+    <Compile Include="DotNetConfiguration\WorkerParameterCollection.cs" />
     <Compile Include="FileSystemAssemblySource.cs" />
-    <Compile Include="HardCodedConfiguration.cs" />
+    <Compile Include="HardCodedConfiguration\HardCodedMachineConfiguration.cs" />
+    <Compile Include="StaticConfigurationProvider.cs" />
     <Compile Include="MemoryMessageStore.cs" />
     <Compile Include="MemoryMessageTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="HardCodedThreadConfiguration.cs" />
-    <Compile Include="StageConfiguration.cs" />
-    <Compile Include="StageConfigurationParameter.cs" />
+    <Compile Include="HardCodedConfiguration\HardCodedWorkerConfiguration.cs" />
+    <Compile Include="HardCodedConfiguration\HardCodedStageConfiguration.cs" />
+    <Compile Include="HardCodedConfiguration\HardCodedStageConfigurationParameter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Contracts\Contracts.csproj">
@@ -54,6 +72,7 @@
       <Name>Contracts</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

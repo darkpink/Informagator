@@ -6,17 +6,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Informagator.DevProviders.Configuration
+namespace Informagator.DevProviders.HardCodedConfiguration
 {
     [Serializable]
-    public class HardCodedThreadConfiguration : IWorkerConfiguration
+    public class HardCodedWorkerConfiguration : IWorkerConfiguration
     {
-        public HardCodedThreadConfiguration()
+        public HardCodedWorkerConfiguration()
         {
             Stages = new List<IStageConfiguration>();
         }
 
-        public HardCodedThreadConfiguration(HardCodedThreadConfiguration configuration)
+        public HardCodedWorkerConfiguration(HardCodedWorkerConfiguration configuration)
         {
             Stages = configuration.Stages.ToList();
         }

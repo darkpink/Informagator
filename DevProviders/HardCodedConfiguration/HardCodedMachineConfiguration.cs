@@ -1,62 +1,21 @@
-﻿using Informagator.Contracts;
-using Informagator.Contracts.Configuration;
-using Informagator.Contracts.Providers;
-using Informagator.DevProviders.Configuration;
+﻿using Informagator.Contracts.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Informagator.DevProviders
+namespace Informagator.DevProviders.HardCodedConfiguration
 {
-    public class HardCodedConfigurationProvider : IConfigurationProvider
+    public class HardCodedMachineConfiguration : IMachineConfiguration
     {
-        bool first = true;
-
-        public string MachineName { protected get; set; }
-
-        public IMachineConfiguration GetMachineConfiguration(string machineName)
-        {
-            if (first)
-            {
-                first = false;
-                return new HardCodedConfiguration();
-            }
-            else
-            {
-                HardCodedConfiguration config = new HardCodedConfiguration();
-                IDictionary<string, IWorkerConfiguration> uncastedStageConfig = config.Workers;
-                IWorkerConfiguration un = uncastedStageConfig["FileMover"];
-                HardCodedThreadConfiguration casted = (HardCodedThreadConfiguration)un;
-                HardCodedStageConfiguration stageConfig = casted.Stages[1] as HardCodedStageConfiguration;
-                //StageConfigurationParameter configParam = stageConfig.Parameters.First() as StageConfigurationParameter;
-                //configParam.Value = @"E:\tst\Dest2";
-                return config;
-            }
-        }
-
-        public IEnumerable<string> GetActiveMachineNames()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IWorkerConfiguration GetThreadConfiguration(string machineName, string threadName)
-        {
-            return new HardCodedConfiguration().Workers[threadName];
-        }
-    }
-    
-    public class HardCodedConfiguration : IMachineConfiguration
-    {
-        private IDictionary<string, IWorkerConfiguration> config {get; set;}
-        public HardCodedConfiguration()
+        private IDictionary<string, IWorkerConfiguration> config { get; set; }
+        public HardCodedMachineConfiguration()
         {
             config = new Dictionary<string, IWorkerConfiguration>() { 
                     {
                         "FileMover", 
-                        new HardCodedThreadConfiguration() {
+                        new HardCodedWorkerConfiguration() {
                             Name = "FileMover",
                             AssemblyName = "Informagator.CommonComponents.dll",
                             Type = "Informagator.CommonComponents.Workers.PollingStageWorker",
@@ -95,7 +54,7 @@ namespace Informagator.DevProviders
 
         public IDictionary<string, IWorkerConfiguration> Workers
         {
-            get 
+            get
             {
                 return config;
             }

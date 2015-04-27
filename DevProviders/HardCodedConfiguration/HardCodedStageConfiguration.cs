@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Informagator.DevProviders.Configuration
+namespace Informagator.DevProviders.HardCodedConfiguration
 {
     public class HardCodedStageConfiguration : IStageConfiguration
     {
