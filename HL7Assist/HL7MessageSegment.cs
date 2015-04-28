@@ -32,7 +32,7 @@ namespace Informagator.HL7Assist
             Fields.AddRange(segment.Split('|').Select(s => new HL7Field(s)));
         }
 
-        public HL7Field this[int fieldIndex]
+        public virtual HL7Field this[int fieldIndex]
         {
             get
             {

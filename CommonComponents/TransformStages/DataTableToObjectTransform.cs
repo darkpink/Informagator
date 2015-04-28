@@ -62,7 +62,22 @@ namespace Informagator.CommonComponents.TransformStages
 
             foreach(DataRow row in dataTable.Rows.OfType<DataRow>())
             {
-                IMessage objectMessage = CreateObjectMessage();
+                IMessage objectMessage;
+                object messageBody;
+                CreateObjectMessage(out objectMessage, out messageBody);
+                foreach(DataColumn col in dataTable.Columns)
+                {
+                    if (mapping.ContainsKey(col.ColumnName))
+                    {
+                        object value = row[col];
+                        if (conversions.ContainsKey(col.ColumnName))
+                        {
+                            value = conversions[col.ColumnName](value);
+                        }
+                        mapping[col.ColumnName].SetValue(messageBody, value);
+                    }
+                }
+                messages.Add(objectMessage);
             }
 
             return messages;
@@ -126,10 +141,10 @@ namespace Informagator.CommonComponents.TransformStages
             return result;
         }
 
-        private IMessage CreateObjectMessage()
+        private void CreateObjectMessage(out IMessage message, out object body)
         {
-            IMessage objectMessage = Activator.CreateInstance(MessageType) as IMessage;
-            return objectMessage;
+            body = Activator.CreateInstance(BodyType);
+            message = Activator.CreateInstance(MessageType, body) as IMessage;
         }
 
         public string Name

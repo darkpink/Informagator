@@ -112,14 +112,22 @@ namespace Informagator.Machine
 
         private void ApplyHostProvidedDependencies(object hostObject, object result)
         {
-            IEnumerable<PropertyInfo> resultHostProvidedProperties = result.GetType().GetProperties().Where(pi => pi.GetCustomAttributes().OfType<HostProvidedAttribute>().Any());
-            IEnumerable<PropertyInfo> hostPropsForResult = hostObject.GetType().GetProperties().Where(pi => pi.GetCustomAttributes().OfType<ProvideToClientAttribute>().Any());
+            IEnumerable<PropertyInfo> resultHostProvidedProperties = result.GetType()
+                                                                           .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                                                           .Where(pi => pi.GetCustomAttributes()
+                                                                                          .OfType<HostProvidedAttribute>()
+                                                                                          .Any());
+            IEnumerable<PropertyInfo> hostPropsForResult = hostObject.GetType()
+                                                                     .GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                                                                     .Where(pi => pi.GetCustomAttributes()
+                                                                                    .OfType<ProvideToClientAttribute>()
+                                                                                    .Any());
             var availableDependenciesFromHost = new Dictionary<Type, object>();
 
             foreach (PropertyInfo pi in hostPropsForResult)
             {
                 IEnumerable<ProvideToClientAttribute> attrs = pi.GetCustomAttributes<ProvideToClientAttribute>();
-                object value = pi.GetValue(this);
+                object value = pi.GetValue(hostObject);
                 foreach (ProvideToClientAttribute attr in attrs)
                 {
                     availableDependenciesFromHost.Add(attr.InterfaceType, value);

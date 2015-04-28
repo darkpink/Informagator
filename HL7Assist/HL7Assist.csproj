@@ -49,10 +49,21 @@
     <Compile Include="HL7FieldComponent.cs" />
     <Compile Include="HL7Message.cs" />
     <Compile Include="HL7MessageSegment.cs" />
+    <Compile Include="MSHSegment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SegmentTypes.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contracts\Contracts.csproj">
+      <Project>{e701e1e5-ed20-4ada-8723-e97a0d9460fb}</Project>
+      <Name>Contracts</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" ..\..\..\HostConsoleApp\bin\Debug\
+xcopy /F /Y "$(TargetDir)$(TargetName).pdb" ..\..\..\HostConsoleApp\bin\Debug\</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

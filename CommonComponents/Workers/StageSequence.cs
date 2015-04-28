@@ -39,12 +39,13 @@ namespace Informagator.CommonComponents.Workers
             }
         }
 
-        public IMessageTracker MessageTracker { get; set; }
+        protected IMessageTracker MessageTracker { get; set; }
 
-        public StageSequence()
+        public StageSequence(IMessageTracker messageTracker)
         {
             Stages = new List<IProcessingStage>();
             ErrorHandlers = new List<IList<IMessageErrorHandler>>();
+            MessageTracker = messageTracker;
         }
 
         public void AddStage(IProcessingStage stage, IList<IMessageErrorHandler> errorHandlers)
@@ -59,11 +60,11 @@ namespace Informagator.CommonComponents.Workers
             bool result = false;
 
             List<IMessage> messagesInProcess = null;
-            ProcessingSequenceTracker tracker = null;
+            ProcessingSequenceTracker tracker = new ProcessingSequenceTracker(MessageTracker);
             int currentStageIndex = 0;
             IMessage initialMessage = null;
 
-            while(currentStageIndex == 0 || messagesInProcess != null)
+            while(currentStageIndex < Stages.Count && (currentStageIndex == 0 || messagesInProcess != null))
             {
                 var stage = Stages[currentStageIndex];
                 tracker.BeginStage(stage.Name);

@@ -26,6 +26,9 @@ namespace Informagator.Machine
         [ProvideToClient(typeof(IMessageStore))]
         protected IMessageStore MessageStore { get; set; }
 
+        [ProvideToClient(typeof(IMessageTracker))]
+        protected IMessageTracker MessageTracker { get; set; }
+
         [ProvideToClient(typeof(IWorkerConfiguration))]
         protected IWorkerConfiguration Configuration { get; set; }
 
@@ -33,7 +36,7 @@ namespace Informagator.Machine
         
         protected IWorker WorkerObject { get; set; }
         
-        protected Type WorkerClass { get; set; }
+        //protected Type WorkerClass { get; set; }
         
         protected Exception WorkerThreadException { get; set; }
 
@@ -53,10 +56,13 @@ namespace Informagator.Machine
             try
             {
                 RunStatus = ThreadRunStatus.NotStarted;
+                ErrorHandlers = new List<IMessageErrorHandler>();
                 Container = new UnityContainer();
                 Container.LoadConfiguration();
 
                 AssemblyManager = Container.Resolve<IAssemblyManager>();
+                MessageStore = Container.Resolve<IMessageStore>();
+                MessageTracker = Container.Resolve<IMessageTracker>();
                 IConfigurationProvider configurationProvider = Container.Resolve<IConfigurationProvider>();
                 Configuration = configurationProvider.GetMachineConfiguration(machineName).Workers[threadName];
                 CreateErrorHandlers();

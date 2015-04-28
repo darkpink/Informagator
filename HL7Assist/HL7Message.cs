@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Informagator.Contracts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Informagator.HL7Assist
 {
-    public class HL7Message : IEnumerable<HL7MessageSegment>
+    public class HL7Message : IMessage, IEnumerable<HL7MessageSegment>
     {
         private const string CRLF = "\r\n";
 
@@ -16,6 +17,7 @@ namespace Informagator.HL7Assist
         public HL7Message()
         {
             Segments = new List<HL7MessageSegment>();
+            Segments.Add(new MSHSegment());
         }
 
         public HL7Message(string message)
@@ -37,6 +39,22 @@ namespace Informagator.HL7Assist
             : this()
         {
             Parse(Encoding.ASCII.GetString(message));
+        }
+
+        public HL7MessageSegment AddSegment(string segment)
+        {
+            HL7MessageSegment result = new HL7MessageSegment(segment);
+            
+            Segments.Add(result);
+            
+            return result;
+        }
+
+        public HL7MessageSegment[] AddSegments(params string[] segments)
+        {
+            HL7MessageSegment[] result = segments.Select(s => new HL7MessageSegment(s)).ToArray();
+            Segments.AddRange(result);
+            return result;
         }
 
         public HL7MessageSegment this[string segmentId]
@@ -80,15 +98,10 @@ namespace Informagator.HL7Assist
             return String.Join(CRLF, Segments);
         }
 
-        public static implicit operator HL7Message(string message)
-        {
-            return new HL7Message(message);
-        }
-
         private void Parse(string message)
         {
             Segments.AddRange(message.Split(new[] { '\r', '\n'}, StringSplitOptions.RemoveEmptyEntries)
-                              .Select(s => new HL7MessageSegment(s))
+                .Select(s => s.StartsWith("MSH") ? new MSHSegment() :  new HL7MessageSegment(s))
                               );
         }
 
@@ -106,6 +119,33 @@ namespace Informagator.HL7Assist
             {
                 yield return segment;
             }
+        }
+
+        public Guid Id
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public byte[] BinaryData
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public IDictionary<string, string> Attributes
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public IList<string> ProcessingTrail
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }

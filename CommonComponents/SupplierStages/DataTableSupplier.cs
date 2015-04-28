@@ -12,15 +12,16 @@ using System.Threading.Tasks;
 
 namespace Informagator.CommonComponents.SupplierStages
 {
-    public abstract class DataTableSupplier : ISupplierStage
+    public class DataTableSupplier : ISupplierStage
     {
         [ConfigurationParameter]
         public string Server { get; set; }
 
         [ConfigurationParameter]
         public string Database { get; set; }
-        
-        protected abstract string SqlStatement { get; }
+
+        [ConfigurationParameter]
+        public string SqlStatement { get; set; }
 
         protected SqlConnection Connection { get; set; }
 
@@ -38,12 +39,16 @@ namespace Informagator.CommonComponents.SupplierStages
                 using (SqlCommand cmd = new SqlCommand(SqlStatement, Connection))
                 {
                     DataTable resultBody = new DataTable();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while(reader.HasRows)
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         resultBody.Load(reader);
                     }
-                    result.Body = resultBody;
+
+                    if (resultBody.Rows.Count > 0)
+                    {
+                        result = new ObjectMessage<DataTable>();
+                        result.Body = resultBody;
+                    }
                 }
             }
 

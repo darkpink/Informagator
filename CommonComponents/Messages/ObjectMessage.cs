@@ -41,5 +41,11 @@ namespace Informagator.CommonComponents.Messages
         {
             Formatter = new BinaryFormatter();
         }
+
+        public ObjectMessage(TBody body)
+        {
+            Formatter = new BinaryFormatter();
+            Body = body;
+        }
     }
 }

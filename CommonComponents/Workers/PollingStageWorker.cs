@@ -16,6 +16,7 @@ namespace Informagator.CommonComponents.Workers
     public class PollingStageWorker : MessageWorker
     {
         [HostProvided]
+        [ProvideToClient(typeof(IAssemblyManager))]
         public IAssemblyManager AssemblyManager { get; set; }
 
         protected StageSequence Stages { get; set; }
@@ -65,16 +66,17 @@ namespace Informagator.CommonComponents.Workers
 
         protected virtual void BuildStages()
         {
-            Stages = new StageSequence();
-            Stages.MessageTracker = MessageTracker;
+            Stages = new StageSequence(MessageTracker);
             
             foreach (IStageConfiguration stageConfig in Configuration.Stages)
             {
                 IProcessingStage stage = AssemblyManager.CreateConfiguredObject(stageConfig, this) as IProcessingStage;
+                stage.ValidateSettings();
                 var errorHandlers = new List<IMessageErrorHandler>();
                 foreach(IErrorHandlerConfiguration errorHandlerConfiguration in stageConfig.ErrorHandlers)
                 {
                     IMessageErrorHandler errorHandler = AssemblyManager.CreateConfiguredObject(errorHandlerConfiguration, stage) as IMessageErrorHandler;
+                    errorHandler.ValidateSettings();
                     errorHandlers.Add(errorHandler);
                 }
 
