@@ -12,11 +12,20 @@ namespace Informagator.DevProviders
 {
     public class FileSystemAssemblySource : IAssemblyProvider
     {
+        protected string AssemblyDirectory { get; set; }
+
+        public FileSystemAssemblySource(string assemblyDirectory)
+        {
+            AssemblyDirectory = assemblyDirectory;
+        }
+
         public byte[] GetAssemblyBinary(string assemblyName, string assemblyVersion)
         {
             byte[] assemblyBytes;
 
-            using (FileStream stream = new FileStream(assemblyName, FileMode.Open, FileAccess.Read))
+            string path = Path.Combine(AssemblyDirectory, assemblyName);
+
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 assemblyBytes = new byte[stream.Length];
                 stream.Read(assemblyBytes, 0, assemblyBytes.Length);
@@ -30,7 +39,9 @@ namespace Informagator.DevProviders
         {
             byte[] debuggingSymbolBytes;
 
-            using (FileStream stream = new FileStream(assemblyName.Replace(".dll", ".pdb"), FileMode.Open, FileAccess.Read))
+            string path = Path.Combine(AssemblyDirectory, assemblyName).Replace(".dll", ".pdb");
+
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read))
             {
                 debuggingSymbolBytes = new byte[stream.Length];
                 stream.Read(debuggingSymbolBytes, 0, debuggingSymbolBytes.Length);

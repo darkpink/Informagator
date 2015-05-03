@@ -8,6 +8,6 @@ namespace Informagator.Contracts.WorkerServices
 {
     public interface IMessageTracker
     {
-        void TrackMessage(ITrackingInfo info, IMessage message);
+        void TrackOutputMessage(IMessageTrackingInfo info, IMessage outputMessage);
     }
 }

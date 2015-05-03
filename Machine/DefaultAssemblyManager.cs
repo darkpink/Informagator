@@ -28,7 +28,7 @@ namespace Informagator.Machine
         protected virtual Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
             AssemblyName name = new AssemblyName(args.Name);
-            return GetAssembly(name.Name, name.Version.ToString());
+            return GetAssembly(name.Name + ".dll", name.Version.ToString());
         }
 
         public Assembly GetAssembly(string name, string version)

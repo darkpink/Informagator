@@ -60,20 +60,23 @@ namespace Informagator.CommonComponents.Workers
             bool result = false;
 
             List<IMessage> messagesInProcess = null;
-            ProcessingSequenceTracker tracker = new ProcessingSequenceTracker(MessageTracker);
+            StageSequenceTracker tracker = null;
             int currentStageIndex = 0;
             IMessage initialMessage = null;
 
             while(currentStageIndex < Stages.Count && (currentStageIndex == 0 || messagesInProcess != null))
             {
                 var stage = Stages[currentStageIndex];
-                tracker.BeginStage(stage.Name);
+                if (currentStageIndex > 0)
+                {
+                    tracker.BeginNonInitialStage(stage.Name);
+                }
 
                 try
                 {
                     if (stage is IReplyBuilderStage)
                     {
-                        ProcessReplyBuilderStage((IReplyingSupplierStage)Stages[0], (IReplyBuilderStage)stage, messagesInProcess);
+                        ProcessReplyBuilderStage((IReplyingSupplierStage)Stages[0], (IReplyBuilderStage)stage, messagesInProcess, tracker);
                     }
                     else if (stage is ITransformStage)
                     {
@@ -81,7 +84,7 @@ namespace Informagator.CommonComponents.Workers
                     }
                     else if (stage is IObserverStage)
                     {
-                        ProcessObserverStage((IObserverStage)stage, messagesInProcess);
+                        ProcessObserverStage((IObserverStage)stage, messagesInProcess, tracker);
                     }
                     else if (stage is IConsumerStage)
                     {
@@ -95,8 +98,8 @@ namespace Informagator.CommonComponents.Workers
                         {
                             result = true;
                             messagesInProcess = new List<IMessage>() { initialMessage };
-                            tracker = new ProcessingSequenceTracker(MessageTracker);
-                            tracker.TrackInitialMessage(initialMessage, SupplierStage.Name);
+                            tracker = new StageSequenceTracker(MessageTracker);
+                            tracker.TrackInitialSupplierStageOutput(initialMessage, SupplierStage.Name);
                         }
                     }
                     else
@@ -139,9 +142,40 @@ namespace Informagator.CommonComponents.Workers
             return result;
         }
 
-        private void ProcessReplyBuilderStage(IReplyingSupplierStage supplierStage, IReplyBuilderStage builderStage, List<IMessage> messagesInProcess)
+        private void ProcessReplyBuilderStage(IReplyingSupplierStage supplierStage, IReplyBuilderStage builderStage, List<IMessage> messagesInProcess, StageSequenceTracker tracker)
         {
+            List<IMessage> replies = new List<IMessage>();
 
+            foreach(IMessage mip in messagesInProcess)
+            {
+                IMessage reply = null;
+
+                try
+                {
+                    tracker.BeginNonInitialStageInputMessage(mip);
+                    reply = builderStage.SupplyReply(mip);
+                    tracker.TrackNonInitialStageOutputMessage(reply);
+                    replies.Add(reply);
+                }catch(Exception ex)
+                {
+                    tracker.TrackStageException(builderStage.Name, mip, ex);
+                    throw;
+                }
+            }
+
+            foreach (IMessage mip in replies)
+            {
+                try
+                {
+                    tracker.TrackReplyToInitialSupplierStage(supplierStage.Name, mip);
+                    supplierStage.Reply(mip);
+                }
+                catch (Exception ex)
+                {
+                    tracker.TrackStageException(builderStage.Name, mip, ex);
+                    throw;
+                }
+            }
         }
 
         private void InvokeErrorHandlers(IList<IMessageErrorHandler> handlers, string stageName, IMessage message, Exception ex)
@@ -156,34 +190,50 @@ namespace Informagator.CommonComponents.Workers
             }
         }
 
-        private void ProcessConsumerStage(IConsumerStage stage, List<IMessage> messagesInProcess, ProcessingSequenceTracker tracker)
+        private void ProcessConsumerStage(IConsumerStage stage, List<IMessage> messagesInProcess, StageSequenceTracker tracker)
         {
             foreach (IMessage mip in messagesInProcess)
             {
-                tracker.BeginInputMessage(mip);
-                stage.Consume(mip);
-                tracker.TrackSequenceOutputMessage(mip);
+                tracker.BeginNonInitialStageInputMessage(mip);
+                try
+                {
+                    stage.Consume(mip);
+                    tracker.TrackNoninitialStageOutputMessage(mip);
+                }
+                catch (Exception ex)
+                {
+                    tracker.TrackStageException(stage.Name, mip, ex);
+                    throw;
+                }
             }
         }
 
-        private static void ProcessObserverStage(IObserverStage stage, List<IMessage> messagesInProcess)
+        private static void ProcessObserverStage(IObserverStage stage, List<IMessage> messagesInProcess, StageSequenceTracker tracker)
         {
             foreach (IMessage mip in messagesInProcess)
             {
-                stage.Observe(mip);
+                try
+                {
+                    stage.Observe(mip);
+                }
+                catch(Exception ex)
+                {
+                    tracker.TrackStageException(stage.Name, mip, ex);
+                    throw;
+                }
             }
         }
 
-        private static List<IMessage> ProcessTransformStage(ITransformStage stage, ProcessingSequenceTracker tracker, List<IMessage> messagesInProcess)
+        private static List<IMessage> ProcessTransformStage(ITransformStage stage, StageSequenceTracker tracker, List<IMessage> messagesInProcess)
         {
             var newMessagesInProcess = new List<IMessage>(messagesInProcess.Count);
             foreach (IMessage mip in messagesInProcess)
             {
-                tracker.BeginInputMessage(mip);
+                tracker.BeginNonInitialStageInputMessage(mip);
                 var newMessages = stage.TransformMessage(mip);
                 foreach (IMessage newMessage in newMessages)
                 {
-                    tracker.TrackSequenceOutputMessage(newMessage);
+                    tracker.TrackNoninitialStageOutputMessage(newMessage);
                     newMessagesInProcess.Add(newMessage);
                 }
             }

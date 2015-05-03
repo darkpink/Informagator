@@ -11,15 +11,15 @@ namespace Informagator.DevProviders
     public class MemoryMessageTracker : IMessageTracker
     {
         private const int LogCount = 100;
-        private List<Tuple<IMessage, ITrackingInfo>> TrackingLog { get; set; }
+        private List<Tuple<IMessage, IMessageTrackingInfo>> TrackingLog { get; set; }
 
         public MemoryMessageTracker()
         {
-            TrackingLog = new List<Tuple<IMessage, ITrackingInfo>>();
+            TrackingLog = new List<Tuple<IMessage, IMessageTrackingInfo>>();
         }
-        public void TrackMessage(ITrackingInfo info, IMessage message)
+        public void TrackOutputMessage(IMessageTrackingInfo info, IMessage message)
         {
-            TrackingLog.Add(new Tuple<IMessage, ITrackingInfo>(message, info));
+            TrackingLog.Add(new Tuple<IMessage, IMessageTrackingInfo>(message, info));
             if (TrackingLog.Count > LogCount)
             {
                 TrackingLog.RemoveAt(0);

@@ -66,3 +66,4 @@ DB/bin/
 DB/*.dbmdl
 DBEntities/obj/
 DBEntities/bin/
+assemblies/

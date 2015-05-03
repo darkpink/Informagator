@@ -60,8 +60,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" ..\..\..\HostConsoleApp\bin\Debug\
-xcopy /F /Y "$(TargetDir)$(TargetName).pdb" ..\..\..\HostConsoleApp\bin\Debug\</PostBuildEvent>
+    <PostBuildEvent>xcopy /F /Y "$(TargetPath)" ..\..\..\assemblies\
+xcopy /F /Y "$(TargetDir)$(TargetName).pdb" ..\..\..\assemblies\</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
