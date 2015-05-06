@@ -4,20 +4,24 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Message">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" Nullable="false" />
+          <Property Name="MessageId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProcessingSequenceId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="TrackDateTime" Type="datetime" Nullable="false" />
-          <Property Name="MessageId" Type="bigint" Nullable="false" />
-          <Property Name="MessageBody" Type="varchar(max)" Nullable="false" />
-          <Property Name="ProcessingSequenceId" Type="uniqueidentifier" />
-          <Property Name="StageSequence" Type="int" />
-          <Property Name="MessageSequence" Type="int" />
+          <Property Name="MachineName" Type="varchar" MaxLength="100" />
+          <Property Name="WorkerName" Type="varchar" MaxLength="100" />
           <Property Name="StageName" Type="varchar" MaxLength="100" />
+          <Property Name="StageSequence" Type="int" />
+          <Property Name="InputMessageSequence" Type="int" />
+          <Property Name="OutputMessageSequence" Type="int" />
+          <Property Name="MessageBody" Type="varchar(max)" Nullable="false" />
           <Property Name="Exception" Type="varchar(max)" />
+          <Property Name="Info" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="MessageAttribute">
           <Key>
@@ -50,8 +54,7 @@
             <End Role="MessageAttribute" EntitySet="MessageAttribute" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -61,14 +64,18 @@
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
           <Property Name="TrackDateTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="MessageId" Type="Int64" Nullable="false" />
+          <Property Name="MessageId" Type="Guid" Nullable="false" />
           <Property Name="MessageBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="ProcessingSequenceId" Type="Guid" />
+          <Property Name="ProcessingSequenceId" Type="Guid" Nullable="false" />
           <Property Name="StageSequence" Type="Int32" />
-          <Property Name="MessageSequence" Type="Int32" />
           <Property Name="StageName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Exception" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="MessageAttributes" Relationship="Self.FK_TrackedMessageAttribute_TrackedMessage" FromRole="Message" ToRole="MessageAttribute" />
+          <Property Name="MachineName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="WorkerName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="InputMessageSequence" Type="Int32" />
+          <Property Name="OutputMessageSequence" Type="Int32" />
+          <Property Name="Info" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="MessageAttribute">
           <Key>
@@ -111,13 +118,17 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="Model.Message">
               <MappingFragment StoreEntitySet="Message">
+                <ScalarProperty Name="Info" ColumnName="Info" />
+                <ScalarProperty Name="OutputMessageSequence" ColumnName="OutputMessageSequence" />
+                <ScalarProperty Name="InputMessageSequence" ColumnName="InputMessageSequence" />
+                <ScalarProperty Name="WorkerName" ColumnName="WorkerName" />
+                <ScalarProperty Name="MachineName" ColumnName="MachineName" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="TrackDateTime" ColumnName="TrackDateTime" />
                 <ScalarProperty Name="MessageId" ColumnName="MessageId" />
                 <ScalarProperty Name="MessageBody" ColumnName="MessageBody" />
                 <ScalarProperty Name="ProcessingSequenceId" ColumnName="ProcessingSequenceId" />
                 <ScalarProperty Name="StageSequence" ColumnName="StageSequence" />
-                <ScalarProperty Name="MessageSequence" ColumnName="MessageSequence" />
                 <ScalarProperty Name="StageName" ColumnName="StageName" />
                 <ScalarProperty Name="Exception" ColumnName="Exception" />
               </MappingFragment>

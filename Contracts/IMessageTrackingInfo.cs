@@ -18,7 +18,7 @@ namespace Informagator.Contracts
 
         int OutputMessageSequence { get; }  //ordinal of the messae passed out, unique (does not zero out for each input)
 
-        string Info { get; set; }
+        string Info { get; }
         
         string Exception { get; }
         

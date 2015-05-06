@@ -21,13 +21,17 @@ namespace Informagator.DBEntities.Tracking
     
         public long Id { get; set; }
         public System.DateTime TrackDateTime { get; set; }
-        public long MessageId { get; set; }
+        public System.Guid MessageId { get; set; }
         public string MessageBody { get; set; }
-        public Nullable<System.Guid> ProcessingSequenceId { get; set; }
+        public System.Guid ProcessingSequenceId { get; set; }
         public Nullable<int> StageSequence { get; set; }
-        public Nullable<int> MessageSequence { get; set; }
         public string StageName { get; set; }
         public string Exception { get; set; }
+        public string MachineName { get; set; }
+        public string WorkerName { get; set; }
+        public Nullable<int> InputMessageSequence { get; set; }
+        public Nullable<int> OutputMessageSequence { get; set; }
+        public string Info { get; set; }
     
         public virtual ICollection<MessageAttribute> MessageAttributes { get; set; }
     }

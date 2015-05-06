@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="a491902ca3f3436d928d3f25c8ed8341" Name="Diagram1">
+      <Diagram DiagramId="a491902ca3f3436d928d3f25c8ed8341" Name="Diagram1" ZoomLevel="85">
         <EntityTypeShape EntityType="Model.Message" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="Model.MessageAttribute" Width="1.5" PointX="3" PointY="1.5" IsExpanded="true" />
         <AssociationConnector Association="Model.FK_TrackedMessageAttribute_TrackedMessage" ManuallyRouted="false" />

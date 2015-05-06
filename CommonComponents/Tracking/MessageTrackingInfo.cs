@@ -25,7 +25,7 @@ namespace Informagator.CommonComponents.Tracking
 
         public DateTime TrackDateTime { get; protected set; }
 
-        public string Exception { get; protected set; }
+        public string Exception { get; set; }
 
         public string Info { get; set; }
         

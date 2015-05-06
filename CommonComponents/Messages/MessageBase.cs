@@ -29,10 +29,15 @@ namespace Informagator.CommonComponents.Messages
         }
 
         public MessageBase()
+            : this(Guid.NewGuid())
+        {
+        }
+
+        public MessageBase(Guid id)
         {
             _processingTrail = new List<string>();
-            _attributes = new Dictionary<string,string>();
-            Id = Guid.NewGuid();
+            _attributes = new Dictionary<string, string>();
+            Id = id;
         }
     }
 }
